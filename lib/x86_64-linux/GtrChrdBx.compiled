@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/usr/bin/fpc" Date="1704440408"/>
+  <Params Value="-MObjFPC -Scghi -Cg -O1 -gw3 -gl -l -vewnhibq -Fi/home/bill/src/GuitarChordBox/lib/x86_64-linux -Fu/home/bill/src/GuitarChordBox/ -Fu/home/bill/src/Lazarus/lcl/units/x86_64-linux/gtk2 -Fu/home/bill/src/Lazarus/lcl/units/x86_64-linux -Fu/home/bill/src/Lazarus/components/freetype/lib/x86_64-linux -Fu/home/bill/src/Lazarus/components/lazutils/lib/x86_64-linux -Fu/home/bill/src/Lazarus/packager/units/x86_64-linux -FU/home/bill/src/GuitarChordBox/lib/x86_64-linux/ -FE/home/bill/src/GuitarChordBox/ -o/home/bill/src/GuitarChordBox/GtrChrdBx -dLCL -dLCLgtk2 GtrChrdBx.lpr"/>
+</CONFIG>
