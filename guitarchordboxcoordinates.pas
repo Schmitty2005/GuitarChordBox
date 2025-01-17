@@ -18,11 +18,12 @@ type
   end;
 
   TstrRec = record
-    top: Tpoint;
+    top: Tpoint;  //change to start and end instead of top and bottom
     bottom: Tpoint;
   end;
 
   TstrPnts = array [1..6] of TstrRec;
+  TfrtPnts = array [1..4] of TstrRec;
 
 
   TGuitarChordBoxCoOrds = class
@@ -39,7 +40,8 @@ type
     //procedure setCanvasY (YCoords : Double);
 
   public
-    function stringPoints(aRect: Trect): TstrPnts;
+     function stringLines(aRect: Trect): TstrPnts; //chnage to private
+     function fretLines(aRect: Trect): TstrPnts; //chnage to private
     //property CanvasX : Double  read getCanvasX write setCanvasX;
     //property CanvasY : Double read getCanvasY   write setCanvasY;
     property CanvasSize: TRect read getCanvasRect write setCanvasRect;
@@ -81,35 +83,49 @@ begin
   Result := blIsYCoOrd;
 end;
 
-function TGuitarChordBoxCoOrds.stringPoints(aRect: Trect): TstrPnts;
+function TGuitarChordBoxCoOrds.stringLines(aRect: Trect): TstrPnts;
 var
   output: TstrPnts;
   Count: integer;
-  pnt: Tpoint;
   rec: TstrRec;
   spcing: longint;
 begin
-  pnt := Point(0, 0);
-  //output := (pnt,pnt,pnt,pnt,pnt,pnt);
   spcing := Round(aRect.Width / 5);
   Count := 0;
 
   while Count <= 5 do
   begin
-    pnt.Y := aRect.top;
-    pnt.X := aRect.left + (spcing * Count);
-    rec.top := pnt;
-
-    pnt.Y := aRect.bottom;
-    pnt.X := aRect.left + (spcing * Count);
-    rec.bottom := pnt;
-
-    output[Count] := rec;
+    rec.top := Point(aRect.Top, aRect.left + (spcing * Count));
+    rec.bottom := Point(aRect.Bottom, aRect.left + (spcing * Count));
+    output[low(output) + Count] := rec;
     Inc(Count);
   end;
   Result := output;
 
 end;
+
+function TGuitarChordBoxCoOrds.fretLines(aRect: Trect): TstrPnts;
+var
+  output: TstrPnts;
+  Count: integer;
+  rec: TstrRec;
+  spcing: longint;
+begin
+  spcing := Round(aRect.Width / 4);
+  Count := 2;
+  output := default(TstrPnts);
+   //not working correcly yet!
+  while Count >= 0 do
+  begin
+    rec.top := Point(aRect.Left, aRect.top + (spcing * Count));
+    rec.bottom := Point(aRect.right, aRect.top + (spcing * Count));
+    output[low(output) + Count] := rec;
+    Dec(Count);
+  end;
+  Result := output;
+
+end;
+
 
 //uses Classes;;
 
