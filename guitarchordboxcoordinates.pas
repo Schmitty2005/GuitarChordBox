@@ -17,10 +17,12 @@ type
     Placeholder: integer;
   end;
 
+  TstrPnts = array [1..6] of Tpoint;
 
   TGuitarChordBoxCoOrds = class
   private
     blIsYCoOrd: boolean;
+    constructor Create();
     function getCanvasRect: Trect;
     procedure setCanvasRect(aRect: Trect);
     function isReveresedY(): boolean;
@@ -31,6 +33,7 @@ type
     //procedure setCanvasY (YCoords : Double);
 
   public
+    function stringPoints(aRect: Trect): TstrPnts;
     //property CanvasX : Double  read getCanvasX write setCanvasX;
     //property CanvasY : Double read getCanvasY   write setCanvasY;
     property CanvasSize: TRect read getCanvasRect write setCanvasRect;
@@ -42,7 +45,10 @@ type
 
 implementation
 
-
+constructor TGuitarChordBoxCoOrds.Create();
+begin
+  CanvasSize := Trect.Create(0, 0, 0, 0);
+end;
 
 function TGuitarChordBoxCoOrdsisReveresedY: boolean;
 begin
@@ -51,13 +57,12 @@ end;
 
 function TGuitarChordBoxCoOrds.getCanvasRect: Trect;
 begin
-  ;
-  Result := CanvasSize;
+
 end;
 
 procedure TGuitarChordBoxCoOrds.setCanvasRect(aRect: Trect);
 begin
-  CanvasSize := aRect;
+
 end;
 
 procedure TGuitarChordBoxCoOrds.setReversedYCoords(setY: boolean);
@@ -68,6 +73,31 @@ end;
 function TGuitarChordBoxCoOrds.isReveresedY: boolean;
 begin
   Result := blIsYCoOrd;
+end;
+
+function TGuitarChordBoxCoOrds.stringPoints(aRect: Trect): TstrPnts;
+var
+  output: TstrPnts;
+  Count: integer;
+  pnt: Tpoint;
+  spcing: longint;
+begin
+  pnt := Point(0, 0);
+  //output := (pnt,pnt,pnt,pnt,pnt,pnt);
+  spcing := Round(aRect.Width / 5);
+  Count := 0;
+
+  while Count <= 5 do
+  begin
+    pnt.Y := aRect.top;
+    pnt.X := aRect.left + (spcing * Count);
+    //pnt is now top of string
+    output[Count] := pnt;
+    //update array to have string as array of points
+  inc(Count);
+  end;
+  Result := output;
+
 end;
 
 //uses Classes;;
