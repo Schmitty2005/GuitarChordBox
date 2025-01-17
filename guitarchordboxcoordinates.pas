@@ -17,7 +17,13 @@ type
     Placeholder: integer;
   end;
 
-  TstrPnts = array [1..6] of Tpoint;
+  TstrRec = record
+    top: Tpoint;
+    bottom: Tpoint;
+  end;
+
+  TstrPnts = array [1..6] of TstrRec;
+
 
   TGuitarChordBoxCoOrds = class
   private
@@ -80,6 +86,7 @@ var
   output: TstrPnts;
   Count: integer;
   pnt: Tpoint;
+  rec: TstrRec;
   spcing: longint;
 begin
   pnt := Point(0, 0);
@@ -91,10 +98,14 @@ begin
   begin
     pnt.Y := aRect.top;
     pnt.X := aRect.left + (spcing * Count);
-    //pnt is now top of string
-    output[Count] := pnt;
-    //update array to have string as array of points
-  inc(Count);
+    rec.top := pnt;
+
+    pnt.Y := aRect.bottom;
+    pnt.X := aRect.left + (spcing * Count);
+    rec.bottom := pnt;
+
+    output[Count] := rec;
+    Inc(Count);
   end;
   Result := output;
 
