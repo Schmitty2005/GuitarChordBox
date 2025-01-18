@@ -50,6 +50,11 @@
         <Filename Value="reduceFunction.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="chordboxcanvas.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ChordBoxCanvas"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -6,7 +6,8 @@ unit GuitarChordBoxCoordinates;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils, Graphics; //Graphics is only used for TCanvas on Draw Function
+
 
 type
   TFrettedStrings = record
@@ -18,33 +19,29 @@ type
   end;
 
   TstrRec = record
-    top: Tpoint;  //change to start and end instead of top and bottom
-    bottom: Tpoint;
+    start: Tpoint;
+    finish: Tpoint;
   end;
 
   TstrPnts = array [1..6] of TstrRec;
   TfrtPnts = array [1..4] of TstrRec;
-
+  TchrdDtPnts = array [1..6, 1..4] of TstrRec;
 
   TGuitarChordBoxCoOrds = class
   private
     blIsYCoOrd: boolean;
     constructor Create();
     function getCanvasRect: Trect;
+    function GridRectFromParent(aRect: Trect): Trect;
     procedure setCanvasRect(aRect: Trect);
     function isReveresedY(): boolean;
     procedure setReversedYCoords(setY: boolean);
-    //function getCanvasX : Double;
-    //procedure setCanvasX (xCoords: Double);
-    //function getCanvasY : Double;
-    //procedure setCanvasY (YCoords : Double);
-
   public
+    procedure generate();
+    //possibly private functions later
     function verifyCanvasRect(aRect: Trect): boolean;
     function stringLines(aRect: Trect): TstrPnts; //chnage to private
     function fretLines(aRect: Trect): TfrtPnts; //chnage to private
-    //property CanvasX : Double  read getCanvasX write setCanvasX;
-    //property CanvasY : Double read getCanvasY   write setCanvasY;
     property CanvasSize: TRect read getCanvasRect write setCanvasRect;
     property reverseYCoOrds: boolean read isReveresedY write setReversedYCoords;
   end;
@@ -53,6 +50,8 @@ type
 
 
 implementation
+
+uses Types;
 
 constructor TGuitarChordBoxCoOrds.Create();
 begin
@@ -97,13 +96,12 @@ begin
   output := default(TstrPnts);
   while Count <= 5 do
   begin
-    rec.top := Point(aRect.Top, aRect.left + (spcing * Count));
-    rec.bottom := Point(aRect.Bottom, aRect.left + (spcing * Count));
+    rec.start := Point(aRect.Top, aRect.left + (spcing * Count));
+    rec.finish := Point(aRect.Bottom, aRect.left + (spcing * Count));
     output[low(output) + Count] := rec;
     Inc(Count);
   end;
   Result := output;
-
 end;
 
 function TGuitarChordBoxCoOrds.fretLines(aRect: Trect): TfrtPnts;
@@ -118,18 +116,17 @@ begin
   output := default(TfrtPnts);
   while Count <= 4 do
   begin
-    rec.top := Point(aRect.Left, aRect.top + (Count * spcing));
-    rec.bottom := Point(aRect.right, aRect.top + (Count * spcing));
+    rec.start := Point(aRect.Left, aRect.top + (Count * spcing));
+    rec.finish := Point(aRect.right, aRect.top + (Count * spcing));
     output[1 + (Count - 1)] := rec;
     Inc(Count);
   end;
   Result := output;
-
 end;
 
 function TGuitarChordBoxCoOrds.verifyCanvasRect(aRect: Trect): boolean;
 const
-  rectRatio = 1.3;// Temp suggested window ratio of 1 : 1.3 !
+  rectRatio = 1;
   //should possibly use a ratio of 1:1 !
 begin
   if aRect.Height >= (Round(aRect.Width * rectRatio)) then Result := True
@@ -137,7 +134,16 @@ begin
     Result := False;
 end;
 
+function TGuitarChordBoxCoOrds.GridRectFromParent(aRect: Trect): Trect;
+begin
+  if verifyCanvasRect(aRect) and InflateRect(aRect, -5, -5) then Result := aRect;
+end;
+
 //uses Classes;;
+procedure TGuitarChordBoxCoOrds.generate();
+begin
+
+end;
 
 {
 constructor TGuitarChordBoxCoOrds.Create;
