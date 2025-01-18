@@ -40,8 +40,9 @@ type
     //procedure setCanvasY (YCoords : Double);
 
   public
-     function stringLines(aRect: Trect): TstrPnts; //chnage to private
-     function fretLines(aRect: Trect): TstrPnts; //chnage to private
+    function verifyCanvasRect(aRect: Trect): boolean;
+    function stringLines(aRect: Trect): TstrPnts; //chnage to private
+    function fretLines(aRect: Trect): TfrtPnts; //chnage to private
     //property CanvasX : Double  read getCanvasX write setCanvasX;
     //property CanvasY : Double read getCanvasY   write setCanvasY;
     property CanvasSize: TRect read getCanvasRect write setCanvasRect;
@@ -91,8 +92,9 @@ var
   spcing: longint;
 begin
   spcing := Round(aRect.Width / 5);
+  output := default(TstrPnts);
   Count := 0;
-
+  output := default(TstrPnts);
   while Count <= 5 do
   begin
     rec.top := Point(aRect.Top, aRect.left + (spcing * Count));
@@ -104,28 +106,36 @@ begin
 
 end;
 
-function TGuitarChordBoxCoOrds.fretLines(aRect: Trect): TstrPnts;
+function TGuitarChordBoxCoOrds.fretLines(aRect: Trect): TfrtPnts;
 var
-  output: TstrPnts;
+  output: TfrtPnts;
   Count: integer;
   rec: TstrRec;
   spcing: longint;
 begin
   spcing := Round(aRect.Width / 4);
-  Count := 2;
-  output := default(TstrPnts);
-   //not working correcly yet!
-  while Count >= 0 do
+  Count := 1;
+  output := default(TfrtPnts);
+  while Count <= 4 do
   begin
-    rec.top := Point(aRect.Left, aRect.top + (spcing * Count));
-    rec.bottom := Point(aRect.right, aRect.top + (spcing * Count));
-    output[low(output) + Count] := rec;
-    Dec(Count);
+    rec.top := Point(aRect.Left, aRect.top + (Count * spcing));
+    rec.bottom := Point(aRect.right, aRect.top + (Count * spcing));
+    output[1 + (Count - 1)] := rec;
+    Inc(Count);
   end;
   Result := output;
 
 end;
 
+function TGuitarChordBoxCoOrds.verifyCanvasRect(aRect: Trect): boolean;
+const
+  rectRatio = 1.3;// Temp suggested window ratio of 1 : 1.3 !
+  //should possibly use a ratio of 1:1 !
+begin
+  if aRect.Height >= (Round(aRect.Width * rectRatio)) then Result := True
+  else
+    Result := False;
+end;
 
 //uses Classes;;
 
