@@ -23,6 +23,7 @@ type
     finish: Tpoint;
   end;
 
+  TlinePoints = array of TstrRec;
   TstrPnts = array [1..6] of TstrRec;
   TfrtPnts = array [1..4] of TstrRec;
   TchrdDtPnts = array [1..6, 1..4] of TstrRec;
