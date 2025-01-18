@@ -92,13 +92,12 @@ var
   spcing: longint;
 begin
   spcing := Round(aRect.Width / 5);
-  output := default(TstrPnts);
   Count := 0;
   output := default(TstrPnts);
   while Count <= 5 do
   begin
-    rec.start := Point(aRect.Top, aRect.left + (spcing * Count));
-    rec.finish := Point(aRect.Bottom, aRect.left + (spcing * Count));
+    rec.start := Point(aRect.Left + (spcing * Count), aRect.Top);
+    rec.finish := Point(aRect.Left + (spcing * Count), aRect.Bottom);
     output[low(output) + Count] := rec;
     Inc(Count);
   end;

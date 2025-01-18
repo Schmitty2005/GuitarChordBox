@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  GuitarChordBoxCoordinates, ChordBoxCanvas;
+  ComCtrls, Types, GuitarChordBoxCoordinates, ChordBoxCanvas;
 
 type
 
@@ -18,6 +18,7 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Panel1: TPanel;
+    UpDown1: TUpDown;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure Panel1Click(Sender: TObject);
@@ -57,7 +58,9 @@ begin
 end;
 
 procedure TForm1.Panel1Click(Sender: TObject);
+var tempRect : Trect;
 begin
+
   gcb.CanvasSize := Panel1.ClientRect;//ClientRect;
   label1.Caption := IntToStr(gcb.CanvasSize.Bottom);//.ToString());
      gcb.stringLines(clientRect);
@@ -65,6 +68,14 @@ begin
      Label1.Caption := BoolToStr(gcb.verifyCanvasRect(Form1.ClientRect));
      Label2.Caption := IntToStr(clientRect.Width);
      Label3.Caption := IntToStr(clientRect.Height);
+
+     canvas.Pen.Width :=5;
+     tempRect := clientRect;
+     InflateRect(tempRect, -10,-10);
+     drawMultiLines(canvas, (gcb.stringLines(tempRect)));
+     canvas.brush.style := bsClear;
+     canvas.Rectangle(tempRect);
+     drawMultiLines (Canvas, gcb.fretLines(tempRect));
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
