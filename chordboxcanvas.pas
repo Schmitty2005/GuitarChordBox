@@ -5,7 +5,7 @@ unit ChordBoxCanvas;
 interface
 
 uses
-  Classes, SysUtils, Graphics, GuitarChordBoxCoordinates;
+  Classes, SysUtils, Graphics, Types, GuitarChordBoxCoordinates;
 
 type
   TChordBoxCanvas = class(TGuitarChordBoxCoOrds)
@@ -19,13 +19,38 @@ procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TlinePoints);
 procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TstrPnts); overload;
 procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TfrtPnts); overload;
 procedure Normalize(var aRect: Trect);
+function centeredRect(const ARect: TRect; const bRect: TRect): TRect;
 
 
 implementation
 
-procedure Normalize(var aRect: Trect);
+function centeredRect(const ARect: TRect; const bRect: TRect): TRect;
+var
+  aCenter: TPoint;
+  outerSize, innerSize: TSize;
+  xNew, yNew: longint;
 begin
+  outerSize := Size(ARect);
+  innerSize := Size(bRect);
 
+  if innerSize.cx > outerSize.cx then
+    innerSize.cx := outerSize.cx;
+
+  if innerSize.cy > outerSize.cy then
+    innerSize.cy := outerSize.cy;
+
+  aCenter := centerpoint(ARect);
+  xNew := aCenter.x - round(innerSize.cx div 2);
+  yNew := aCenter.y - round(innerSize.cy div 2);
+  Result := bounds(xNew, yNew, innerSize.cx, innerSize.cy);
+end;
+
+
+procedure Normalize(var aRect: Trect);
+var
+  replRect: Trect;
+begin
+  //@TODO need to have centerpoint moved!
   if aRect.top > aRect.bottom then
   begin
     with aRect do
@@ -42,9 +67,12 @@ begin
     begin
       left := left xor right;
       right := left xor right;
-      left := left xor bottom;
+      left := left xor right;
     end;
   end;
+  replRect := aRect;
+  aRect := centeredRect(replRect, aRect);
+
 end;
 
 function drawLine(aCanvas: Tcanvas; aStrRec: TstrRec): boolean; inline;

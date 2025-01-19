@@ -30,6 +30,9 @@ type
 
   TGuitarChordBoxCoOrds = class
   private
+    aFingerPoints : TchrdDtPnts;
+    aFretPoints : TfrtPnts;
+    aStringPoints : TstrPnts;
     blIsYCoOrd: boolean;
     constructor Create();
     function getCanvasRect: Trect;
@@ -37,6 +40,7 @@ type
     procedure setCanvasRect(aRect: Trect);
     function isReveresedY(): boolean;
     procedure setReversedYCoords(setY: boolean);
+    procedure fingerMarker(aRect : Trect);
   public
     procedure generate();
     //possibly private functions later
@@ -101,6 +105,7 @@ begin
     output[low(output) + Count] := rec;
     Inc(Count);
   end;
+  aStringPoints := output;
   Result := output;
 end;
 
@@ -121,6 +126,7 @@ begin
     output[1 + (Count - 1)] := rec;
     Inc(Count);
   end;
+  aFretPoints := output;
   Result := output;
 end;
 
@@ -137,6 +143,22 @@ end;
 function TGuitarChordBoxCoOrds.GridRectFromParent(aRect: Trect): Trect;
 begin
   if verifyCanvasRect(aRect) and InflateRect(aRect, -5, -5) then Result := aRect;
+end;
+
+
+procedure TGuitarChordBoxCoOrds.fingerMarker(aRect : Trect);
+var
+  tmpPoint : Tpoint;
+begin
+  for tmpPoint in aStringPoints do
+  begin
+    //get x from aStringPoints for each string;
+  end;
+
+  for tmpPoint in aFretPoints do
+  begin
+    // get Y for each fret, subtract 1/2 of spacing !
+  end;
 end;
 
 //uses Classes;;

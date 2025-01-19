@@ -17,6 +17,8 @@ type
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
     Panel1: TPanel;
     ToggleBox1: TToggleBox;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -61,6 +63,7 @@ begin
   //gcb.stringLines(clientRect);
 end;
 
+
 procedure TForm1.FormPaint(Sender: TObject);
 const
   shrinkRatio  = -0.925;
@@ -73,17 +76,33 @@ begin
   canvas.Pen.Width := Round(Form1.Width * 0.005);
   //seems to be good pen / width ratio!//5;
   tempRect := clientRect;
+
   //@TODO InflatedRect with neg coords needs Normalization!  WTF!
+  //move tempRect.Width and tempRect.Height into local variables to see
+  //if drawing in calculcated more accurately.
+  Label4.Caption := format('Before Inflation tempRect Center ( %d, %d )', [temprect.CenterPoint.X ,
+  temprect.centerpoint.y]);
+
+  //Seems to be funky!
   InflateRect(tempRect,round(tempRect.width * shrinkRatio ),
     round(tempRect.Height * shrinkRatio ));// -50, -50);//change with ratio, not static
-  tempRect.Height := Round(tempRect.Width * 1);
+
+  Label5.Caption := format('After Inflation tempRect Center ( %d, %d )', [temprect.CenterPoint.X ,
+  temprect.centerpoint.y]);
+
+  Normalize(tempRect); //@TODO YAY Normalize works properly..sometimes drawin has issue ? !
+  //@TODO needs Centered rec here !
+    Label1.Caption := format('After Normalization tempRect Center ( %d, %d )', [temprect.CenterPoint.X ,
+  temprect.centerpoint.y]);
+
+  // tempRect.Height := Round(tempRect.Width * 1);
   //make sure ratio of Trect is good
   drawMultiLines(canvas, (gcb.stringLines(tempRect)));
   canvas.brush.style := bsClear;
   if ToggleBox1.Checked then  canvas.Rectangle(tempRect);
   drawMultiLines(Canvas, gcb.fretLines(tempRect));
-  Form1.Invalidate;
-  Form1.Refresh;
+  //Form1.Invalidate;
+  //Form1.Refresh;
 end;
 
 procedure TForm1.Panel1Click(Sender: TObject);
