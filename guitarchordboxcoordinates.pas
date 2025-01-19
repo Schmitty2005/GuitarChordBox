@@ -66,7 +66,7 @@ end;
 
 function TGuitarChordBoxCoOrds.getCanvasRect: Trect;
 begin
-
+   result:= Rect(0,0,0,0);//placeholder
 end;
 
 procedure TGuitarChordBoxCoOrds.setCanvasRect(aRect: Trect);
@@ -92,12 +92,12 @@ var
   spcing: longint;
 begin
   spcing := Round(aRect.Width / 5);
-  Count := 0;
+  Count := 1;
   output := default(TstrPnts);
-  while Count <= 5 do
+  while Count <= 4 do
   begin
-    rec.start := Point(aRect.Left + (spcing * Count), aRect.Top);
-    rec.finish := Point(aRect.Left + (spcing * Count), aRect.Bottom);
+    rec.start := Point(aRect.Left + (spcing * Count), (aRect.Top)-1);
+    rec.finish := Point(aRect.Left + (spcing * Count), (aRect.Bottom) + 1);
     output[low(output) + Count] := rec;
     Inc(Count);
   end;
@@ -111,13 +111,13 @@ var
   rec: TstrRec;
   spcing: longint;
 begin
-  spcing := Round(aRect.Width / 4);
+  spcing := Round(aRect.Height / 4);
   Count := 1;
   output := default(TfrtPnts);
-  while Count <= 4 do
+  while Count <= 3 do
   begin
-    rec.start := Point(aRect.Left, aRect.top + (Count * spcing));
-    rec.finish := Point(aRect.right, aRect.top + (Count * spcing));
+    rec.start := Point(aRect.Left, aRect.top + (Count * spcing) + 1);
+    rec.finish := Point(aRect.right - 1, aRect.top + (Count * spcing) + 1);
     output[1 + (Count - 1)] := rec;
     Inc(Count);
   end;
@@ -144,6 +144,8 @@ procedure TGuitarChordBoxCoOrds.generate();
 begin
 
 end;
+
+
 
 {
 constructor TGuitarChordBoxCoOrds.Create;

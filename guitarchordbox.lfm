@@ -1,21 +1,24 @@
 object Form1: TForm1
   Left = 440
-  Height = 341
+  Height = 512
   Top = 32
   Width = 491
   Caption = 'Form1'
-  ClientHeight = 341
+  ClientHeight = 512
   ClientWidth = 491
-  LCLVersion = '4.99.0.0'
+  DoubleBuffered = True
+  ParentDoubleBuffered = False
   OnClose = FormClose
   OnCreate = FormCreate
+  OnPaint = FormPaint
   object Panel1: TPanel
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
-    Left = 0
+    Left = 224
     Height = 56
-    Top = 0
+    Top = 176
     Width = 62
+    Anchors = []
     BevelInner = bvLowered
     BevelWidth = 3
     Caption = 'Sample Panel'
@@ -24,42 +27,48 @@ object Form1: TForm1
     OnPaint = Panel1Paint
   end
   object Label1: TLabel
-    Left = 238
+    Left = 439
     Height = 18
-    Top = 27
+    Top = 0
     Width = 44
     Caption = 'Label1'
   end
   object Button1: TButton
     Left = 408
     Height = 25
-    Top = 312
+    Top = 483
     Width = 75
     Anchors = [akRight, akBottom]
     Caption = 'Button1'
     TabOrder = 1
   end
   object Label2: TLabel
-    Left = 239
+    Left = 8
     Height = 18
-    Top = 103
+    Top = 456
     Width = 44
+    Anchors = [akLeft, akBottom]
     Caption = 'Label2'
   end
   object Label3: TLabel
-    Left = 239
+    Left = 8
     Height = 18
-    Top = 144
+    Top = 480
     Width = 44
+    Anchors = [akLeft, akBottom]
     Caption = 'Label3'
   end
-  object UpDown1: TUpDown
-    Left = 444
-    Height = 31
-    Top = 16
-    Width = 17
-    Min = 0
-    Position = 0
+  object ToggleBox1: TToggleBox
+    Left = 136
+    Height = 26
+    Top = 448
+    Width = 347
+    Anchors = [akRight, akBottom]
+    Caption = 'ClientRect ON / OFF'
+    Checked = True
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
+    State = cbChecked
     TabOrder = 2
   end
 end

@@ -18,9 +18,10 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Panel1: TPanel;
-    UpDown1: TUpDown;
+    ToggleBox1: TToggleBox;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure FormPaint(Sender: TObject);
     procedure Panel1Click(Sender: TObject);
     procedure Panel1Paint(Sender: TObject);
   private
@@ -52,30 +53,66 @@ begin
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
+//var constrainForm : TConstraintSize;
 begin
-   gcb := TGuitarChordBoxCoOrds.Create();
-   //gcb.stringLines(clientRect);
+  //constrainForm.Size :=300;
+  gcb := TGuitarChordBoxCoOrds.Create();
+  //Form1.ConstrainedResize:=constrainForm;
+  //gcb.stringLines(clientRect);
+end;
+
+procedure TForm1.FormPaint(Sender: TObject);
+const
+  shrinkRatio  = -0.925;
+var
+  tempRect: Trect;
+begin
+  Label2.Caption := IntToStr(clientRect.Width);
+  Label3.Caption := IntToStr(clientRect.Height);
+  //Form1.Height := Round(Form1.Width * 1.1);
+  canvas.Pen.Width := Round(Form1.Width * 0.005);
+  //seems to be good pen / width ratio!//5;
+  tempRect := clientRect;
+  //@TODO InflatedRect with neg coords needs Normalization!  WTF!
+  InflateRect(tempRect,round(tempRect.width * shrinkRatio ),
+    round(tempRect.Height * shrinkRatio ));// -50, -50);//change with ratio, not static
+  tempRect.Height := Round(tempRect.Width * 1);
+  //make sure ratio of Trect is good
+  drawMultiLines(canvas, (gcb.stringLines(tempRect)));
+  canvas.brush.style := bsClear;
+  if ToggleBox1.Checked then  canvas.Rectangle(tempRect);
+  drawMultiLines(Canvas, gcb.fretLines(tempRect));
+  Form1.Invalidate;
+  Form1.Refresh;
 end;
 
 procedure TForm1.Panel1Click(Sender: TObject);
-var tempRect : Trect;
 begin
-
+{
+var
+  tempRect: Trect;
+begin
   gcb.CanvasSize := Panel1.ClientRect;//ClientRect;
   label1.Caption := IntToStr(gcb.CanvasSize.Bottom);//.ToString());
-     gcb.stringLines(clientRect);
-     gcb.fretLines(clientRect);
-     Label1.Caption := BoolToStr(gcb.verifyCanvasRect(Form1.ClientRect));
-     Label2.Caption := IntToStr(clientRect.Width);
-     Label3.Caption := IntToStr(clientRect.Height);
+  Label1.Caption := BoolToStr(gcb.verifyCanvasRect(Form1.ClientRect));
+  Label2.Caption := IntToStr(clientRect.Width);
+  Label3.Caption := IntToStr(clientRect.Height);
 
-     canvas.Pen.Width :=5;
-     tempRect := clientRect;
-     InflateRect(tempRect, -10,-10);
-     drawMultiLines(canvas, (gcb.stringLines(tempRect)));
-     canvas.brush.style := bsClear;
-     canvas.Rectangle(tempRect);
-     drawMultiLines (Canvas, gcb.fretLines(tempRect));
+  // Form1.Height := Round(Form1.Width *1.1);
+  canvas.Pen.Width := Round(Form1.Width * 0.005);
+  //seems to be good pen / width ratio!//5;
+  tempRect := clientRect;
+  InflateRect(tempRect, -20, -20);
+  gcb.stringLines(tempRect);
+  gcb.fretLines(tempRect);
+
+  drawMultiLines(canvas, (gcb.stringLines(tempRect)));
+  canvas.brush.style := bsClear;
+  //canvas.Rectangle(tempRect);
+  drawMultiLines(Canvas, gcb.fretLines(tempRect));
+  // Form1.Invalidate;
+  //Form1.Refresh;
+  }
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -84,6 +121,6 @@ begin
 end;
 
 begin
-    //gcb.stringLines(Tform1.clientRect);
+  //gcb.stringLines(Tform1.clientRect);
 
 end.

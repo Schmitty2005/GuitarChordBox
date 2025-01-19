@@ -55,6 +55,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ChordBoxCanvas"/>
       </Unit>
+      <Unit>
+        <Filename Value="normalizeTrect.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -18,15 +18,39 @@ type
 procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TlinePoints);
 procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TstrPnts); overload;
 procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TfrtPnts); overload;
-
+procedure Normalize(var aRect: Trect);
 
 
 implementation
 
+procedure Normalize(var aRect: Trect);
+begin
+
+  if aRect.top > aRect.bottom then
+  begin
+    with aRect do
+    begin
+      top := top xor bottom;
+      bottom := top xor bottom;
+      top := top xor bottom;
+    end;
+  end;
+
+  if aRect.left > aRect.right then
+  begin
+    with aRect do
+    begin
+      left := left xor right;
+      right := left xor right;
+      left := left xor bottom;
+    end;
+  end;
+end;
+
 function drawLine(aCanvas: Tcanvas; aStrRec: TstrRec): boolean; inline;
 begin
   aCanvas.Line(astrRec.start, aStrRec.finish);
-  result := True; /// change to procedure later ?
+  Result := True; /// change to procedure later ?
 end;
 
 procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TlinePoints);
