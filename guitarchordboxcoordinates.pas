@@ -30,25 +30,26 @@ type
 
   TGuitarChordBoxCoOrds = class
   private
-    aFingerPoints : TchrdDtPnts;
-    aFretPoints : TfrtPnts;
-    aStringPoints : TstrPnts;
+    aFingerPoints: TchrdDtPnts;
+    aFretPoints: TfrtPnts;
+    aStringPoints: TstrPnts;
     blIsYCoOrd: boolean;
-    constructor Create();
     function getCanvasRect: Trect;
     function GridRectFromParent(aRect: Trect): Trect;
     procedure setCanvasRect(aRect: Trect);
     function isReveresedY(): boolean;
     procedure setReversedYCoords(setY: boolean);
-    procedure fingerMarker(aRect : Trect);
+    procedure fingerMarker(aRect: Trect);
   public
     procedure generate();
+    constructor Create();
     //possibly private functions later
     function verifyCanvasRect(aRect: Trect): boolean;
     function stringLines(aRect: Trect): TstrPnts; //chnage to private
     function fretLines(aRect: Trect): TfrtPnts; //chnage to private
     property CanvasSize: TRect read getCanvasRect write setCanvasRect;
     property reverseYCoOrds: boolean read isReveresedY write setReversedYCoords;
+    function NutRect(aRect: Trect): Trect;
   end;
 
 
@@ -57,6 +58,9 @@ type
 implementation
 
 uses Types;
+
+const
+  shrinkRatio = -0.925; //ratio to shrink parent and get chord RECT
 
 constructor TGuitarChordBoxCoOrds.Create();
 begin
@@ -70,7 +74,7 @@ end;
 
 function TGuitarChordBoxCoOrds.getCanvasRect: Trect;
 begin
-   result:= Rect(0,0,0,0);//placeholder
+  Result := Rect(0, 0, 0, 0);//placeholder
 end;
 
 procedure TGuitarChordBoxCoOrds.setCanvasRect(aRect: Trect);
@@ -100,8 +104,8 @@ begin
   output := default(TstrPnts);
   while Count <= 4 do
   begin
-    rec.start := Point(aRect.Left + (spcing * Count), (aRect.Top)+1);
-    rec.finish := Point(aRect.Left + (spcing * Count), (aRect.Bottom)-1);
+    rec.start := Point(aRect.Left + (spcing * Count), (aRect.Top) + 1);
+    rec.finish := Point(aRect.Left + (spcing * Count), (aRect.Bottom) - 1);
     output[low(output) + Count] := rec;
     Inc(Count);
   end;
@@ -146,9 +150,9 @@ begin
 end;
 
 
-procedure TGuitarChordBoxCoOrds.fingerMarker(aRect : Trect);
+procedure TGuitarChordBoxCoOrds.fingerMarker(aRect: Trect);
 var
-  tmpPoint : TstrRec;
+  tmpPoint: TstrRec;
 begin
   for tmpPoint in aStringPoints do
   begin
@@ -161,6 +165,7 @@ begin
   end;
 end;
 
+
 //uses Classes;;
 procedure TGuitarChordBoxCoOrds.generate();
 begin
@@ -168,6 +173,14 @@ begin
 end;
 
 
+function TGuitarChordBoxCoOrds.NutRect(aRect: Trect): Trect;
+begin
+  Result.Bottom := arect.Top;
+  Result.Left := aRect.Left;
+  Result.Right := aRect.Right;
+  //Result.Top := aRect.Top - 30; //really needs a ratio to match just testing with -8;
+  Result.Top := Round(aRect.Height / 18)*-1;
+end;
 
 {
 constructor TGuitarChordBoxCoOrds.Create;

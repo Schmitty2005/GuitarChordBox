@@ -74,14 +74,6 @@ begin
   canvas.Pen.Width := Round(Form1.Width * 0.005);
   //seems to be good pen / width ratio!//5;
   tempRect := clientRect;
-
-  //@TODO InflatedRect with neg coords needs Normalization!  WTF!
-  //move tempRect.Width and tempRect.Height into local variables to see
-  //if drawing in calculcated more accurately.
- // Label4.Caption := format('Before Inflation tempRect Center ( %d, %d )', [temprect.CenterPoint.X ,
- // temprect.centerpoint.y]);
-
-  //Seems to be funky!
   InflateRect(tempRect,round(tempRect.width * shrinkRatio ),
     round(tempRect.Height * shrinkRatio ));// -50, -50);//change with ratio, not static
 
@@ -99,6 +91,11 @@ begin
   canvas.brush.style := bsClear;
    canvas.Rectangle(tempRect);
   drawMultiLines(Canvas, gcb.fretLines(tempRect));
+
+  canvas.brush.Style := bsSOlid;
+  canvas.brush.color := clBlack ;
+  canvas.Rectangle(gcb.NutRect(tempRect));
+  canvas.brush.style := bsClear;
   //Form1.Invalidate;
   //Form1.Refresh;
 end;
