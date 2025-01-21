@@ -100,8 +100,8 @@ begin
   output := default(TstrPnts);
   while Count <= 4 do
   begin
-    rec.start := Point(aRect.Left + (spcing * Count), (aRect.Top)-1);
-    rec.finish := Point(aRect.Left + (spcing * Count), (aRect.Bottom) + 1);
+    rec.start := Point(aRect.Left + (spcing * Count), (aRect.Top)+1);
+    rec.finish := Point(aRect.Left + (spcing * Count), (aRect.Bottom)-1);
     output[low(output) + Count] := rec;
     Inc(Count);
   end;
@@ -148,7 +148,7 @@ end;
 
 procedure TGuitarChordBoxCoOrds.fingerMarker(aRect : Trect);
 var
-  tmpPoint : Tpoint;
+  tmpPoint : TstrRec;
 begin
   for tmpPoint in aStringPoints do
   begin
