@@ -1,19 +1,13 @@
+
 unit GuitarChordBoxCoordinates;
-
 {$mode DELPHI}
-
-
 interface
 
+//@TODO Graphics is only used for TCanvas on Draw Function remove after testing
 uses
-  Classes, SysUtils, Graphics; //Graphics is only used for TCanvas on Draw Function
-
+  Classes, SysUtils, Graphics;
 
 type
-  TFrettedStrings = record
-    placeholder: integer;
-  end;
-
   TChordSettings = record
     Placeholder: integer;
   end;
@@ -24,12 +18,17 @@ type
   end;
 
   TlinePoints = array of TstrRec;
+
   TstrPnts = array [1..6] of TstrRec;
+
   TfrtPnts = array [1..4] of TstrRec;
-  TchrdDtPnts = array [1..6, 1..4] of TstrRec;
+
+  TchrdDtPnts = array [1..6, 1..4] of Tpoint;
 
   TGuitarChordBoxCoOrds = class
   private
+    aParentRect: Trect;
+    aChordBoxRect: Trect;
     aFingerPoints: TchrdDtPnts;
     aFretPoints: TfrtPnts;
     aStringPoints: TstrPnts;
@@ -37,22 +36,19 @@ type
     function getCanvasRect: Trect;
     function GridRectFromParent(aRect: Trect): Trect;
     procedure setCanvasRect(aRect: Trect);
-    function isReveresedY(): boolean;
-    procedure setReversedYCoords(setY: boolean);
-    procedure fingerMarker(aRect: Trect);
+    // procedure fingerMarker(aRect: Trect);
   public
     procedure generate();
     constructor Create();
-    //possibly private functions later
+    //@TODO most will be private functions later
     function verifyCanvasRect(aRect: Trect): boolean;
     function stringLines(aRect: Trect): TstrPnts; //chnage to private
     function fretLines(aRect: Trect): TfrtPnts; //chnage to private
-    property CanvasSize: TRect read getCanvasRect write setCanvasRect;
+    property ParentCanvasRect: TRect read getCanvasRect write setCanvasRect;
     property reverseYCoOrds: boolean read isReveresedY write setReversedYCoords;
     function NutRect(aRect: Trect): Trect;
+    procedure fingerMarker(aRect: Trect);
   end;
-
-
 
 
 implementation
@@ -64,32 +60,19 @@ const
 
 constructor TGuitarChordBoxCoOrds.Create();
 begin
-  CanvasSize := Trect.Create(0, 0, 0, 0);
-end;
-
-function TGuitarChordBoxCoOrdsisReveresedY: boolean;
-begin
-  Result := True;
+  aChordBoxRect := Trect.Create(0, 0, 0, 0);
+  //@TODO create real function later
 end;
 
 function TGuitarChordBoxCoOrds.getCanvasRect: Trect;
 begin
-  Result := Rect(0, 0, 0, 0);//placeholder
+  Result := aParentRect;
 end;
 
 procedure TGuitarChordBoxCoOrds.setCanvasRect(aRect: Trect);
 begin
-
-end;
-
-procedure TGuitarChordBoxCoOrds.setReversedYCoords(setY: boolean);
-begin
-  blisycoord := not blIsYCoOrd;
-end;
-
-function TGuitarChordBoxCoOrds.isReveresedY: boolean;
-begin
-  Result := blIsYCoOrd;
+  aParentRect := aRect;
+  //@TODO run routine to recalc all points after change
 end;
 
 function TGuitarChordBoxCoOrds.stringLines(aRect: Trect): TstrPnts;
@@ -147,29 +130,44 @@ end;
 function TGuitarChordBoxCoOrds.GridRectFromParent(aRect: Trect): Trect;
 begin
   if verifyCanvasRect(aRect) and InflateRect(aRect, -5, -5) then Result := aRect;
+  //@TODO add method to increase top space on chord box for chord name and other
+  //text needed
 end;
 
 
 procedure TGuitarChordBoxCoOrds.fingerMarker(aRect: Trect);
 var
-  tmpPoint: TstrRec;
+  tmpStrRect: TstrRec;
+  tmpFrtRect: TstrRec;
+  XofString: longint;
+  YofFret: longint;
+  SpacingAdjust: longint;
+  gString, fPos: integer;
 begin
-  for tmpPoint in aStringPoints do
-  begin
-    //get x from aStringPoints for each string;
-  end;
-
-  for tmpPoint in aFretPoints do
-  begin
-    // get Y for each fret, subtract 1/2 of spacing !
-  end;
+  gString := 1;
+  fPos := 1;
+  SpacingAdjust := round(0.5 * ((aFretPoints[2].start.Y) - (aFretPoints[1].start.Y)));
+  //@TODO Still need spacing Adjustment to place Y point between frets
+  repeat
+    while fPos <= 5 do
+    begin
+      aFingerPoints[gString, fPos] :=
+        Point(aStringPoints[Gstring].start.X, aFretPoints[fPos].start.Y);
+      Inc(fPos);
+    end;
+    fPos := 1;
+    Inc(gString);
+  until gString >= 6;
 end;
 
-
-//uses Classes;;
 procedure TGuitarChordBoxCoOrds.generate();
 begin
-
+  //
+  //@@TODO chain functions to generate all coordinates needed.
+  //
+  // NOTE : Rect size needed first, then strings , frets, and finally
+  //        finger position markers last!
+  //        add check for fret start.  If > 0 then don't draw guitar nut.
 end;
 
 
@@ -178,17 +176,13 @@ begin
   Result.Bottom := arect.Top;
   Result.Left := aRect.Left;
   Result.Right := aRect.Right;
-  //Result.Top := aRect.Top - 30; //really needs a ratio to match just testing with -8;
-  Result.Top := Round(aRect.Height / 18)*-1;
+  Result.Top := Round(aRect.Height * 0.0325);
 end;
 
-{
-constructor TGuitarChordBoxCoOrds.Create;
-begin
-  inherited;
-end;
- }
+//@TODO add function for fret number point and remove nut drawing for chords
+//that start on higher frets
 
-
+//@TODO add method for chord name placement
+//@TODO add method for string note / tuning placement
 
 end.
