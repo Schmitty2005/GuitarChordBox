@@ -21,6 +21,8 @@ procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TfrtPnts); overloa
 procedure Normalize(var aRect: Trect);
 function centeredRect(const ARect: TRect; const bRect: TRect): TRect;
 
+procedure addMarker(aPoint : Tpoint; aCanvas : TCanvas);
+
 
 implementation
 
@@ -105,8 +107,18 @@ begin
     drawline(aCanvas, fPoints);
 end;
 
+procedure addMarker(aPoint : Tpoint; aCanvas : TCanvas);
+var
+  DotSize : Trect;
+begin
+  DotSize.Create(152, 152,280,280);//sample Rect
+  //@TODO need to use move function here to center rect properly!
+  aCanvas.Ellipse(DotSize);
+end;
+
 function TChordBoxCanvas.DrawOnCanvas(aCanvas: TCanvas): boolean;
 begin
+  Result:=false;
   //need a Type for coordinates
 end;
 

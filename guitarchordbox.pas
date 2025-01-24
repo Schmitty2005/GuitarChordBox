@@ -76,6 +76,9 @@ begin
   canvas.brush.style := bsClear;
 
   gcb.fingerMarker(tempRect);
+
+  addMarker(Point(34,434), Canvas);
+  addMarker (gcb.getFretMarkerPoint(2,2), canvas);
   //Form1.Invalidate;
   //Form1.Refresh;
 end;

@@ -40,14 +40,16 @@ type
   public
     procedure generate();
     constructor Create();
+    function getFretMarkerPoint(gString : Integer; gFret : Integer ):Tpoint;
     //@TODO most will be private functions later
     function verifyCanvasRect(aRect: Trect): boolean;
     function stringLines(aRect: Trect): TstrPnts; //chnage to private
     function fretLines(aRect: Trect): TfrtPnts; //chnage to private
     property ParentCanvasRect: TRect read getCanvasRect write setCanvasRect;
-    property reverseYCoOrds: boolean read isReveresedY write setReversedYCoords;
+    //property reverseYCoOrds: boolean read isReveresedY write setReversedYCoords;
     function NutRect(aRect: Trect): Trect;
     procedure fingerMarker(aRect: Trect);
+    procedure addMarker(aPoint : Tpoint);
   end;
 
 
@@ -62,6 +64,16 @@ constructor TGuitarChordBoxCoOrds.Create();
 begin
   aChordBoxRect := Trect.Create(0, 0, 0, 0);
   //@TODO create real function later
+end;
+
+function TGuitarChordBoxCoOrds.getFretMarkerPoint(gString : Integer; gFret : Integer ):Tpoint;
+//@TODO Possible bug function ?
+//as a possible workaround use a procedure with a VAR instead!
+var
+  output : Tpoint;
+begin
+  output := aFingerPoints[gString, gFret];
+  result := output;
 end;
 
 function TGuitarChordBoxCoOrds.getCanvasRect: Trect;
@@ -177,6 +189,11 @@ begin
   Result.Left := aRect.Left;
   Result.Right := aRect.Right;
   Result.Top := Round(aRect.Height * 0.0325);
+end;
+
+procedure TGuitarChordBoxCoOrds.addMarker(aPoint : Tpoint);
+begin
+
 end;
 
 //@TODO add function for fret number point and remove nut drawing for chords
