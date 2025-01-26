@@ -52,6 +52,7 @@ const
 var
   tempRect: Trect;
 begin
+
   Label2.Caption := IntToStr(clientRect.Width);
   Label3.Caption := IntToStr(clientRect.Height);
   //Form1.Height := Round(Form1.Width * 1.1);
@@ -75,16 +76,16 @@ begin
   canvas.Rectangle(gcb.NutRect(tempRect));
   canvas.brush.style := bsClear;
 
-  gcb.fingerMarker(tempRect);
+  gcb.fingerMarkerCalc(tempRect);
 
  // addMarker(Point(34,434), Canvas, 'D');
- addMarker (gcb.getFretMarkerPoint(1,1), canvas, '1F');
+ addMarker (gcb.getFretMarkerPoint(SixthStrng,FirstFret), canvas, '1F');
  addMarker (gcb.getFretMarkerPoint(2,1), canvas, 'A#');
  addMarker (gcb.getFretMarkerPoint(3,1), canvas, 'D#');
  addMarker (gcb.getFretMarkerPoint(4,1), canvas, 'G#');
  addMarker (gcb.getFretMarkerPoint(5,1), canvas, 'C');
  addMarker (gcb.getFretMarkerPoint(6,1), canvas, '2F');
-  addMarker (gcb.getFretMarkerPoint(2,2), canvas,'G');
+  //addMarker (gcb.getFretMarkerPoint(2,2), canvas,'G');
   //Form1.Invalidate;
   //Form1.Refresh;
 end;

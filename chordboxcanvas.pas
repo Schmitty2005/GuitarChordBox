@@ -137,8 +137,10 @@ begin
   textLook.Layout:= tlCenter;
   aCanvas.Font.Color := clLime;
   aCanvas.Font.Bold := True;
-  aCanvas.Font.Size := 18;
+  aCanvas.Font.Size := 6;
   acanvas.font.Italic := True;
+  //temp for debug line below
+  txtLbl := format ('(%d,%d)%s', [Dotsize.CenterPoint.X, DotSize.CenterPoint.Y, txtLbl]);
   aCanvas.TextRect(DotSize,0,0, txtLbl, textLook ); //Placeholder   'F𝄰♭♮'
 end;
 
