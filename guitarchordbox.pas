@@ -48,7 +48,7 @@ end;
 
 procedure TForm1.FormPaint(Sender: TObject);
 const
-  shrinkRatio = -0.925;
+  shrinkRatio =-0.85;// -0.925;
 var
   tempRect: Trect;
 begin
@@ -59,7 +59,7 @@ begin
   //seems to be good pen / width ratio!//5;
   tempRect := clientRect;
   InflateRect(tempRect, round(tempRect.Width * shrinkRatio),
-    round(tempRect.Height * shrinkRatio));// -50, -50);//change with ratio, not static
+    round((tempRect.Height *  shrinkRatio)));// -50, -50);//change with ratio, not static
 
 
   Normalize(tempRect);
@@ -77,8 +77,14 @@ begin
 
   gcb.fingerMarker(tempRect);
 
-  addMarker(Point(34,434), Canvas);
-  addMarker (gcb.getFretMarkerPoint(2,2), canvas);
+ // addMarker(Point(34,434), Canvas, 'D');
+ addMarker (gcb.getFretMarkerPoint(1,1), canvas, '1F');
+ addMarker (gcb.getFretMarkerPoint(2,1), canvas, 'A#');
+ addMarker (gcb.getFretMarkerPoint(3,1), canvas, 'D#');
+ addMarker (gcb.getFretMarkerPoint(4,1), canvas, 'G#');
+ addMarker (gcb.getFretMarkerPoint(5,1), canvas, 'C');
+ addMarker (gcb.getFretMarkerPoint(6,1), canvas, '2F');
+  addMarker (gcb.getFretMarkerPoint(2,2), canvas,'G');
   //Form1.Invalidate;
   //Form1.Refresh;
 end;

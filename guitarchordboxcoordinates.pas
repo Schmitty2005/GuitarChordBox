@@ -3,6 +3,8 @@ unit GuitarChordBoxCoordinates;
 {$mode DELPHI}
 interface
 
+//@TODO ChordBox Rect needs to be moved to lower half of Parent rect to
+//      make room for Muted Strings display and  Chord name text.
 //@TODO Graphics is only used for TCanvas on Draw Function remove after testing
 uses
   Classes, SysUtils, Graphics;
@@ -25,6 +27,8 @@ type
 
   TchrdDtPnts = array [1..6, 1..4] of Tpoint;
 
+  TMutedOpenPnts = array [1..6] of Tpoint;
+
   TGuitarChordBoxCoOrds = class
   private
     aParentRect: Trect;
@@ -32,11 +36,11 @@ type
     aFingerPoints: TchrdDtPnts;
     aFretPoints: TfrtPnts;
     aStringPoints: TstrPnts;
-    blIsYCoOrd: boolean;
+    aMuteOpenPoints : TMutedOpenPnts;
+    //blIsYCoOrd: boolean;
     function getCanvasRect: Trect;
     function GridRectFromParent(aRect: Trect): Trect;
     procedure setCanvasRect(aRect: Trect);
-    // procedure fingerMarker(aRect: Trect);
   public
     procedure generate();
     constructor Create();
@@ -50,6 +54,7 @@ type
     function NutRect(aRect: Trect): Trect;
     procedure fingerMarker(aRect: Trect);
     procedure addMarker(aPoint : Tpoint);
+    procedure muteOpenMarker(aRect : Trect);
   end;
 
 
@@ -67,13 +72,10 @@ begin
 end;
 
 function TGuitarChordBoxCoOrds.getFretMarkerPoint(gString : Integer; gFret : Integer ):Tpoint;
-//@TODO Possible bug function ?
-//as a possible workaround use a procedure with a VAR instead!
-var
-  output : Tpoint;
+//Do not use optmization .  Use -O- option.  Last line in calling method does not
+// get the result.
 begin
-  output := aFingerPoints[gString, gFret];
-  result := output;
+  result := aFingerPoints[gString, gFret];
 end;
 
 function TGuitarChordBoxCoOrds.getCanvasRect: Trect;
@@ -146,25 +148,36 @@ begin
   //text needed
 end;
 
+procedure TGuitarChordBoxCoOrds.muteOpenMarker(aRect : Trect);
+//@TODO may be able to remove aRect : Trect later
+//must be called after string coordinates created
+var
+  gstring : Integer;
+begin
+    gString :=1;
+    //moPos :=1;
+    while gString <=6 do
+    begin
+      aMuteOpenPoints[gString] := Point(aStringPoints[gString].start.X,
+      aChordBoxRect.Top - 12);//@TODO 12 is simply a placeholder for testing!
+      inc(gString);
+    end;
+end;
 
 procedure TGuitarChordBoxCoOrds.fingerMarker(aRect: Trect);
 var
-  tmpStrRect: TstrRec;
-  tmpFrtRect: TstrRec;
-  XofString: longint;
-  YofFret: longint;
   SpacingAdjust: longint;
   gString, fPos: integer;
 begin
   gString := 1;
   fPos := 1;
   SpacingAdjust := round(0.5 * ((aFretPoints[2].start.Y) - (aFretPoints[1].start.Y)));
-  //@TODO Still need spacing Adjustment to place Y point between frets
+  //@TODO check spacing for accuracy of fret versus array location
   repeat
     while fPos <= 5 do
     begin
       aFingerPoints[gString, fPos] :=
-        Point(aStringPoints[Gstring].start.X, aFretPoints[fPos].start.Y);
+        Point(aStringPoints[Gstring].start.X, (aFretPoints[fPos].start.Y)-SpacingAdjust);
       Inc(fPos);
     end;
     fPos := 1;
@@ -176,6 +189,8 @@ procedure TGuitarChordBoxCoOrds.generate();
 begin
   //
   //@@TODO chain functions to generate all coordinates needed.
+  //
+  // Check for null parent rect here as well
   //
   // NOTE : Rect size needed first, then strings , frets, and finally
   //        finger position markers last!

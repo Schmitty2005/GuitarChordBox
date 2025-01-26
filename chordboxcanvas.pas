@@ -20,8 +20,8 @@ procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TstrPnts); overloa
 procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TfrtPnts); overload;
 procedure Normalize(var aRect: Trect);
 function centeredRect(const ARect: TRect; const bRect: TRect): TRect;
-
-procedure addMarker(aPoint : Tpoint; aCanvas : TCanvas);
+procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl : String ; pxSize : Integer = 50);
+procedure moveRectCenter(var aRect: Trect; aNewCenter: Tpoint); inline;
 
 
 implementation
@@ -47,6 +47,21 @@ begin
   Result := bounds(xNew, yNew, innerSize.cx, innerSize.cy);
 end;
 
+
+procedure moveRectCenter(var aRect: Trect; aNewCenter: Tpoint); inline;
+//@TODO maybe rename RectCentered ?? Like Delphi .
+var
+  newX, newY: longint;
+  newRect: Trect;
+begin
+  newX := aNewCenter.x - round((aRect.Width / 2));
+  newY := aNewCenter.y - (round(arect.Height / 2));
+  newRect.TopLeft := Point(newX, newY);
+  newX := aNewCenter.x + round((aRect.Width / 2));
+  newY := aNewCenter.y + (round(arect.Height / 2));
+  newRect.BottomRight := point(newX, newY);
+  aRect := newRect;
+end;
 
 procedure Normalize(var aRect: Trect);
 var
@@ -107,18 +122,29 @@ begin
     drawline(aCanvas, fPoints);
 end;
 
-procedure addMarker(aPoint : Tpoint; aCanvas : TCanvas);
+procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl : String ; pxSize : Integer = 50);
 var
-  DotSize : Trect;
+  DotSize: Trect;
+  textLook: TTextStyle;
 begin
-  DotSize.Create(152, 152,280,280);//sample Rect
-  //@TODO need to use move function here to center rect properly!
+  DotSize.Create(0, 0, pxSize, pxSize);
+  moveRectCenter(DotSize, aPoint);
+  aCanvas.Brush.Style := bsSolid;
   aCanvas.Ellipse(DotSize);
+  aCanvas.Brush.Style := bsClear;
+  textLook := aCanvas.TextStyle;
+  textLook.Alignment := taCenter;
+  textLook.Layout:= tlCenter;
+  aCanvas.Font.Color := clLime;
+  aCanvas.Font.Bold := True;
+  aCanvas.Font.Size := 18;
+  acanvas.font.Italic := True;
+  aCanvas.TextRect(DotSize,0,0, txtLbl, textLook ); //Placeholder   'F𝄰♭♮'
 end;
 
 function TChordBoxCanvas.DrawOnCanvas(aCanvas: TCanvas): boolean;
 begin
-  Result:=false;
+  Result := False;
   //need a Type for coordinates
 end;
 
