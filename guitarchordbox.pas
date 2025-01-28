@@ -32,7 +32,7 @@ type
 
 var
   Form1: TForm1;
-  gcb: TGuitarChordBoxCoOrds;
+  gcb, testBox, testFail: TGuitarChordBoxCoOrds;
 
 implementation
 
@@ -43,12 +43,17 @@ implementation
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   gcb := TGuitarChordBoxCoOrds.Create();
+  testBox := TGuitarChordBoxCoOrds.Create(Bounds (0,0,200,400));
+  testBox.generate();
+
+  testFail := TGuitarChordBoxCoOrds.Create();
+  testFail.generate();
 end;
 
 
 procedure TForm1.FormPaint(Sender: TObject);
 const
-  shrinkRatio =-0.85;// -0.925;
+  shrinkRatio = -0.925 ;//-0.85;// -0.925;
 var
   tempRect: Trect;
 begin
@@ -64,6 +69,8 @@ begin
 
 
   Normalize(tempRect);
+  //Temp routine to test repostioning top of Rect
+  //tempRect.Top := tempRect.Top+265;
   //@TODO Normalize works properly..sometimes drawin has issue ? !
 
   drawMultiLines(canvas, (gcb.stringLines(tempRect)));
@@ -122,6 +129,8 @@ end;
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   gcb.Free;
+  testBox.Free;
+  testFail.Free;
 end;
 
 begin

@@ -20,7 +20,8 @@ procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TstrPnts); overloa
 procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TfrtPnts); overload;
 procedure Normalize(var aRect: Trect);
 function centeredRect(const ARect: TRect; const bRect: TRect): TRect;
-procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl : String ; pxSize : Integer = 50);
+procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string;
+  pxSize: integer = 50);
 procedure moveRectCenter(var aRect: Trect; aNewCenter: Tpoint); inline;
 
 
@@ -89,13 +90,11 @@ begin
   end;
   replRect := aRect;
   aRect := centeredRect(replRect, aRect);
-
 end;
 
-function drawLine(aCanvas: Tcanvas; aStrRec: TstrRec): boolean; inline;
+procedure drawLine(aCanvas: Tcanvas; aStrRec: TstrRec); inline;
 begin
   aCanvas.Line(astrRec.start, aStrRec.finish);
-  Result := True; /// change to procedure later ?
 end;
 
 procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TlinePoints);
@@ -122,7 +121,8 @@ begin
     drawline(aCanvas, fPoints);
 end;
 
-procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl : String ; pxSize : Integer = 50);
+procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string;
+  pxSize: integer = 50);
 var
   DotSize: Trect;
   textLook: TTextStyle;
@@ -134,18 +134,19 @@ begin
   aCanvas.Brush.Style := bsClear;
   textLook := aCanvas.TextStyle;
   textLook.Alignment := taCenter;
-  textLook.Layout:= tlCenter;
+  textLook.Layout := tlCenter;
   aCanvas.Font.Color := clLime;
   aCanvas.Font.Bold := True;
   aCanvas.Font.Size := 6;
   acanvas.font.Italic := True;
   //temp for debug line below
-  txtLbl := format ('(%d,%d)%s', [Dotsize.CenterPoint.X, DotSize.CenterPoint.Y, txtLbl]);
-  aCanvas.TextRect(DotSize,0,0, txtLbl, textLook ); //Placeholder   'F𝄰♭♮'
+  txtLbl := format('(%d,%d)%s', [Dotsize.CenterPoint.X, DotSize.CenterPoint.Y, txtLbl]);
+  aCanvas.TextRect(DotSize, 0, 0, txtLbl, textLook); //Placeholder   'F𝄰♭♮'
 end;
 
 function TChordBoxCanvas.DrawOnCanvas(aCanvas: TCanvas): boolean;
 begin
+  //@TODO Finish function
   Result := False;
   //need a Type for coordinates
 end;

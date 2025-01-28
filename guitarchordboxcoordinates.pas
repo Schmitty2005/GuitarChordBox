@@ -1,15 +1,24 @@
 
 unit GuitarChordBoxCoordinates;
+{$IFDEF FPC}
 {$mode DELPHI}
+{$ENDIF}
+
 interface
 
 //@TODO ChordBox Rect needs to be moved to lower half of Parent rect to
 //      make room for Muted Strings display and  Chord name text.
 //@TODO Graphics is only used for TCanvas on Draw Function remove after testing
+//      Types should be added and Graphics removed when finished.
 uses
   Classes, SysUtils, Graphics;
 
+const
+  cShrinkRatio = -0.925;//Ratio to make chordbox fit parent Rect
+  cTopMoveRatio = 0.33; //Ratio to leave on top of chordbox for text
+
 type
+
   TChordSettings = record
     Placeholder: integer;
   end;
@@ -35,6 +44,8 @@ type
 
   TFretNumber = (OpenString, FirstFret, SecondFret, ThirdFret, FourthFret);
 
+  //@TODO make a record to encompass all of the points!
+
   TGuitarChordBoxCoOrds = class
   private
     aParentRect: Trect;
@@ -43,26 +54,25 @@ type
     aFretPoints: TfrtPnts;
     aStringPoints: TstrPnts;
     aMuteOpenPoints: TMutedOpenPnts;
-    //blIsYCoOrd: boolean;
     function getCanvasRect: Trect;
     function GridRectFromParent(aRect: Trect): Trect;
     procedure setCanvasRect(aRect: Trect);
   public
     procedure generate();
     constructor Create();
+    constructor Create(fParentRect: Trect); overload;
+
+    //@TODO most will be private functions later
     function getFretMarkerPoint(gString: integer; gFret: integer): Tpoint;
     function getFretMarkerPoint(gString: TGuitarStrings;
       gFret: TFretNumber): Tpoint; overload;
-    //@TODO most will be private functions later
+
     function verifyCanvasRect(aRect: Trect): boolean;
     function stringLines(aRect: Trect): TstrPnts; //chnage to private
     function fretLines(aRect: Trect): TfrtPnts; //chnage to private
     property ParentCanvasRect: TRect read getCanvasRect write setCanvasRect;
-    //property reverseYCoOrds: boolean read isReveresedY write setReversedYCoords;
     function NutRect(aRect: Trect): Trect;
     procedure fingerMarkerCalc(aRect: Trect);
-    procedure addMarker(aPoint: Tpoint);
-
     procedure muteOpenMarker(aRect: Trect);
   end;
 
@@ -71,13 +81,19 @@ implementation
 
 uses Types;
 
-const
-  shrinkRatio = -0.925; //ratio to shrink parent and get chord RECT
+  //const
+  //  shrinkRatio = -0.925; //ratio to shrink parent and get chord RECT
 
 constructor TGuitarChordBoxCoOrds.Create();
 begin
   aChordBoxRect := Trect.Create(0, 0, 0, 0);
   //@TODO create real function later
+end;
+
+constructor TGuitarChordBoxCoOrds.Create(fParentRect: Trect); overload;
+begin
+  aParentRect := fParentRect;
+  generate();
 end;
 
 function TGuitarChordBoxCoOrds.getFretMarkerPoint(gString: integer;
@@ -104,10 +120,13 @@ end;
 procedure TGuitarChordBoxCoOrds.setCanvasRect(aRect: Trect);
 begin
   aParentRect := aRect;
-  //@TODO run routine to recalc all points after change
+  generate();
 end;
 
 function TGuitarChordBoxCoOrds.stringLines(aRect: Trect): TstrPnts;
+  //@TODO Trect coordinates need to be modified to compensate for -1 on width
+  //      and height! For string lines X coord, for fret lines chnage the Y coord
+  //      minus or plus one to compensate
 var
   output: TstrPnts;
   Count: integer;
@@ -116,7 +135,7 @@ var
 begin
   spcing := Round(aRect.Width / 5);
   Count := 0;
-  output := default(TstrPnts);
+  output := Default(TstrPnts);
   while Count <= 5 do
   begin
     rec.start := Point(aRect.Left + (spcing * Count), (aRect.Top) + 1);
@@ -124,7 +143,7 @@ begin
     output[low(output) + (Count)] := rec;
     Inc(Count);
   end;
-  //@TODO Fix String Point Calculation
+  //@TODO Fix String Point Calculation for last string and bottom fret
   aStringPoints := output;
   Result := output;
 end;
@@ -162,8 +181,14 @@ begin
 end;
 
 function TGuitarChordBoxCoOrds.GridRectFromParent(aRect: Trect): Trect;
+  //@TODO change to procedure that modifies class variable for chord box rect
 begin
-  if verifyCanvasRect(aRect) and InflateRect(aRect, -5, -5) then Result := aRect;
+  if verifyCanvasRect(aRect) and InflateRect(aRect, -5, -5) then
+  begin
+    //@TODO add routine to drop top of aRect by cTopMoveRatio
+    aRect.Top:=aRect.Top + 145; //145 is a temp number ! @TODO ! ! !
+    Result := aRect;
+  end;
   //@TODO add method to increase top space on chord box for chord name and other
   //text needed
   aChordBoxRect := aRect;//Newlly added line 1-26-2025 untested
@@ -181,6 +206,7 @@ begin
     aMuteOpenPoints[gString] :=
       Point(aStringPoints[gString].start.X, aChordBoxRect.Top - 12);
     //@TODO 12 is simply a placeholder for testing!
+    //      It should be based on proper ratio  & spacing from nut rect
     Inc(gString);
   end;
 end;
@@ -211,6 +237,13 @@ end;
 
 procedure TGuitarChordBoxCoOrds.generate();
 begin
+  if not aParentRect.IsEmpty then
+  begin
+    aChordBoxRect := GridRectFromParent(aParentRect);
+    aStringPoints := stringLines(aChordBoxRect);
+    aFretPoints := fretlines(aChordBoxRect);
+    fingerMarkerCalc(aChordBoxRect);
+  end;
 
   //@@TODO chain functions to generate all coordinates needed.
 
@@ -227,13 +260,10 @@ begin
   Result.Bottom := arect.Top;
   Result.Left := aRect.Left;
   Result.Right := aRect.Right;
-  Result.Top := Round(aRect.Height * 0.0325);
+  //Result.Top :=(aRect.Height * 0.0525);
+  Result.Top := aRect.Top - (round(aRect.Height *0.07)); //0.0525));//0.25);// 0.0325);
 end;
 
-procedure TGuitarChordBoxCoOrds.addMarker(aPoint: Tpoint);
-begin
-
-end;
 
 //@TODO add function for fret number point and remove nut drawing for chords
 //that start on higher frets
