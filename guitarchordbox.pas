@@ -32,7 +32,8 @@ type
 
 var
   Form1: TForm1;
-  gcb, testBox, testFail: TGuitarChordBoxCoOrds;
+  gcb, testBox, testFail, cbc: TGuitarChordBoxCoOrds;
+  cbCanvasTester: TChordBoxCanvas;
 
 implementation
 
@@ -43,17 +44,21 @@ implementation
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   gcb := TGuitarChordBoxCoOrds.Create();
-  testBox := TGuitarChordBoxCoOrds.Create(Bounds (0,0,200,400));
+  testBox := TGuitarChordBoxCoOrds.Create(Bounds(0, 0, 200, 400));
   testBox.generate();
+  //Test chordBox Canvas Drawing!
+  cbc := TGuitarChordBoxCoOrds.Create();
 
   testFail := TGuitarChordBoxCoOrds.Create();
   testFail.generate();
+
+  cbCanvasTester := TChordBoxCanvas.Create();
 end;
 
 
 procedure TForm1.FormPaint(Sender: TObject);
 const
-  shrinkRatio = -0.925 ;//-0.85;// -0.925;
+  shrinkRatio = -0.925;//-0.85;// -0.925;
 var
   tempRect: Trect;
 begin
@@ -61,7 +66,9 @@ begin
   Label2.Caption := IntToStr(clientRect.Width);
   Label3.Caption := IntToStr(clientRect.Height);
   //Form1.Height := Round(Form1.Width * 1.1);
-  canvas.Pen.Width := Round(Form1.Width * 0.005);
+  //canvas.Pen.Width := Round(Form1.Width * 0.005);
+
+  {
   //seems to be good pen / width ratio!//5;
   tempRect := clientRect;
   InflateRect(tempRect, round(tempRect.Width * shrinkRatio),
@@ -95,6 +102,17 @@ begin
   //addMarker (gcb.getFretMarkerPoint(2,2), canvas,'G');
   //Form1.Invalidate;
   //Form1.Refresh;
+
+
+  }
+  //Test ChordBox Canvas Drawing!
+  cbc.Create(Form1.ClientRect);
+  cbc.DrawOnCanvas(Form1.Canvas);
+
+  //cbCan.Create(Form1.ClientRect);
+  //cbCan.DrawOnCanvas(Form1.Canvas);
+  // cbCan.addMarker(Point(120,300), Form1.Canvas, 'D#', 50);
+
 end;
 
 procedure TForm1.Panel1Click(Sender: TObject);
@@ -131,6 +149,8 @@ begin
   gcb.Free;
   testBox.Free;
   testFail.Free;
+  cbc.Free;
+  cbCanvasTester.Free;
 end;
 
 begin

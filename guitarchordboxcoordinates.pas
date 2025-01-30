@@ -35,7 +35,8 @@ type
   TfrtPnts = array [0..4] of TstrRec; //changed to 0..4 instead of 1..4 for
   //open  or muted markers
 
-  TchrdDtPnts = array [1..6, 1..4] of Tpoint;
+  TchrdDtPnts = array [1..6, 1..5] of
+    Tpoint;//changed last array from [1..4] to [1..5] 1-29-25
 
   TMutedOpenPnts = array [1..6] of Tpoint;
 
@@ -44,7 +45,17 @@ type
 
   TFretNumber = (OpenString, FirstFret, SecondFret, ThirdFret, FourthFret);
 
+  TChordData = record
+    parentRect: Trect;
+    chordBoxRect: Trect;
+    fretPoints: TfrtPnts;
+    strngPoints: TstrPnts;
+    mutedPoints: TMutedOpenPnts;
+  end;
+
   //@TODO make a record to encompass all of the points!
+
+  { TGuitarChordBoxCoOrds }
 
   TGuitarChordBoxCoOrds = class
   private
@@ -54,26 +65,27 @@ type
     aFretPoints: TfrtPnts;
     aStringPoints: TstrPnts;
     aMuteOpenPoints: TMutedOpenPnts;
+    aMarkerRect: TRect;
     function getCanvasRect: Trect;
+    function getMarkerRect: Trect;
     function GridRectFromParent(aRect: Trect): Trect;
     procedure setCanvasRect(aRect: Trect);
+    procedure fingerMarkerCalc(aRect: Trect);
+    function NutRect(aRect: Trect): Trect;
+    function verifyCanvasRect(aRect: Trect): boolean;
+    function stringLines(aRect: Trect): TstrPnts;
+    function fretLines(aRect: Trect): TfrtPnts;
   public
     procedure generate();
     constructor Create();
     constructor Create(fParentRect: Trect); overload;
-
-    //@TODO most will be private functions later
     function getFretMarkerPoint(gString: integer; gFret: integer): Tpoint;
     function getFretMarkerPoint(gString: TGuitarStrings;
       gFret: TFretNumber): Tpoint; overload;
-
-    function verifyCanvasRect(aRect: Trect): boolean;
-    function stringLines(aRect: Trect): TstrPnts; //chnage to private
-    function fretLines(aRect: Trect): TfrtPnts; //chnage to private
     property ParentCanvasRect: TRect read getCanvasRect write setCanvasRect;
-    function NutRect(aRect: Trect): Trect;
-    procedure fingerMarkerCalc(aRect: Trect);
-    procedure muteOpenMarker(aRect: Trect);
+    property MarkerRect: Trect read getMarkerRect;
+    procedure muteOpenMarker(aRect: Trect); //@TODO probably no longer needed
+    function DrawOnCanvas(aCanvas: TCanvas): boolean;//@TODO move to ChordBoxCanvas Class
   end;
 
 
@@ -81,8 +93,102 @@ implementation
 
 uses Types;
 
-  //const
-  //  shrinkRatio = -0.925; //ratio to shrink parent and get chord RECT
+  //This is TEMP............................
+
+
+function centeredRect(const ARect: TRect; const bRect: TRect): TRect;
+var
+  aCenter: TPoint;
+  outerSize, innerSize: TSize;
+  xNew, yNew: longint;
+begin
+  outerSize := Size(ARect);
+  innerSize := Size(bRect);
+
+  if innerSize.cx > outerSize.cx then
+    innerSize.cx := outerSize.cx;
+
+  if innerSize.cy > outerSize.cy then
+    innerSize.cy := outerSize.cy;
+
+  aCenter := centerpoint(ARect);
+  Result := bounds(xNew, yNew, innerSize.cx, innerSize.cy);
+end;
+
+
+procedure Normalize(var aRect: Trect);
+var
+  replRect: Trect;
+begin
+  //@TODO need to have centerpoint moved!
+  if aRect.top > aRect.bottom then
+  begin
+    with aRect do
+    begin
+      top := top xor bottom;
+      bottom := top xor bottom;
+      top := top xor bottom;
+    end;
+  end;
+
+  if aRect.left > aRect.right then
+  begin
+    with aRect do
+    begin
+      left := left xor right;
+      right := left xor right;
+      left := left xor right;
+    end;
+  end;
+  replRect := aRect;
+  aRect := centeredRect(replRect, aRect);
+end;
+
+
+//@TODO change procedure to take variable array ?
+procedure drawLine(aCanvas: Tcanvas; aStrRec: TstrRec); inline;
+begin
+  aCanvas.Line(astrRec.start, aStrRec.finish);
+end;
+
+{
+procedure drawMultiLines(aCanvas: TCanvas; var aLinePoints array of TlinePoints); overload;
+//untested and probably broken!
+var
+  fPoints: TstrRec;
+  arLen : Integer;
+begin
+  for fPoints in aLinePoints do
+    drawline(aCanvas, fPoints);
+end;
+}
+procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TlinePoints); overload;
+var
+  fPoints: TstrRec;
+begin
+  for fPoints in aLinePoints do
+    drawline(aCanvas, fPoints);
+end;
+
+procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TstrPnts); overload;
+var
+  fPoints: TstrRec;
+  counter: integer;
+begin
+  for counter := (low(aLinePoints)) to (high(aLinePoints)) do
+    drawline(aCanvas, aLinePoints[counter]);
+end;
+
+procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TfrtPnts); overload;
+var
+  fPoints: TstrRec;
+begin
+  for fPoints in aLinePoints do
+    drawline(aCanvas, fPoints);
+end;
+
+// Above is temp for testing
+//........................................
 
 constructor TGuitarChordBoxCoOrds.Create();
 begin
@@ -98,8 +204,6 @@ end;
 
 function TGuitarChordBoxCoOrds.getFretMarkerPoint(gString: integer;
   gFret: integer): Tpoint;
-  //Do not use optmization .  Use -O- option.  Last line in calling method does not
-  // get the result.
 begin
   Result := aFingerPoints[gString, gFret];
 end;
@@ -117,6 +221,11 @@ begin
   Result := aParentRect;
 end;
 
+function TGuitarChordBoxCoOrds.getMarkerRect: Trect;
+begin
+  Result := aMarkerRect;
+end;
+
 procedure TGuitarChordBoxCoOrds.setCanvasRect(aRect: Trect);
 begin
   aParentRect := aRect;
@@ -128,24 +237,26 @@ function TGuitarChordBoxCoOrds.stringLines(aRect: Trect): TstrPnts;
   //      and height! For string lines X coord, for fret lines chnage the Y coord
   //      minus or plus one to compensate
 var
-  output: TstrPnts;
+  calcOutput: TstrPnts;
   Count: integer;
   rec: TstrRec;
-  spcing: longint;
+  spcing, calc: longint;  //@TODO change to floate for accuracy ?
 begin
-  spcing := Round(aRect.Width / 5);
+  spcing := round((aRect.Width) / 5);
+  calc := round(spcing * cShrinkRatio);
+  aMarkerRect := Bounds(0, 0, calc, calc);
   Count := 0;
-  output := Default(TstrPnts);
+  calcOutput := Default(TstrPnts);
   while Count <= 5 do
   begin
     rec.start := Point(aRect.Left + (spcing * Count), (aRect.Top) + 1);
     rec.finish := Point(aRect.Left + (spcing * Count), (aRect.Bottom) - 1);
-    output[low(output) + (Count)] := rec;
+    calcOutput[low(calcOutput) + (Count)] := rec;
     Inc(Count);
   end;
   //@TODO Fix String Point Calculation for last string and bottom fret
-  aStringPoints := output;
-  Result := output;
+  aStringPoints := calcOutput;
+  Result := calcOutput;
 end;
 
 function TGuitarChordBoxCoOrds.fretLines(aRect: Trect): TfrtPnts;
@@ -158,6 +269,9 @@ begin
   spcing := Round(aRect.Height / 4);
   Count := 1;
   calcOutput := default(TfrtPnts);
+  rec.start := Point(30, 30);
+  rec.finish := Point(80, 30); //@TODO check when this changes
+  calcOutput[0] := rec;//(Point(30,30));// , Point (80,30));
   //@TODO add case for count = 0 to muted . open
   while Count <= 4 do
   begin
@@ -186,12 +300,15 @@ begin
   if verifyCanvasRect(aRect) and InflateRect(aRect, -5, -5) then
   begin
     //@TODO add routine to drop top of aRect by cTopMoveRatio
-    aRect.Top:=aRect.Top + 145; //145 is a temp number ! @TODO ! ! !
+    aRect.Top := aRect.Top + 145; //145 is a temp number ! @TODO add ratio! ! ! !
     Result := aRect;
   end;
   //@TODO add method to increase top space on chord box for chord name and other
   //text needed
-  aChordBoxRect := aRect;//Newlly added line 1-26-2025 untested
+
+  //@TODO add method to increase bottom gap for room for text or fingerings
+  //      if needed
+  aChordBoxRect := aRect;
 end;
 
 procedure TGuitarChordBoxCoOrds.muteOpenMarker(aRect: Trect);
@@ -224,7 +341,7 @@ begin
   //@TODO check spacing for accuracy of fret versus array location
   repeat
     while fPos <= 5 do
-    begin
+    begin  //@TODO This is possibly going out of bounds
       aFingerPoints[gString, fPos] :=
         Point(aStringPoints[Gstring].start.X, (aFretPoints[fPos].start.Y) -
         SpacingAdjust);
@@ -237,6 +354,8 @@ end;
 
 procedure TGuitarChordBoxCoOrds.generate();
 begin
+  //@TODO add normalize here for aChordBoxRect!
+  //normalize(aParentRect);
   if not aParentRect.IsEmpty then
   begin
     aChordBoxRect := GridRectFromParent(aParentRect);
@@ -244,6 +363,7 @@ begin
     aFretPoints := fretlines(aChordBoxRect);
     fingerMarkerCalc(aChordBoxRect);
   end;
+  Normalize(aParentRect);//@TODO Workaround for now!
 
   //@@TODO chain functions to generate all coordinates needed.
 
@@ -260,10 +380,28 @@ begin
   Result.Bottom := arect.Top;
   Result.Left := aRect.Left;
   Result.Right := aRect.Right;
-  //Result.Top :=(aRect.Height * 0.0525);
-  Result.Top := aRect.Top - (round(aRect.Height *0.07)); //0.0525));//0.25);// 0.0325);
+  Result.Top := aRect.Top - (round(aRect.Height * 0.06)); //0.0525));//0.25);// 0.0325);
 end;
 
+
+function TGuitarChordBoxCoOrds.DrawOnCanvas(aCanvas: TCanvas): boolean;
+begin
+  aCanvas.Pen.Width := Round(aCanvas.Width * 0.005);
+
+  aCanvas.Brush.Style := bsClear;
+  aCanvas.Rectangle(aChordBoxRect);
+  drawMultiLines(aCanvas, aStringPoints);
+  drawMultiLines(aCanvas, aFretPoints);
+
+  aCanvas.Brush.Style := bsSolid;
+  aCanvas.Brush.Color := clBlack;
+  aCanvas.Rectangle(NutRect(aChordBoxRect));
+  aCanvas.Brush.Style := bsClear;
+
+  //@TODO Finish function
+  Result := False;
+  //need a Type for coordinates
+end;
 
 //@TODO add function for fret number point and remove nut drawing for chords
 //that start on higher frets
