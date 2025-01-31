@@ -49,8 +49,8 @@ begin
   //Test chordBox Canvas Drawing!
   cbc := TGuitarChordBoxCoOrds.Create();
 
-  testFail := TGuitarChordBoxCoOrds.Create();
-  testFail.generate();
+  //testFail := TGuitarChordBoxCoOrds.Create();
+  //testFail.generate();
 
   cbCanvasTester := TChordBoxCanvas.Create();
 end;
@@ -65,6 +65,9 @@ begin
 
   Label2.Caption := IntToStr(clientRect.Width);
   Label3.Caption := IntToStr(clientRect.Height);
+  Label1.Caption := format('Parent Canvs Left: %d, Rigth : %d, Top: %d, Bottom: %d',
+    [cbc.ParentCanvasRect.Left, cbc.ParentCanvasRect.Right,
+    cbc.ParentCanvasRect.Top, cbc.ParentCanvasRect.Bottom]);
   //Form1.Height := Round(Form1.Width * 1.1);
   //canvas.Pen.Width := Round(Form1.Width * 0.005);
 

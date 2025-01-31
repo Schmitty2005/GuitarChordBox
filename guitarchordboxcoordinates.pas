@@ -14,8 +14,11 @@ uses
   Classes, SysUtils, Graphics;
 
 const
-  cShrinkRatio = -0.925;//Ratio to make chordbox fit parent Rect
-  cTopMoveRatio = 0.33; //Ratio to leave on top of chordbox for text
+  cShrinkRatio = -0.925;
+  cTopMoveRatio = 0.33;
+  cBottomMoveRatio = 0.111;
+  cSideMoveRatio = 0.15;
+  cMarkerYRatio = 0.222; //@TODO this ratio is untested
 
 type
 
@@ -97,6 +100,7 @@ uses Types;
 
 
 function centeredRect(const ARect: TRect; const bRect: TRect): TRect;
+  //@TODO check if this even works correctly
 var
   aCenter: TPoint;
   outerSize, innerSize: TSize;
@@ -163,6 +167,7 @@ begin
 end;
 }
 procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TlinePoints); overload;
+//@TODO this procedure may not be being used.  Remove
 var
   fPoints: TstrRec;
 begin
@@ -170,21 +175,24 @@ begin
     drawline(aCanvas, fPoints);
 end;
 
-procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TstrPnts); overload;
+
+//@TODO These were reworked and should be copied over to ChordBoxCanvas
+procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TstrPnts);
+  overload; inline;
 var
-  fPoints: TstrRec;
   counter: integer;
 begin
-  for counter := (low(aLinePoints)) to (high(aLinePoints)) do
+  for counter := (low(aLinePoints) + 1) to (high(aLinePoints) - 1) do
     drawline(aCanvas, aLinePoints[counter]);
 end;
 
-procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TfrtPnts); overload;
+procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TfrtPnts);
+  overload; inline;
 var
-  fPoints: TstrRec;
+  counter: integer;
 begin
-  for fPoints in aLinePoints do
-    drawline(aCanvas, fPoints);
+  for counter := (low(aLinePoints) + 1) to (high(aLinePoints) - 1) do
+    drawline(aCanvas, aLinePoints[counter]);
 end;
 
 // Above is temp for testing
@@ -297,10 +305,13 @@ end;
 function TGuitarChordBoxCoOrds.GridRectFromParent(aRect: Trect): Trect;
   //@TODO change to procedure that modifies class variable for chord box rect
 begin
-  if verifyCanvasRect(aRect) and InflateRect(aRect, -5, -5) then
+  //if verifyCanvasRect(aRect) and InflateRect(aRect, -5, -5) then
   begin
     //@TODO add routine to drop top of aRect by cTopMoveRatio
-    aRect.Top := aRect.Top + 145; //145 is a temp number ! @TODO add ratio! ! ! !
+    aRect.Top := aRect.Top + Round(aParentRect.Height * cTopMoveRatio);
+    aRect.Bottom := aRect.Bottom - Round(aParentRect.Height * cBottomMoveRatio);
+    aRect.Left := aRect.Left + Round(aParentRect.Width * cSideMoveRatio);
+    aRect.Right := aRect.Right - Round(aParentRect.Width * cSideMoveRatio);
     Result := aRect;
   end;
   //@TODO add method to increase top space on chord box for chord name and other
@@ -363,7 +374,7 @@ begin
     aFretPoints := fretlines(aChordBoxRect);
     fingerMarkerCalc(aChordBoxRect);
   end;
-  Normalize(aParentRect);//@TODO Workaround for now!
+  //Normalize(aParentRect);//@TODO Workaround for now!
 
   //@@TODO chain functions to generate all coordinates needed.
 
@@ -377,7 +388,7 @@ end;
 
 function TGuitarChordBoxCoOrds.NutRect(aRect: Trect): Trect;
 begin
-  Result.Bottom := arect.Top;
+  Result.Bottom := arect.Top + 1;
   Result.Left := aRect.Left;
   Result.Right := aRect.Right;
   Result.Top := aRect.Top - (round(aRect.Height * 0.06)); //0.0525));//0.25);// 0.0325);
