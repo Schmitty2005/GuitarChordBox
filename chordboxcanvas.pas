@@ -14,6 +14,7 @@ type
   TChordBoxCanvas = class(TGuitarChordBoxCoOrds)
   private
     placeholder: boolean;
+    procedure drawLines(aCanvas: TCanvas; const aLinePoints: array of TstrRec);
   public
     procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string;
       pxSize: integer = 50);
@@ -23,9 +24,6 @@ type
     function getMarkerRect(): TRect;
   end;
 
-procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TlinePoints);
-procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TstrPnts); overload;
-procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TfrtPnts); overload;
 procedure Normalize(var aRect: Trect);
 function centeredRect(const ARect: TRect; const bRect: TRect): TRect;
 procedure moveRectCenter(var aRect: Trect; aNewCenter: Tpoint); inline;
@@ -98,33 +96,16 @@ begin
   aRect := centeredRect(replRect, aRect);
 end;
 
-procedure drawLine(aCanvas: Tcanvas; aStrRec: TstrRec); inline;
-begin
-  aCanvas.Line(astrRec.start, aStrRec.finish);
-end;
-
-procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TlinePoints);
+procedure TChordBoxCanvas.drawLines(aCanvas: TCanvas;
+  const aLinePoints: array of TstrRec);
 var
-  fPoints: TstrRec;
+  counter: integer;
 begin
-  for fPoints in aLinePoints do
-    drawline(aCanvas, fPoints);
-end;
-
-procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TstrPnts); overload;
-var
-  fPoints: TstrRec;
-begin
-  for fPoints in aLinePoints do
-    drawline(aCanvas, fPoints);
-end;
-
-procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TfrtPnts); overload;
-var
-  fPoints: TstrRec;
-begin
-  for fPoints in aLinePoints do
-    drawline(aCanvas, fPoints);
+  counter := Low(aLinePoints);
+  repeat
+    aCanvas.Line(aLinePoints[counter].start, aLinePoints[counter].finish);
+    Inc(counter);
+  until counter > high(aLinePoints);
 end;
 
 function TChordBoxCanvas.getMarkerRect: TRect;
@@ -167,7 +148,8 @@ var
 begin
   DotSize.Create(MarkerRect);
   //DotSize.Create(Bounds(0,0, pxSize, pxSize));
-  moveRectCenter(DotSize, POINT(12, 12));//@TODO Point is placeholder
+  //moveRectCenter(DotSize, POINT(30, 300));//@TODO Point is placeholder
+  moveRectCenter(DotSize, aFingerPoints[Ord(aString), Ord(aFret)]);
   Normalize(DotSize);
   aCanvas.Brush.Style := bsSolid;
   aCanvas.Ellipse(DotSize);
@@ -179,16 +161,39 @@ begin
   aCanvas.Font.Bold := True;
   aCanvas.Font.Size := 8;//@TODO Need Method to calculat PX to Font PT size
   acanvas.font.Italic := True;
+  {
   //temp for debug line below
   txtLbl := format('(%d,%d)%s', [Dotsize.CenterPoint.X,
     DotSize.CenterPoint.Y, txtLbl]);
-  aCanvas.TextRect(DotSize, 0, 0, txtLbl, textLook); //Placeholder   'F𝄰♭♮'
+    }
+  aCanvas.TextRect(DotSize, 0, 0, txtLbl, textLook); //Placeholder   'F𝄰♭♮';
 end;
 
 function TChordBoxCanvas.DrawOnCanvas(aCanvas: TCanvas): boolean;
 begin
-  //@TODO remeber to set pen width according to dimensions of canvas!
-  //      1.  Move from GuitarChordBoxCoOrds Class later!
+  aCanvas.Pen.Width := Round(aCanvas.Width * 0.005);
+
+  aCanvas.Brush.Style := bsClear;
+  aCanvas.Rectangle(aChordBoxRect);
+  //drawMultiLines(aCanvas, aStringPoints);
+  //drawMultiLines(aCanvas, aFretPoints);
+  drawLines(aCanvas, aStringPoints[2..5]);
+  drawLines(aCanvas, aFretPoints[1..3]);
+  aCanvas.Brush.Style := bsSolid;
+  aCanvas.Brush.Color := clBlack;
+  aCanvas.Rectangle(NutRect(aChordBoxRect));
+  aCanvas.Brush.Style := bsClear;
+
+  //@TODO Finish function
+  Result := False;
+  //need a Type for coordinates
+  //TEMP.......
+  aCanvas.Rectangle(aChordTextRect);
+  aCanvas.Rectangle(aFretTextRect);
+  normalize(aMarkerRect);
+  aCanvas.Rectangle(aMarkerRect);
+  //...........
+
 end;
 
 

@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 440
-  Height = 512
+  Left = 300
+  Height = 500
   Top = 32
-  Width = 491
+  Width = 250
   Caption = 'Form1'
-  ClientHeight = 512
-  ClientWidth = 491
+  ClientHeight = 500
+  ClientWidth = 250
   DoubleBuffered = True
   ParentDoubleBuffered = False
   LCLVersion = '4.99.0.0'
@@ -21,9 +21,9 @@ object Form1: TForm1
     Caption = 'Label1'
   end
   object Button1: TButton
-    Left = 408
+    Left = 167
     Height = 25
-    Top = 483
+    Top = 471
     Width = 75
     Anchors = [akRight, akBottom]
     Caption = 'Button1'
@@ -32,7 +32,7 @@ object Form1: TForm1
   object Label2: TLabel
     Left = 8
     Height = 18
-    Top = 456
+    Top = 444
     Width = 44
     Anchors = [akLeft, akBottom]
     Caption = 'Label2'
@@ -40,7 +40,7 @@ object Form1: TForm1
   object Label3: TLabel
     Left = 8
     Height = 18
-    Top = 480
+    Top = 468
     Width = 44
     Anchors = [akLeft, akBottom]
     Caption = 'Label3'
