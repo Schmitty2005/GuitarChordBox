@@ -54,11 +54,23 @@ begin
   //  [cbc.ParentCanvasRect.Left, cbc.ParentCanvasRect.Right,
   //  cbc.ParentCanvasRect.Top, cbc.ParentCanvasRect.Bottom]);
   cbCanvasTester.ParentCanvasRect := Form1.ClientRect;
+  cbCanvasTester.StartFret := 0;
   cbCanvasTester.DrawOnCanvas(Form1.Canvas);
   cbCanvasTester.addMarker(FifthStrng, FirstFret, Form1.Canvas, 'A#');
   cbCanvasTester.addMarker(SixthStrng, FourthFret, Form1.Canvas, 'Ab');
-  cbCanvasTester.addMarker(secondStrng, ThirdFret, Form1.Canvas,
-    format('s:%df:%d', [Ord(secondStrng), Ord(ThirdFret)]));
+  //cbCanvasTester.addMarker(secondStrng, ThirdFret, Form1.Canvas,
+  //  format('s:%df:%d', [Ord(secondStrng), Ord(ThirdFret)]));
+
+  //cbCanvasTester.addMarker(FourthStrng, OpenString, Form1.Canvas,
+  //  format('s:%df:%d', [Ord(FourthStrng), Ord(OpenString)]));
+  cbCanvasTester.addMarker(SixthStrng, OpenString, Form1.Canvas, 'o6');
+  cbCanvasTester.addMarker(FifthStrng, OpenString, Form1.Canvas, 'o5');
+  cbCanvasTester.addMarker(FourthStrng, OpenString, Form1.Canvas, 'o4');
+  cbCanvasTester.addMarker(ThirdStrng, OpenString, Form1.Canvas, 'o3');
+  cbCanvasTester.addMarker(SecondStrng, OpenString, Form1.Canvas, 'o2');
+  cbCanvasTester.addMarker(FirstStrng, OpenString, Form1.Canvas, 'o1');
+  ;
+
 end;
 
 

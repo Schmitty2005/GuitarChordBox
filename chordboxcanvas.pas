@@ -9,15 +9,15 @@ uses
 
 type
 
+  TmarkerShape = (msCircle, msSquare, msTriangle, msStar);
+
   { TChordBoxCanvas }
 
   TChordBoxCanvas = class(TGuitarChordBoxCoOrds)
   private
-    placeholder: boolean;
     procedure drawLines(aCanvas: TCanvas; const aLinePoints: array of TstrRec);
   public
-    procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string;
-      pxSize: integer = 50);
+    procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string); overload;
     procedure addMarker(aString: TGuitarStrings; aFret: TFretNumber;
       aCanvas: TCanvas; txtLbl: string); overload;
     function DrawOnCanvas(aCanvas: TCanvas): boolean;//@TODO move --see notes
@@ -52,7 +52,6 @@ begin
   Result := bounds(xNew, yNew, innerSize.cx, innerSize.cy);
 end;
 
-//@TODO make these functions private class functions later
 procedure moveRectCenter(var aRect: Trect; aNewCenter: Tpoint); inline;
 //@TODO maybe rename RectCentered ?? Like Delphi .
 var
@@ -114,7 +113,8 @@ begin
 end;
 
 procedure TChordBoxCanvas.addMarker(aPoint: Tpoint; aCanvas: TCanvas;
-  txtLbl: string; pxSize: integer = 50);
+  txtLbl: string); overload;
+//@TODO Remove and replace body of method with short call to other addMarker
 var
   DotSize: Trect;
   textLook: TTextStyle;
@@ -141,14 +141,11 @@ end;
 
 procedure TChordBoxCanvas.addMarker(aString: TGuitarStrings;
   aFret: TFretNumber; aCanvas: TCanvas; txtLbl: string);
-//@TODO Needs inherited function to get marker point from TGstrngs and TFrtnum;
 var
   DotSize: Trect;
   textLook: TTextStyle;
 begin
   DotSize.Create(MarkerRect);
-  //DotSize.Create(Bounds(0,0, pxSize, pxSize));
-  //moveRectCenter(DotSize, POINT(30, 300));//@TODO Point is placeholder
   moveRectCenter(DotSize, aFingerPoints[Ord(aString), Ord(aFret)]);
   Normalize(DotSize);
   aCanvas.Brush.Style := bsSolid;
@@ -159,7 +156,8 @@ begin
   textLook.Layout := tlCenter;
   aCanvas.Font.Color := clLime;
   aCanvas.Font.Bold := True;
-  aCanvas.Font.Size := 8;//@TODO Need Method to calculat PX to Font PT size
+  //@TODO Need Method to calculat PX to Font PT size
+  aCanvas.Font.Size := 12;
   acanvas.font.Italic := True;
   {
   //temp for debug line below
