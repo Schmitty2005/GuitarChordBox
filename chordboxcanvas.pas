@@ -15,14 +15,16 @@ type
 
   TChordBoxCanvas = class(TGuitarChordBoxCoOrds)
   private
+    mPenWidth : Integer; //not Implemented yet
     procedure drawLines(aCanvas: TCanvas; const aLinePoints: array of TstrRec);
     procedure drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
     procedure drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
     //procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
   public
+    constructor create(ParentRect : Trect);overload;
     procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
-    procedure drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
-    procedure drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
+    //procedure drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
+    //procedure drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
     procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string); overload;
     procedure addMarker(aString: TGuitarStrings; aFret: TFretNumber;
       aCanvas: TCanvas; txtLbl: string); overload;
@@ -73,7 +75,7 @@ begin
   aRect := newRect;
 end;
 
-procedure Normalize(var aRect: Trect);
+procedure Normalize(var aRect: Trect);inline;
 var
   replRect: Trect;
 begin
@@ -146,6 +148,12 @@ begin
   aCanvas.Ellipse(markDot);
 end;
 
+constructor TChordBoxCanvas.create(ParentRect: Trect);
+begin
+  inherited;
+  mPenWidth:= Round(ParentRect.Width * 0.005);
+end;
+
 function TChordBoxCanvas.getMarkerRect: TRect;
 begin
   Result := inherited MarkerRect;
@@ -196,7 +204,7 @@ begin
   aCanvas.Font.Color := clLime;
   aCanvas.Font.Bold := True;
   //@TODO Need Method to calculat PX to Font PT size
-  aCanvas.Font.Size := 12;
+  aCanvas.Font.Size := Round (aCanvas.Width / 20);//12;
   acanvas.font.Italic := True;
   {
   //temp for debug line below
@@ -210,41 +218,44 @@ function TChordBoxCanvas.DrawOnCanvas(aCanvas: TCanvas): boolean;
 var
   textStyle: TTextStyle;
 begin
-  aCanvas.Pen.Width := Round(aCanvas.Width * 0.005);
+  mPenWidth := Round(aCanvas.Width * 0.005);
+  aCanvas.Pen.Width := mPenWidth;
 
   aCanvas.Brush.Style := bsClear;
   aCanvas.Rectangle(aChordBoxRect);
-  //drawMultiLines(aCanvas, aStringPoints);
-  //drawMultiLines(aCanvas, aFretPoints);
+
   drawLines(aCanvas, aStringPoints[2..5]);
   drawLines(aCanvas, aFretPoints[1..3]);
+
   aCanvas.Brush.Style := bsSolid;
   aCanvas.Brush.Color := clBlack;
   aCanvas.Rectangle(NutRect(aChordBoxRect));
   aCanvas.Brush.Style := bsClear;
 
   //@TODO Finish function
-  Result := False;
+
 
   textStyle.Alignment := taCenter;
   textStyle.Layout := tlCenter;
-  //textStyle
-  //need a Type for coordinates
-  //TEMP.......
-  //aCanvas.Rectangle(aChordTextRect);
-  aCanvas.Font.Size := 32;//@TODO Set Size with Ratio
+
+  aCanvas.Font.Size := Round (aCanvas.Width / 10) ;
+  //32;//@TODO Set Size with Ratio
+  {To convert pixels (px) to font size (usually measured in points, pt), you can
+  use the formula: 1 pixel = approximately 0.75 points; meaning to convert
+  pixels to points, multiply the pixel value by 0.75.}
+
   aCanvas.Font.Color := clBlue;
   aCanvas.TextRect(aChordTextRect, 0, 0, ChordText, textStyle);
-  //aCanvas.Rectangle(aFretTextRect);
-  //  normalize(aMarkerRect); commented out Feb 1st 2025
-  aCanvas.Font.Size := 18;
+  aCanvas.Font.Size := Round (aCanvas.Width / 20) ;//18;
 
   if StartFret > 0 then
     aCanvas.TextRect(aFretTextRect, 0, 0, IntToStr(StartFret), textStyle);
 
+   Result := False;
+
   {TEMP FOR TESTING}
 
-  drawXShape(aCanvas, Point(100, 100));
+  //drawXShape(aCanvas, Point(100, 100));
   {================}
 
 end;

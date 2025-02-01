@@ -48,13 +48,13 @@ end;
 
 procedure TForm1.FormPaint(Sender: TObject);
 begin
-  Label2.Caption :='Client Width : ' + IntToStr(clientRect.Width);
-  Label3.Caption :='Client Heigth: ' + IntToStr(clientRect.Height);
+  Label2.Caption := 'Client Width : ' + IntToStr(clientRect.Width);
+  Label3.Caption := 'Client Heigth: ' + IntToStr(clientRect.Height);
   // Label1.Caption := format('Parent Canvs Left: %d, Rigth : %d, Top: %d, Bottom: %d',
   //  [cbc.ParentCanvasRect.Left, cbc.ParentCanvasRect.Right,
   //  cbc.ParentCanvasRect.Top, cbc.ParentCanvasRect.Bottom]);
   cbCanvasTester.ParentCanvasRect := Form1.ClientRect;
-  cbCanvasTester.StartFret := 5;
+  cbCanvasTester.StartFret := 0;
   cbCanvasTester.ChordText := 'GMaj7';
   cbCanvasTester.DrawOnCanvas(Form1.Canvas);
   cbCanvasTester.addMarker(FifthStrng, FirstFret, Form1.Canvas, 'A#');
@@ -72,12 +72,12 @@ begin
   cbCanvasTester.addMarker(FirstStrng, OpenString, Form1.Canvas, 'o1');
   ;
   //cbCanvasTester.DrawOnCanvas(Form1.Canvas);
-    //cbCanvasTester.drawXShape(Form1.Canvas, Point(300,300));
-    //cbCanvasTester.DrawOShape(Form1.Canvas, Point(200,200));
-    cbCanvasTester.DrawTriShape(Form1.Canvas, Point(100,250));
+  //cbCanvasTester.drawXShape(Form1.Canvas, Point(300,300));
+  //cbCanvasTester.DrawOShape(Form1.Canvas, Point(200,200));
+  cbCanvasTester.DrawTriShape(Form1.Canvas, Point(100, 250));
   {Test Chord Text Box}
 
-         // Label1.Caption := 'Start Fret: ' + IntToStr(cbCanvasTester.StartFret);
+  // Label1.Caption := 'Start Fret: ' + IntToStr(cbCanvasTester.StartFret);
 
   {===================}
 
