@@ -9,12 +9,7 @@ interface
 uses
   Classes, SysUtils;
 
-type
-
-  TChordSettings = record
-    Placeholder: integer;
-  end;
-
+Type
   TstrRec = record
     start: Tpoint;
     finish: Tpoint;
@@ -326,6 +321,7 @@ end;
 procedure TGuitarChordBoxCoOrds.setChordText(AValue: string);
 begin
   mChordText := AValue;
+  //generate(); //May need method to redraw canvas ?
 end;
 
 procedure TGuitarChordBoxCoOrds.setStartFret(AValue: byte);

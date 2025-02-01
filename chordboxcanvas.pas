@@ -16,7 +16,13 @@ type
   TChordBoxCanvas = class(TGuitarChordBoxCoOrds)
   private
     procedure drawLines(aCanvas: TCanvas; const aLinePoints: array of TstrRec);
+    procedure drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
+    procedure drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
+    //procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
   public
+    procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
+    procedure drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
+    procedure drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
     procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string); overload;
     procedure addMarker(aString: TGuitarStrings; aFret: TFretNumber;
       aCanvas: TCanvas; txtLbl: string); overload;
@@ -107,6 +113,39 @@ begin
   until counter > high(aLinePoints);
 end;
 
+procedure TChordBoxCanvas.DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
+var
+  markDot: Trect;
+begin
+  markDot := Trect.Create(aMarkerRect);
+  moveRectCenter(markDot, aPoint);
+  aCanvas.Line(Point(markDot.Left, markDot.Bottom), markDot.BottomRight);
+  aCanvas.Line(Point(markDot.CenterPoint.X, markDot.Top), markDot.BottomRight);
+  aCanvas.Line(Point(markDot.Left, markDot.Bottom),
+    Point(markdot.centerpoint.x, markdot.top));
+end;
+
+procedure TChordBoxCanvas.drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
+var
+  markDot: Trect;
+begin
+  markDot := Trect.Create(aMarkerRect);
+  moveRectCenter(markDot, aPoint);
+  aCanvas.Line(markDot.TopLeft, markDot.BottomRight);
+  aCanvas.Line(Point(markDot.Right, markDot.Top),
+    Point(markDot.Left, markDot.Bottom));
+end;
+
+procedure TChordBoxCanvas.drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
+var
+  markDot: Trect;
+begin
+  markDot := Trect.Create(aMarkerRect);
+  moveRectCenter(markDot, aPoint);
+  aCanvas.Brush.Style := bsClear;
+  aCanvas.Ellipse(markDot);
+end;
+
 function TChordBoxCanvas.getMarkerRect: TRect;
 begin
   Result := inherited MarkerRect;
@@ -168,6 +207,8 @@ begin
 end;
 
 function TChordBoxCanvas.DrawOnCanvas(aCanvas: TCanvas): boolean;
+var
+  textStyle: TTextStyle;
 begin
   aCanvas.Pen.Width := Round(aCanvas.Width * 0.005);
 
@@ -184,13 +225,27 @@ begin
 
   //@TODO Finish function
   Result := False;
+
+  textStyle.Alignment := taCenter;
+  textStyle.Layout := tlCenter;
+  //textStyle
   //need a Type for coordinates
   //TEMP.......
-  aCanvas.Rectangle(aChordTextRect);
-  aCanvas.Rectangle(aFretTextRect);
-  normalize(aMarkerRect);
-  aCanvas.Rectangle(aMarkerRect);
-  //...........
+  //aCanvas.Rectangle(aChordTextRect);
+  aCanvas.Font.Size := 32;//@TODO Set Size with Ratio
+  aCanvas.Font.Color := clBlue;
+  aCanvas.TextRect(aChordTextRect, 0, 0, ChordText, textStyle);
+  //aCanvas.Rectangle(aFretTextRect);
+  //  normalize(aMarkerRect); commented out Feb 1st 2025
+  aCanvas.Font.Size := 18;
+
+  if StartFret > 0 then
+    aCanvas.TextRect(aFretTextRect, 0, 0, IntToStr(StartFret), textStyle);
+
+  {TEMP FOR TESTING}
+
+  drawXShape(aCanvas, Point(100, 100));
+  {================}
 
 end;
 
