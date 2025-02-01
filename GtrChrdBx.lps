@@ -30,9 +30,10 @@
         <Filename Value="guitarchordboxcoordinates.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GuitarChordBoxCoordinates"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="363"/>
-        <CursorPos X="25" Y="376"/>
+        <TopLine Value="190"/>
+        <CursorPos X="48" Y="200"/>
         <UsageCount Value="187"/>
         <Loaded Value="True"/>
       </Unit>
@@ -49,10 +50,8 @@
         <Filename Value="chordboxcanvas.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ChordBoxCanvas"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="105"/>
-        <CursorPos X="17" Y="116"/>
+        <CursorPos Y="70"/>
         <UsageCount Value="174"/>
         <Loaded Value="True"/>
       </Unit>
@@ -103,14 +102,6 @@
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="guitarchordboxcoordinates.pas"/>
-        <Caret Line="63" Column="50" TopLine="62"/>
-      </Position>
-      <Position>
-        <Filename Value="guitarchordboxcoordinates.pas"/>
-        <Caret Line="334" Column="7" TopLine="325"/>
-      </Position>
       <Position>
         <Filename Value="guitarchordboxcoordinates.pas"/>
         <Caret Line="386" Column="40" TopLine="376"/>
@@ -223,6 +214,14 @@
         <Filename Value="chordboxcanvas.pas"/>
         <Caret Line="21" Column="24" TopLine="11"/>
       </Position>
+      <Position>
+        <Filename Value="guitarchordboxcoordinates.pas"/>
+        <Caret Line="14" Column="23" TopLine="2"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordboxcoordinates.pas"/>
+        <Caret Line="171" Column="19" TopLine="163"/>
+      </Position>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
@@ -250,13 +249,6 @@
         <WatchKind Value="wpkWrite"/>
         <Expression Value=":="/>
         <BreakHitCount Value="1"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="chordboxcanvas.pas"/>
-        <Line Value="70"/>
       </Item>
     </BreakPoints>
     <Watches>

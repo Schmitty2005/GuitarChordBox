@@ -6,12 +6,8 @@ unit GuitarChordBoxCoordinates;
 
 interface
 
-//@TODO ChordBox Rect needs to be moved to lower half of Parent rect to
-//      make room for Muted Strings display and  Chord name text.
-//@TODO Graphics is only used for TCanvas on Draw Function remove after testing
-//      Types should be added and Graphics removed when finished.
 uses
-  Classes, SysUtils, Graphics;
+  Classes, SysUtils;
 
 type
 
@@ -56,13 +52,13 @@ type
   TGuitarChordBoxCoOrds = class
   private
     mStartFret: byte;
-    mChordText : String;  //not Implemented yet
+    mChordText: string;  //not Implemented yet
     procedure calcChordTextRect;
     procedure calcFretTextRect;
     procedure fingerMarkerCalc;
-    function getChordText: String;
+    function getChordText: string;
     function getStartFret: byte;
-    procedure setChordText(AValue: String);
+    procedure setChordText(AValue: string);
     procedure setStartFret(AValue: byte);
     function stringLines(aRect: Trect): TstrPnts;
     function fretLines(aRect: Trect): TfrtPnts;
@@ -96,7 +92,7 @@ type
     property ParentCanvasRect: TRect read getCanvasRect write setCanvasRect;
     property MarkerRect: Trect read getMarkerRect;
     property StartFret: byte read getStartFret write setStartFret default 0;
-    property ChordText : String read getChordText write setChordText;
+    property ChordText: string read getChordText write setChordText;
   end;
 
 
@@ -165,53 +161,10 @@ begin
   aRect := centeredRect(replRect, aRect);
 end;
 
-
-procedure drawLine(aCanvas: Tcanvas; aStrRec: TstrRec); inline;
-begin
-  aCanvas.Line(astrRec.start, aStrRec.finish);
-end;
-
-
-procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: array of TstrRec);
-  overload;
-//untested!
-var
-  counter: integer;
-begin
-  counter := Low(aLinePoints);
-  repeat
-    drawline(aCanvas, aLinePoints[counter]);
-    Inc(counter);
-  until counter > high(aLinePoints);
-end;
-
-//@TODO These were reworked and should be copied over to ChordBoxCanvas
-procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TstrPnts);
-  overload; inline;
-var
-  counter: integer;
-begin
-  for counter := (low(aLinePoints) + 1) to (high(aLinePoints) - 1) do
-    drawline(aCanvas, aLinePoints[counter]);
-end;
-
-procedure drawMultiLines(aCanvas: TCanvas; const aLinePoints: TfrtPnts);
-  overload; inline;
-var
-  counter: integer;
-begin
-  for counter := (low(aLinePoints) + 1) to (high(aLinePoints) - 1) do
-    drawline(aCanvas, aLinePoints[counter]);
-end;
-
-// Above is temp for testing
-//........................................
-
 constructor TGuitarChordBoxCoOrds.Create();
 begin
   aChordBoxRect := Trect.Create(0, 0, 0, 0);
   mStartFret := 0;
-  //@TODO create real function later
 end;
 
 constructor TGuitarChordBoxCoOrds.Create(fParentRect: Trect); overload;
@@ -240,14 +193,13 @@ begin
   aChordTextRect.Left := aChordBoxRect.Left;
   aChordTextRect.Right := aChordBoxRect.Right;
   aChordTextRect.Top := aParentRect.Top + Round(
-    (aParentRect.Height * cBottomMoveRatio) / 2);
+    (aParentRect.Height * cBottomMoveRatio) / 4);
   aChordTextRect.Bottom := aParentRect.Top +
-    Round(1.8 * (aParentRect.Height * cBottomMoveRatio));
+    Round(1.7 * (aParentRect.Height * cBottomMoveRatio));
 end;
 
 procedure TGuitarChordBoxCoOrds.calcFretTextRect;
 begin
-  //TEMP
   aFretTextRect.Left := aParentRect.Left;
   aFretTextRect.Top := aChordBoxRect.Top;
   aFretTextRect.Bottom := aFretPoints[1].start.Y;
@@ -361,9 +313,9 @@ begin
   until gString > 6;
 end;
 
-function TGuitarChordBoxCoOrds.getChordText: String;
+function TGuitarChordBoxCoOrds.getChordText: string;
 begin
-  result := mChordText;
+  Result := mChordText;
 end;
 
 function TGuitarChordBoxCoOrds.getStartFret: byte;
@@ -371,9 +323,9 @@ begin
   Result := mStartFret;
 end;
 
-procedure TGuitarChordBoxCoOrds.setChordText(AValue: String);
+procedure TGuitarChordBoxCoOrds.setChordText(AValue: string);
 begin
-   mChordText := AValue;
+  mChordText := AValue;
 end;
 
 procedure TGuitarChordBoxCoOrds.setStartFret(AValue: byte);
