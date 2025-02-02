@@ -46,9 +46,9 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   cbCanvasTester := TChordBoxCanvas.Create();
   TestChord.Name:='AMaj7';
-  TestChord.StartingFret:=0;
-  TestChord.MarkerData[(SixthStrng)].Text := 'E';
-  TestChord.MarkerData[(SixthStrng)].Location := Point(300,300);
+  TestChord.StartingFret:=5;
+  TestChord.MarkerData[(SixthStrng)].Text := 'TEST';
+  TestChord.MarkerData[(SixthStrng)].Location := Point(150,150);// aFretPoints(ord(SixthStrng), ord(FirstFret));// Point(300,300);
 end;
 
 
@@ -62,8 +62,11 @@ begin
   cbCanvasTester.ParentCanvasRect := Form1.ClientRect;
   cbCanvasTester.StartFret := 0;
   //cbCanvasTester.ChordText := 'GMaj7';
-
-
+  TestChord.StartingFret:=0;
+  TestChord.MarkerData[SixthStrng].Location := cbCanvasTester.FingerPoints [ord (SixthStrng),ord( FourthFret)];
+  TestChord.MarkerData[SixthStrng].Text:='Ab';
+  TestChord.MarkerData[FirstStrng].Text := 'E#';
+  TestChord.MarkerData[FirstStrng].Location := cbCanvasTester.FingerPoints[ord(FirstStrng), ord(SecondFret)];
   cbCanvasTester.ChordData := TestChord;
   cbCanvasTester.DrawOnCanvas(Form1.Canvas);
   cbCanvasTester.addMarker(FifthStrng, FirstFret, Form1.Canvas, 'A#');
@@ -73,12 +76,12 @@ begin
 
   //cbCanvasTester.addMarker(FourthStrng, OpenString, Form1.Canvas,
   //  format('s:%df:%d', [Ord(FourthStrng), Ord(OpenString)]));
-  cbCanvasTester.addMarker(SixthStrng, OpenString, Form1.Canvas, 'o6');
+  //cbCanvasTester.addMarker(SixthStrng, OpenString, Form1.Canvas, 'o6');
   //cbCanvasTester.addMarker(FifthStrng, OpenString, Form1.Canvas, 'o5');
   //cbCanvasTester.addMarker(FourthStrng, OpenString, Form1.Canvas, 'o4');
   //cbCanvasTester.addMarker(ThirdStrng, OpenString, Form1.Canvas, 'o3');
   //cbCanvasTester.addMarker(SecondStrng, OpenString, Form1.Canvas, 'o2');
-  cbCanvasTester.addMarker(FirstStrng, OpenString, Form1.Canvas, 'o1');
+ // cbCanvasTester.addMarker(FirstStrng, OpenString, Form1.Canvas, 'o1');
   ;
 
 

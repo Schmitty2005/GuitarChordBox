@@ -58,6 +58,7 @@ type
 
   TGuitarChordBoxCoOrds = class
   private
+
     mStartFret: byte;
     mChordText: string;  //not Implemented yet
     procedure calcChordTextRect;
@@ -72,6 +73,7 @@ type
     procedure GridRectFromParent(aRect: Trect);//: Trect;
 
   protected
+    mChordData : TChordData;
     aParentRect: Trect;
     aChordBoxRect: Trect;
     aNutRect: Trect;// Not Implemented and needs to  be set in function!
@@ -366,7 +368,8 @@ end;
 
 function TGuitarChordBoxCoOrds.NutRect(aRect: Trect): Trect;
 begin
-  if mStartFret <> 0 then
+  //@TODO Needs to pull from mChordData!
+  if mChordData.StartingFret <> 0 then
     Result := Trect.Create(aChordBoxRect.Left, aChordBoxRect.Top,
       aChordBoxRect.Right, aChordBoxRect.Top)
   else

@@ -16,18 +16,18 @@ type
   TChordBoxCanvas = class(TGuitarChordBoxCoOrds)
   private
     mPenWidth: integer; //not Implemented yet
-    mChordData : TChordData;
     procedure drawLines(aCanvas: TCanvas; const aLinePoints: array of TstrRec);
     procedure drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
     procedure drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
-    procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);  //@TODO Check for normalization on aMarkerRect
+    procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
+    //@TODO Check for normalization on aMarkerRect
+    procedure DrawChordDataMarkers(aCanvas: TCanvas);
   public
     constructor Create(const cParentRect: Trect); overload;
     //procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
     procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string); overload;
     procedure addMarker(aString: TGuitarStrings; aFret: TFretNumber;
       aCanvas: TCanvas; txtLbl: string); overload;
-    //procedure ChordSetup (aChordData : TChordData);
     function DrawOnCanvas(aCanvas: TCanvas): boolean;//@TODO move --see notes
     property ChordBoxTextRect: Trect read aChordTextRect;
     property MarkerRect: Trect read aMarkerRect;
@@ -35,11 +35,13 @@ type
     property FretPoints: TfrtPnts read aFretPoints;
     property StringPoints: TstrPnts read aStringPoints;
     property FingerPoints: TchrdDtPnts read aFingerPoints;
-    property ChordData : TChordData read mChordData write mChordData;
+    property ChordData: TChordData read mChordData write mChordData;
   end;
 
+{$IFDEF FPC}
 procedure Normalize(var aRect: Trect);
 function centeredRect(const ARect: TRect; const bRect: TRect): TRect;
+{$ENDIF}
 procedure moveRectCenter(var aRect: Trect; aNewCenter: Tpoint); inline;
 
 
@@ -153,6 +155,18 @@ begin
   {$ENDIF}
 end;
 
+procedure TChordBoxCanvas.DrawChordDataMarkers(aCanvas: TCanvas);
+var
+   counter : TGuitarStrings ;
+begin
+  //@TODO Implement from DrawCanvas
+  with mChordData do
+  begin
+    for counter := SixthStrng to FirstStrng do
+     addMarker(MarkerData[counter].Location, aCanvas,MarkerData[counter].Text);
+  end;
+end;
+
 procedure TChordBoxCanvas.drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
 var
   markDot: Trect;
@@ -193,21 +207,15 @@ begin
   mPenWidth := Round(cParentRect.Width * 0.005);
 end;
 
-{
-function TChordBoxCanvas.getMarkerRect: TRect;
-begin
-  Result := inherited MarkerRect;
-end;
- }
 procedure TChordBoxCanvas.addMarker(aPoint: Tpoint; aCanvas: TCanvas;
   txtLbl: string); overload;
-//@TODO Remove and replace body of method with short call to other addMarker
+//@TODO add method to not draw chord points with (0,0)
+//      This method will likely replace other similar overloaded method.
 var
   DotSize: Trect;
   textLook: TTextStyle;
 begin
   DotSize.Create(MarkerRect);
-  //DotSize.Create(Bounds(0,0, pxSize, pxSize));
   moveRectCenter(DotSize, aPoint);
   Normalize(DotSize);
   aCanvas.Brush.Style := bsSolid;
@@ -218,11 +226,11 @@ begin
   textLook.Layout := tlCenter;
   aCanvas.Font.Color := clLime;
   aCanvas.Font.Bold := True;
-  aCanvas.Font.Size := 8;//@TODO Need Method to calculat PX to Font PT size
+   aCanvas.Font.Size := Round(aCanvas.Width / 20);
   acanvas.font.Italic := True;
   //temp for debug line below
-  txtLbl := format('(%d,%d)%s', [Dotsize.CenterPoint.X,
-    DotSize.CenterPoint.Y, txtLbl]);
+ // txtLbl := format('(%d,%d)%s', [Dotsize.CenterPoint.X,
+  //  DotSize.CenterPoint.Y, txtLbl]);
   aCanvas.TextRect(DotSize, 0, 0, txtLbl, textLook); //Placeholder   'F𝄰♭♮'
 end;
 
@@ -289,6 +297,8 @@ begin
   if mChordData.StartingFret > 0 then
     aCanvas.TextRect(aFretTextRect, 0, 0, IntToStr(mChordData.StartingFret), textStyle);
 
+  //@TODO Draw fingerDots from mChordData
+    DrawChordDataMarkers(aCanvas);
 
   Result := False;
 
