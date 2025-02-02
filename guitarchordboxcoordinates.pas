@@ -13,7 +13,7 @@ uses
   {$ENDIF}
   ;
 
-Type
+type
   TstrRec = record
     start: Tpoint;
     finish: Tpoint;
@@ -31,17 +31,25 @@ Type
 
   TMutedOpenPnts = array [1..6] of Tpoint;
 
+  TmarkerShape = (msCircle, msSquare, msTriangle, msStar);
+
   TGuitarStrings = (SixthStrng = 1, FifthStrng, FourthStrng, ThirdStrng,
     SecondStrng, FirstStrng);
 
   TFretNumber = (OpenString, FirstFret, SecondFret, ThirdFret, FourthFret);
 
+  TMarkerData = record
+    Location: Tpoint;
+    Shape: TmarkerShape;
+    Text: string;
+  end;
+
+  TMarkerDataStrings = Array [TGuitarStrings] of TMarkerData;
+
   TChordData = record
-    parentRect: Trect;
-    chordBoxRect: Trect;
-    fretPoints: TfrtPnts;
-    strngPoints: TstrPnts;
-    mutedPoints: TMutedOpenPnts;
+    Name : String;
+    StartingFret : Integer;
+    MarkerData : TMarkerDataStrings;
   end;
 
   //@TODO make a record to encompass all of the points!
@@ -92,7 +100,7 @@ Type
     property MarkerRect: Trect read aMarkerRect;//getMarkerRect;
     property StartFret: byte read getStartFret write setStartFret default 0;
     property ChordText: string read getChordText write setChordText;
-    property ParentRect : Trect read aParentRect write aParentRect;
+    property ParentRect: Trect read aParentRect write aParentRect;
   end;
 
 

@@ -16,6 +16,7 @@ type
   TChordBoxCanvas = class(TGuitarChordBoxCoOrds)
   private
     mPenWidth: integer; //not Implemented yet
+    mChordData : TChordData;
     procedure drawLines(aCanvas: TCanvas; const aLinePoints: array of TstrRec);
     procedure drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
     procedure drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
@@ -26,6 +27,7 @@ type
     procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string); overload;
     procedure addMarker(aString: TGuitarStrings; aFret: TFretNumber;
       aCanvas: TCanvas; txtLbl: string); overload;
+    //procedure ChordSetup (aChordData : TChordData);
     function DrawOnCanvas(aCanvas: TCanvas): boolean;//@TODO move --see notes
     property ChordBoxTextRect: Trect read aChordTextRect;
     property MarkerRect: Trect read aMarkerRect;
@@ -33,6 +35,7 @@ type
     property FretPoints: TfrtPnts read aFretPoints;
     property StringPoints: TstrPnts read aStringPoints;
     property FingerPoints: TchrdDtPnts read aFingerPoints;
+    property ChordData : TChordData read mChordData write mChordData;
   end;
 
 procedure Normalize(var aRect: Trect);
@@ -251,10 +254,13 @@ begin
   aCanvas.TextRect(DotSize, 0, 0, txtLbl, textLook); //Placeholder   'F𝄰♭♮';
 end;
 
+
 function TChordBoxCanvas.DrawOnCanvas(aCanvas: TCanvas): boolean;
 var
   textStyle: TTextStyle;
 begin
+
+  //@TODO setup to use mChordData to draw chord box
   mPenWidth := Round(aCanvas.Width * 0.005);
   aCanvas.Pen.Width := mPenWidth;
 
@@ -276,17 +282,13 @@ begin
   textStyle.Layout := tlCenter;
 
   aCanvas.Font.Size := Round(aCanvas.Width / 10);
-  //32;//@TODO Set Size with Ratio
-  {To convert pixels (px) to font size (usually measured in points, pt), you can
-  use the formula: 1 pixel = approximately 0.75 points; meaning to convert
-  pixels to points, multiply the pixel value by 0.75.}
-
   aCanvas.Font.Color := clBlue;
-  aCanvas.TextRect(aChordTextRect, 0, 0, ChordText, textStyle);
+  aCanvas.TextRect(aChordTextRect, 0, 0, mChordData.Name, textStyle);
   aCanvas.Font.Size := Round(aCanvas.Width / 20);//18;
 
-  if StartFret > 0 then
-    aCanvas.TextRect(aFretTextRect, 0, 0, IntToStr(StartFret), textStyle);
+  if mChordData.StartingFret > 0 then
+    aCanvas.TextRect(aFretTextRect, 0, 0, IntToStr(mChordData.StartingFret), textStyle);
+
 
   Result := False;
 

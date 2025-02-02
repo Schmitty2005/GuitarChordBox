@@ -34,6 +34,8 @@ var
   gcb, testBox, testFail, cbc: TGuitarChordBoxCoOrds;
   cbCanvasTester: TChordBoxCanvas;
 
+  TestChord : TChordData;
+
 implementation
 
 {$R *.lfm}
@@ -43,6 +45,10 @@ implementation
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   cbCanvasTester := TChordBoxCanvas.Create();
+  TestChord.Name:='AMaj7';
+  TestChord.StartingFret:=0;
+  TestChord.MarkerData[(SixthStrng)].Text := 'E';
+  TestChord.MarkerData[(SixthStrng)].Location := Point(300,300);
 end;
 
 
@@ -55,7 +61,10 @@ begin
   //  cbc.ParentCanvasRect.Top, cbc.ParentCanvasRect.Bottom]);
   cbCanvasTester.ParentCanvasRect := Form1.ClientRect;
   cbCanvasTester.StartFret := 0;
-  cbCanvasTester.ChordText := 'GMaj7';
+  //cbCanvasTester.ChordText := 'GMaj7';
+
+
+  cbCanvasTester.ChordData := TestChord;
   cbCanvasTester.DrawOnCanvas(Form1.Canvas);
   cbCanvasTester.addMarker(FifthStrng, FirstFret, Form1.Canvas, 'A#');
   cbCanvasTester.addMarker(SixthStrng, FourthFret, Form1.Canvas, 'Ab');
@@ -71,6 +80,8 @@ begin
   //cbCanvasTester.addMarker(SecondStrng, OpenString, Form1.Canvas, 'o2');
   cbCanvasTester.addMarker(FirstStrng, OpenString, Form1.Canvas, 'o1');
   ;
+
+
   //cbCanvasTester.DrawOnCanvas(Form1.Canvas);
   //cbCanvasTester.drawXShape(Form1.Canvas, Point(300,300));
   //cbCanvasTester.DrawOShape(Form1.Canvas, Point(200,200));
