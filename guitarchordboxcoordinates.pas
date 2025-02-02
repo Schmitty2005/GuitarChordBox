@@ -7,7 +7,11 @@ unit GuitarChordBoxCoordinates;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils
+  {$IFDEF DCC}
+  , System.Types
+  {$ENDIF}
+  ;
 
 Type
   TstrRec = record
@@ -66,13 +70,13 @@ Type
     aFingerPoints: TchrdDtPnts;
     aFretPoints: TfrtPnts;
     aStringPoints: TstrPnts;
-    aMuteOpenPoints: TMutedOpenPnts;
+    //aMuteOpenPoints: TMutedOpenPnts;
     aMarkerRect: TRect;
-    aChordTextRect: Trect;//@TODO implement
-    aFretTextRect: Trect; //@TODO implement
+    aChordTextRect: Trect;
+    aFretTextRect: Trect;
 
     function getCanvasRect: Trect;
-    function getMarkerRect: Trect;  //may not be needed
+    //function getMarkerRect: Trect;  //may not be needed
     procedure setCanvasRect(aRect: Trect);
     function NutRect(aRect: Trect): Trect;    //change to proc to set class aNutRect
     //function verifyCanvasRect(aRect: Trect): boolean; //private if used
@@ -80,20 +84,23 @@ Type
   public
     procedure generate();
     constructor Create();
-    constructor Create(fParentRect: Trect); overload;
+    constructor Create(const fParentRect: Trect); overload;
     function getFretMarkerPoint(gString: integer; gFret: integer): Tpoint;
     function getFretMarkerPoint(gString: TGuitarStrings;
       gFret: TFretNumber): Tpoint; overload;
     property ParentCanvasRect: TRect read getCanvasRect write setCanvasRect;
-    property MarkerRect: Trect read getMarkerRect;
+    property MarkerRect: Trect read aMarkerRect;//getMarkerRect;
     property StartFret: byte read getStartFret write setStartFret default 0;
     property ChordText: string read getChordText write setChordText;
+    property ParentRect : Trect read aParentRect write aParentRect;
   end;
 
 
 implementation
 
+{$IFDEF FPC}
 uses Types;
+{$ENDIF}
 
 const
   cShrinkRatio = -0.925;
@@ -162,7 +169,7 @@ begin
   mStartFret := 0;
 end;
 
-constructor TGuitarChordBoxCoOrds.Create(fParentRect: Trect); overload;
+constructor TGuitarChordBoxCoOrds.Create(const fParentRect: Trect); overload;
 begin
   aParentRect := fParentRect;
   mStartFret := 0;
@@ -206,11 +213,12 @@ begin
   Result := aParentRect;
 end;
 
+{
 function TGuitarChordBoxCoOrds.getMarkerRect: Trect;
 begin
   Result := aMarkerRect;
 end;
-
+ }
 procedure TGuitarChordBoxCoOrds.setCanvasRect(aRect: Trect);
 begin
   aParentRect := aRect;

@@ -74,7 +74,7 @@ begin
   //cbCanvasTester.DrawOnCanvas(Form1.Canvas);
   //cbCanvasTester.drawXShape(Form1.Canvas, Point(300,300));
   //cbCanvasTester.DrawOShape(Form1.Canvas, Point(200,200));
-  cbCanvasTester.DrawTriShape(Form1.Canvas, Point(100, 250));
+ // cbCanvasTester.DrawTriShape(Form1.Canvas, Point(100, 250));
   {Test Chord Text Box}
 
   // Label1.Caption := 'Start Fret: ' + IntToStr(cbCanvasTester.StartFret);

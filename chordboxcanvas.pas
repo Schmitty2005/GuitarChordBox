@@ -1,7 +1,7 @@
 unit ChordBoxCanvas;
 
-{$mode ObjFPC}{$H+}
-
+//{$mode ObjFPC}{$H+}
+{$MODE DELPHI}
 interface
 
 uses
@@ -15,21 +15,24 @@ type
 
   TChordBoxCanvas = class(TGuitarChordBoxCoOrds)
   private
-    mPenWidth : Integer; //not Implemented yet
+    mPenWidth: integer; //not Implemented yet
     procedure drawLines(aCanvas: TCanvas; const aLinePoints: array of TstrRec);
     procedure drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
     procedure drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
-    //procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
+    procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);  //@TODO Check for normalization on aMarkerRect
   public
-    constructor create(ParentRect : Trect);overload;
-    procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
-    //procedure drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
-    //procedure drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
+    constructor Create(const cParentRect: Trect); overload;
+    //procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
     procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string); overload;
     procedure addMarker(aString: TGuitarStrings; aFret: TFretNumber;
       aCanvas: TCanvas; txtLbl: string); overload;
     function DrawOnCanvas(aCanvas: TCanvas): boolean;//@TODO move --see notes
-    function getMarkerRect(): TRect;
+    property ChordBoxTextRect: Trect read aChordTextRect;
+    property MarkerRect: Trect read aMarkerRect;
+    property FretTextRect: Trect read aFretTextRect;
+    property FretPoints: TfrtPnts read aFretPoints;
+    property StringPoints: TstrPnts read aStringPoints;
+    property FingerPoints: TchrdDtPnts read aFingerPoints;
   end;
 
 procedure Normalize(var aRect: Trect);
@@ -39,6 +42,7 @@ procedure moveRectCenter(var aRect: Trect; aNewCenter: Tpoint); inline;
 
 implementation
 
+{$IFDEF FPC}
 function centeredRect(const ARect: TRect; const bRect: TRect): TRect;
 var
   aCenter: TPoint;
@@ -58,7 +62,7 @@ begin
   xNew := aCenter.x - round(innerSize.cx div 2);
   yNew := aCenter.y - round(innerSize.cy div 2);
   Result := bounds(xNew, yNew, innerSize.cx, innerSize.cy);
-end;
+end;{$ENDIF}
 
 procedure moveRectCenter(var aRect: Trect; aNewCenter: Tpoint); inline;
 //@TODO maybe rename RectCentered ?? Like Delphi .
@@ -75,6 +79,7 @@ begin
   aRect := newRect;
 end;
 
+{$IFDEF FPC}
 procedure Normalize(var aRect: Trect);inline;
 var
   replRect: Trect;
@@ -102,6 +107,7 @@ begin
   replRect := aRect;
   aRect := centeredRect(replRect, aRect);
 end;
+{$ENDIF}
 
 procedure TChordBoxCanvas.drawLines(aCanvas: TCanvas;
   const aLinePoints: array of TstrRec);
@@ -110,8 +116,15 @@ var
 begin
   counter := Low(aLinePoints);
   repeat
+    {$IFDEF FPC}
     aCanvas.Line(aLinePoints[counter].start, aLinePoints[counter].finish);
+    {$ENDIF}
+    {$IFDEF DCC}
+    aCanvas.MoveTo(aLinePoints[counter].start);
+    aCanvas.DrawTo(aLinePOints[counter].finish);
+    {$ENDIF}
     Inc(counter);
+
   until counter > high(aLinePoints);
 end;
 
@@ -121,10 +134,20 @@ var
 begin
   markDot := Trect.Create(aMarkerRect);
   moveRectCenter(markDot, aPoint);
+  {$IFDEF DCC}
+  aCanvas.MoveTo(Point(markDot.Left, markDot.Bottom));
+  aCanvas.DrawTo(markDot.BottomRight);
+  aCanvas.MoveTo(Point(markDot.CenterPoint.X, markDot.Top));
+  aCanvas.LineTo(markDot.BottomRight);
+  aCanvas.MoveTo(Point(markDot.Left, markDot.Bottom));
+  aCanvas.LineTo(Point(markdot.centerpoint.x, markdot.top));
+  {$ENDIF}
+  {$IFDEF FPC}
   aCanvas.Line(Point(markDot.Left, markDot.Bottom), markDot.BottomRight);
   aCanvas.Line(Point(markDot.CenterPoint.X, markDot.Top), markDot.BottomRight);
   aCanvas.Line(Point(markDot.Left, markDot.Bottom),
     Point(markdot.centerpoint.x, markdot.top));
+  {$ENDIF}
 end;
 
 procedure TChordBoxCanvas.drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
@@ -133,9 +156,22 @@ var
 begin
   markDot := Trect.Create(aMarkerRect);
   moveRectCenter(markDot, aPoint);
+  {$IFDEF FPC}
   aCanvas.Line(markDot.TopLeft, markDot.BottomRight);
   aCanvas.Line(Point(markDot.Right, markDot.Top),
     Point(markDot.Left, markDot.Bottom));
+  {$ENDIF}
+
+  {$IFDEF DCC}
+  with aCanvas do
+  begin
+    MoveTo(markDot.TopLeft);
+    LineTo(markDot.BottomRight);
+    MoveTo(markDot.Right);
+    LineTo(markDot.Bottom);
+  end;
+  {$ENDIF}
+
 end;
 
 procedure TChordBoxCanvas.drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
@@ -148,17 +184,18 @@ begin
   aCanvas.Ellipse(markDot);
 end;
 
-constructor TChordBoxCanvas.create(ParentRect: Trect);
+constructor TChordBoxCanvas.Create(const cParentRect: Trect);
 begin
   inherited;
-  mPenWidth:= Round(ParentRect.Width * 0.005);
+  mPenWidth := Round(cParentRect.Width * 0.005);
 end;
 
+{
 function TChordBoxCanvas.getMarkerRect: TRect;
 begin
   Result := inherited MarkerRect;
 end;
-
+ }
 procedure TChordBoxCanvas.addMarker(aPoint: Tpoint; aCanvas: TCanvas;
   txtLbl: string); overload;
 //@TODO Remove and replace body of method with short call to other addMarker
@@ -204,7 +241,7 @@ begin
   aCanvas.Font.Color := clLime;
   aCanvas.Font.Bold := True;
   //@TODO Need Method to calculat PX to Font PT size
-  aCanvas.Font.Size := Round (aCanvas.Width / 20);//12;
+  aCanvas.Font.Size := Round(aCanvas.Width / 20);//12;
   acanvas.font.Italic := True;
   {
   //temp for debug line below
@@ -238,7 +275,7 @@ begin
   textStyle.Alignment := taCenter;
   textStyle.Layout := tlCenter;
 
-  aCanvas.Font.Size := Round (aCanvas.Width / 10) ;
+  aCanvas.Font.Size := Round(aCanvas.Width / 10);
   //32;//@TODO Set Size with Ratio
   {To convert pixels (px) to font size (usually measured in points, pt), you can
   use the formula: 1 pixel = approximately 0.75 points; meaning to convert
@@ -246,12 +283,12 @@ begin
 
   aCanvas.Font.Color := clBlue;
   aCanvas.TextRect(aChordTextRect, 0, 0, ChordText, textStyle);
-  aCanvas.Font.Size := Round (aCanvas.Width / 20) ;//18;
+  aCanvas.Font.Size := Round(aCanvas.Width / 20);//18;
 
   if StartFret > 0 then
     aCanvas.TextRect(aFretTextRect, 0, 0, IntToStr(StartFret), textStyle);
 
-   Result := False;
+  Result := False;
 
   {TEMP FOR TESTING}
 
