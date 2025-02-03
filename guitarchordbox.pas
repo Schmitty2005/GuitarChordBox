@@ -64,13 +64,45 @@ begin
   //cbCanvasTester.ChordText := 'GMaj7';
   TestChord.StartingFret:=0;
   TestChord.MarkerData[SixthStrng].Location := cbCanvasTester.FingerPoints [ord (SixthStrng),ord( FourthFret)];
-  TestChord.MarkerData[SixthStrng].Text:='Ab';
-  TestChord.MarkerData[FirstStrng].Text := 'E#';
+  TestChord.MarkerData[SixthStrng].Text:='64';
+  TestChord.MarkerData[FirstStrng].Text := '11';
   TestChord.MarkerData[FirstStrng].Location := cbCanvasTester.FingerPoints[ord(FirstStrng), ord(SecondFret)];
   cbCanvasTester.ChordData := TestChord;
+
+  with TestChord.MarkerData [FifthStrng] do
+  begin
+    Text :='53';
+    Location := cbCanvasTester.FingerPoints[ord(FifthStrng), ord(ThirdFret)];
+  end;
+
+   with TestChord.MarkerData [FourthStrng] do
+  begin
+    Text :='4o';
+    Location := cbCanvasTester.FingerPoints[ord(FourthStrng), ord(OpenString)];
+  end;
+
+    with TestChord.MarkerData [ThirdStrng] do
+  begin
+    Text :='31';
+    Location := cbCanvasTester.FingerPoints[ord(ThirdStrng), ord(FirstFret)];
+  end;
+
+     with TestChord.MarkerData [SecondStrng] do
+  begin
+    Text :='22';
+        Location := cbCanvasTester.FingerPoints[ord(SecondStrng), ord(SecondFret)];
+  end;
+
+     cbCanvasTester.AutoPenWidth:=false;
+
+     cbCanvasTester.ChordData := TestChord;
+     //cbCanvasTester.generate();
+     cbCanvasTester.create(Form1.ClientRect, TestChord);
+
   cbCanvasTester.DrawOnCanvas(Form1.Canvas);
-  cbCanvasTester.addMarker(FifthStrng, FirstFret, Form1.Canvas, 'A#');
-  cbCanvasTester.addMarker(SixthStrng, FourthFret, Form1.Canvas, 'Ab');
+
+ // cbCanvasTester.addMarker(FifthStrng, FirstFret, Form1.Canvas, 'A#');
+ // cbCanvasTester.addMarker(SixthStrng, FourthFret, Form1.Canvas, 'Ab');
   //cbCanvasTester.addMarker(secondStrng, ThirdFret, Form1.Canvas,
   //  format('s:%df:%d', [Ord(secondStrng), Ord(ThirdFret)]));
 
@@ -82,8 +114,6 @@ begin
   //cbCanvasTester.addMarker(ThirdStrng, OpenString, Form1.Canvas, 'o3');
   //cbCanvasTester.addMarker(SecondStrng, OpenString, Form1.Canvas, 'o2');
  // cbCanvasTester.addMarker(FirstStrng, OpenString, Form1.Canvas, 'o1');
-  ;
-
 
   //cbCanvasTester.DrawOnCanvas(Form1.Canvas);
   //cbCanvasTester.drawXShape(Form1.Canvas, Point(300,300));
