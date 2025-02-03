@@ -25,7 +25,13 @@ type
     //@TODO Check for normalization on aMarkerRect
     procedure DrawChordDataMarkers(aCanvas: TCanvas);
     procedure setautoPen(AValue: boolean);
+    procedure setFifthStringFinger(AValue: TfretNumber);
+    procedure setFirstStringFinger(AValue: TfretNumber);
+    procedure setFourthStringFinger(AValue: TfretNumber);
     procedure setMChordData(AValue: TChordData);
+    procedure setSecondStringFinger(AValue: TfretNumber);
+    procedure setSixthStringFinger(AValue: TfretNumber);
+    procedure setThirdStringFinger(AValue: TfretNumber);
   public
     constructor Create(const cParentRect: Trect); overload;
     constructor Create(const cParentRect: Trect; aChordData: TChordData); overload;
@@ -44,6 +50,16 @@ type
     property StringPoints: TstrPnts read aStringPoints;  //protected
     property FingerPoints: TchrdDtPnts read aFingerPoints;
     property ChordData: TChordData read mChordData write setMChordData;
+
+  published
+    //untested probably delete later!
+    property SixthStringFinger: TfretNumber write setSixthStringFinger;
+    property FifthStringFinger: TfretNumber write setFifthStringFinger;
+    property FourthStringFinger: TfretNumber write setFourthStringFinger;
+    property ThirdStringFinger: TfretNumber write setThirdStringFinger;
+    property SecondStringFinger: TfretNumber write setSecondStringFinger;
+    property FirstStringFinger: TfretNumber write setFirstStringFinger;
+
   end;
 
 {$IFDEF FPC}
@@ -181,11 +197,50 @@ begin
   mAutoPenWidth := AValue;
 end;
 
+
 procedure TChordBoxCanvas.setMChordData(AValue: TChordData);
 begin
   //if mChordData=AValue then Exit;
   mChordData := AValue;
   generate();
+end;
+
+
+//@TODO Strings Move to GuitarChordBoxCoordinates!
+procedure TChordBoxCanvas.setSixthStringFinger(AValue: TfretNumber);
+begin
+  mChordData.MarkerData[sixthStrng].Location :=
+    aFingerPoints[Ord(SixthStrng), Ord(AValue)];
+end;
+
+procedure TChordBoxCanvas.setFifthStringFinger(AValue: TfretNumber);
+begin
+  mChordData.MarkerData[fifthStrng].Location :=
+    aFingerPoints[Ord(fifthStrng), Ord(AValue)];
+end;
+
+procedure TChordBoxCanvas.setFourthStringFinger(AValue: TfretNumber);
+begin
+  mChordData.MarkerData[fourthStrng].Location :=
+    aFingerPoints[Ord(fourthStrng), Ord(AValue)];
+end;
+
+procedure TChordBoxCanvas.setThirdStringFinger(AValue: TfretNumber);
+begin
+  mChordData.MarkerData[thirdStrng].Location :=
+    aFingerPoints[Ord(thirdStrng), Ord(AValue)];
+end;
+
+procedure TChordBoxCanvas.setSecondStringFinger(AValue: TfretNumber);
+begin
+  mChordData.MarkerData[secondStrng].Location :=
+    aFingerPoints[Ord(secondStrng), Ord(AValue)];
+end;
+
+procedure TChordBoxCanvas.setFirstStringFinger(AValue: TfretNumber);
+begin
+  mChordData.MarkerData[firstStrng].Location :=
+    aFingerPoints[Ord(firstStrng), Ord(AValue)];
 end;
 
 procedure TChordBoxCanvas.drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);

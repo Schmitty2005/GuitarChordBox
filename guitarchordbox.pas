@@ -63,10 +63,11 @@ begin
   cbCanvasTester.StartFret := 0;
   //cbCanvasTester.ChordText := 'GMaj7';
   TestChord.StartingFret:=0;
+  {
   TestChord.MarkerData[SixthStrng].Location := cbCanvasTester.FingerPoints [ord (SixthStrng),ord( FourthFret)];
   TestChord.MarkerData[SixthStrng].Text:='64';
   TestChord.MarkerData[FirstStrng].Text := '11';
-  TestChord.MarkerData[FirstStrng].Location := cbCanvasTester.FingerPoints[ord(FirstStrng), ord(SecondFret)];
+  TestChord.MarkerData[FirstStrng].Location := cbCanvasTester.FingerPoints[ord(FirstStrng), ord(FirstFret)];
   cbCanvasTester.ChordData := TestChord;
 
   with TestChord.MarkerData [FifthStrng] do
@@ -92,12 +93,25 @@ begin
     Text :='22';
         Location := cbCanvasTester.FingerPoints[ord(SecondStrng), ord(SecondFret)];
   end;
-
+   }
+    cbCanvasTester.create(Form1.ClientRect, TestChord);
      cbCanvasTester.AutoPenWidth:=false;
 
      cbCanvasTester.ChordData := TestChord;
-     //cbCanvasTester.generate();
-     cbCanvasTester.create(Form1.ClientRect, TestChord);
+     with cbCanvasTester do
+     begin
+       SixthStringFinger := FourthFret;
+       FifthStringFinger:= ThirdFret;
+       FourthStringFinger:= SecondFret;
+       ThirdStringFinger:= OpenString;
+       SecondStringFinger:= FirstFret;
+       FirstStringFinger:= OpenString;
+     end;
+    //SixthStringFinger := FourthFret;
+
+
+     cbCanvasTester.generate();
+     //cbCanvasTester.create(Form1.ClientRect, TestChord);
 
   cbCanvasTester.DrawOnCanvas(Form1.Canvas);
 

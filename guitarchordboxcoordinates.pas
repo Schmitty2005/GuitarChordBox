@@ -23,11 +23,9 @@ type
 
   TstrPnts = array [1..6] of TstrRec;
 
-  TfrtPnts = array [0..4] of TstrRec; //changed to 0..4 instead of 1..4 for
-  //open  or muted markers
+  TfrtPnts = array [0..4] of TstrRec;
 
-  TchrdDtPnts = array [1..6, 0..4] of ///changed from [1..5] for test
-    Tpoint;//changed last array from [1..4] to [1..5] 1-29-25
+  TchrdDtPnts = array [1..6, 0..4] of Tpoint;
 
   TMutedOpenPnts = array [1..6] of Tpoint;
 
@@ -44,12 +42,12 @@ type
     Text: string;
   end;
 
-  TMarkerDataStrings = Array [TGuitarStrings] of TMarkerData;
+  TMarkerDataStrings = array [TGuitarStrings] of TMarkerData;
 
   TChordData = record
-    Name : String;
-    StartingFret : Integer;
-    MarkerData : TMarkerDataStrings;
+    Name: string;
+    StartingFret: integer;
+    MarkerData: TMarkerDataStrings;
   end;
 
   //@TODO make a record to encompass all of the points!
@@ -73,7 +71,7 @@ type
     procedure GridRectFromParent(aRect: Trect);//: Trect;
 
   protected
-    mChordData : TChordData;
+    mChordData: TChordData;
     aParentRect: Trect;
     aChordBoxRect: Trect;
     aNutRect: Trect;// Not Implemented and needs to  be set in function!
