@@ -97,6 +97,11 @@ begin
     cbCanvasTester.create(Form1.ClientRect, TestChord);
      cbCanvasTester.AutoPenWidth:=false;
 
+     TestChord.MarkerData[FifthStrng].Text:='C#';
+     with TestChord do begin
+       MarkerData[FourthStrng].Text :='A';
+       MarkerData[ThirdStrng].Text := 'G';
+     end;
      cbCanvasTester.ChordData := TestChord;
      with cbCanvasTester do
      begin

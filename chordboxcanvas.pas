@@ -149,8 +149,9 @@ begin
     aCanvas.Line(aLinePoints[counter].start, aLinePoints[counter].finish);
     {$ENDIF}
     {$IFDEF DCC}
-    aCanvas.MoveTo(aLinePoints[counter].start);
-    aCanvas.DrawTo(aLinePOints[counter].finish);
+    aCanvas.MoveTo(aLinePoints[counter].start.x, aLinePoints[counter].start.y);
+    aCanvas.LineTo(aLinePoints[counter].finish.x,
+      aLinePoints[counter].finish.y);
     {$ENDIF}
     Inc(counter);
 
@@ -164,12 +165,12 @@ begin
   markDot := Trect.Create(aMarkerRect);
   moveRectCenter(markDot, aPoint);
   {$IFDEF DCC}
-  aCanvas.MoveTo(Point(markDot.Left, markDot.Bottom));
-  aCanvas.DrawTo(markDot.BottomRight);
-  aCanvas.MoveTo(Point(markDot.CenterPoint.X, markDot.Top));
-  aCanvas.LineTo(markDot.BottomRight);
-  aCanvas.MoveTo(Point(markDot.Left, markDot.Bottom));
-  aCanvas.LineTo(Point(markdot.centerpoint.x, markdot.top));
+  aCanvas.MoveTo(markDot.left, markDot.bottom);
+  aCanvas.LineTo(markDot.BottomRight.x, markDot.BottomRight.y);
+  aCanvas.MoveTo(markDot.centerpoint.x, markDot.top);
+  aCanvas.LineTo(markDot.BottomRight.x, markDot.BottomRight.y);
+  aCanvas.MoveTo(markDot.left, markDot.bottom);
+  aCanvas.LineTo(markDot.centerpoint.x, markDot.top);
   {$ENDIF}
   {$IFDEF FPC}
   aCanvas.Line(Point(markDot.Left, markDot.Bottom), markDot.BottomRight);
@@ -256,12 +257,12 @@ begin
   {$ENDIF}
 
   {$IFDEF DCC}
-  with aCanvas do
+   with aCanvas do
   begin
-    MoveTo(markDot.TopLeft);
-    LineTo(markDot.BottomRight);
-    MoveTo(markDot.Right);
-    LineTo(markDot.Bottom);
+    MoveTo(markDot.TopLeft.x, markDot.TopLeft.Y);
+    LineTo(markDot.BottomRight.x, markdot.bottomright.y);
+    MoveTo(markDot.right, markdot.top);
+    LineTo(markDot.bottom, markDot.left);
   end;
   {$ENDIF}
 
@@ -302,7 +303,9 @@ procedure TChordBoxCanvas.addMarker(aPoint: Tpoint; aCanvas: TCanvas;
 //      This method will likely replace other similar overloaded method.
 var
   DotSize: Trect;
+  {$IFDEF FPC}
   textLook: TTextStyle;
+  {$ENDIF}
 begin
   DotSize.Create(MarkerRect);
   moveRectCenter(DotSize, aPoint);
@@ -310,17 +313,30 @@ begin
   aCanvas.Brush.Style := bsSolid;
   aCanvas.Ellipse(DotSize);
   aCanvas.Brush.Style := bsClear;
+  {$IFDEF FPC}
   textLook := aCanvas.TextStyle;
   textLook.Alignment := taCenter;
   textLook.Layout := tlCenter;
+  {$ENDIF}
   aCanvas.Font.Color := clLime;
+
   aCanvas.Font.Bold := True;
+  {$IFDEF FPC}
   aCanvas.Font.Size := Round(aCanvas.Width / 20);
-  acanvas.font.Italic := True;
+  {$ELSEIFDEF DCC}
+  aCanvas.Font.Size := 14 ;// @TODO Fix for Delphi!
+  {$ENDIF}
+
+ // acanvas.font.Italic := True;
   //temp for debug line below
   // txtLbl := format('(%d,%d)%s', [Dotsize.CenterPoint.X,
   //  DotSize.CenterPoint.Y, txtLbl]);
+  {$IFDEF FPC}
   aCanvas.TextRect(DotSize, 0, 0, txtLbl, textLook); //Placeholder   'F𝄰♭♮'
+  {$ENDIF}
+  {$IFDEF DCC}
+  aCanvas.TextRect(DotSize.Left, DotSize.Top,txtLbl,[]); //@TODO TEMP DELPHI
+  {$ENDIF}
 end;
 
 procedure TChordBoxCanvas.addMarker(aString: TGuitarStrings;

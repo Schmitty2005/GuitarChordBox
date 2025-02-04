@@ -20,8 +20,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="GuitarChordBox"/>
-        <TopLine Value="102"/>
-        <CursorPos X="7" Y="110"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="93"/>
+        <CursorPos X="43" Y="103"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -31,8 +32,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="GuitarChordBoxCoordinates"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="52"/>
-        <CursorPos X="14" Y="15"/>
+        <TopLine Value="126"/>
+        <CursorPos X="26" Y="136"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -42,7 +43,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="21"/>
         <CursorPos Y="24"/>
-        <UsageCount Value="198"/>
+        <UsageCount Value="199"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -50,9 +51,9 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ChordBoxCanvas"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="201"/>
-        <CursorPos X="17" Y="209"/>
-        <UsageCount Value="189"/>
+        <TopLine Value="327"/>
+        <CursorPos X="10" Y="336"/>
+        <UsageCount Value="190"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -61,7 +62,7 @@
         <EditorIndex Value="6"/>
         <TopLine Value="4"/>
         <CursorPos Y="21"/>
-        <UsageCount Value="180"/>
+        <UsageCount Value="181"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -69,7 +70,17 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
         <CursorPos Y="9"/>
-        <UsageCount Value="133"/>
+        <UsageCount Value="134"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="chorddata.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ChordData"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="24"/>
+        <CursorPos X="65" Y="28"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -94,27 +105,8 @@
         <CursorPos Y="60"/>
         <UsageCount Value="1"/>
       </Unit>
-      <Unit>
-        <Filename Value="chorddata.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="ChordData"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="24"/>
-        <CursorPos X="63" Y="43"/>
-        <UsageCount Value="21"/>
-        <Loaded Value="True"/>
-      </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="29" Column="24" TopLine="14"/>
-      </Position>
-      <Position>
-        <Filename Value="guitarchordbox.pas"/>
-        <Caret Line="93" Column="5" TopLine="81"/>
-      </Position>
       <Position>
         <Filename Value="guitarchordbox.pas"/>
         <Caret Line="97" Column="4" TopLine="81"/>
@@ -226,6 +218,14 @@
       <Position>
         <Filename Value="chorddata.pas"/>
         <Caret Line="29" TopLine="21"/>
+      </Position>
+      <Position>
+        <Filename Value="chordboxcanvas.pas"/>
+        <Caret Line="337" Column="52" TopLine="328"/>
+      </Position>
+      <Position>
+        <Filename Value="chordboxcanvas.pas"/>
+        <Caret Line="336" Column="17" TopLine="328"/>
       </Position>
     </JumpHistory>
     <RunParams>
