@@ -129,8 +129,10 @@ var
 begin
   xNew := 0;
   yNew := 0;
-  outerSize := Size(ARect);
-  innerSize := Size(bRect);
+  //outerSize := Size(ARect);
+  //innerSize := Size(bRect);
+  outerSize := ARect.Size;
+  innerSize := bRect.Size;
 
   if innerSize.cx > outerSize.cx then
     innerSize.cx := outerSize.cx;
