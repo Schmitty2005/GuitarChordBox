@@ -63,6 +63,11 @@
         <Filename Value="GuitarChordCoOrds_Notes.txt"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="chorddata.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ChordData"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
