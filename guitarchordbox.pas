@@ -49,10 +49,11 @@ begin
   TestChord.FifthString.Text:='A';
   TestChord.FifthString.StringNumber := SixthString;
   cbCanvasTester := TChordBoxCanvas.Create();
-  TestChord.Name:='AMaj7';
-  TestChord.StartingFret:=5;
-  TestChord.MarkerData[(SixthString)].Text := 'TEST';
-  TestChord.MarkerData[(SixthString)].Location := Point(150,150);// aFretPoints(ord(SixthStrng), ord(FirstFret));// Point(300,300);
+ // TestChord.Name:='AMaj7';
+  //TestChord.StartingFret:=5;
+  cbCanvasTester.ChordData:=TestChord;
+  //TestChord.MarkerData[(SixthString)].Text := 'TEST';
+  //TestChord.MarkerData[(SixthString)].Location := Point(150,150);// aFretPoints(ord(SixthStrng), ord(FirstFret));// Point(300,300);
 end;
 
 
@@ -64,16 +65,16 @@ begin
   //  [cbc.ParentCanvasRect.Left, cbc.ParentCanvasRect.Right,
   //  cbc.ParentCanvasRect.Top, cbc.ParentCanvasRect.Bottom]);
   cbCanvasTester.ParentCanvasRect := Form1.ClientRect;
-  cbCanvasTester.StartFret := 0;
+  //cbCanvasTester.StartFret := 0;
   //cbCanvasTester.ChordText := 'GMaj7';
-  TestChord.StartingFret:=0;
-    TestChord.Name := 'DMin7';
+ // TestChord.StartingFret:=0;
+ // TestChord.Name := 'FMin7';
 
   TestChord.FifthString.Text := 'C5';
   TestChord.FifthString.FretPosition:=FirstFret; //@TODO No Method to Draw yet
   TestChord.SixthString.FretPosition:=FourthFret;
   TestChord.SixthString.Text := '6';
-  cbCanvasTester.ChordData := TestChord;
+ // cbCanvasTester.ChordData := TestChord;
   //TestChord.MarkerData[FifthString];
 
 
@@ -111,7 +112,7 @@ begin
     cbCanvasTester.create(Form1.ClientRect, TestChord);
      cbCanvasTester.AutoPenWidth:=false;
 
-     TestChord.MarkerData[FifthString].Text:='C#';
+    //TestChord.MarkerData[FifthString].Text:='C#';
      {
      with TestChord do begin
        MarkerData[FourthString].Text :='A';
@@ -129,11 +130,14 @@ begin
      end;
     //SixthStringFinger := FourthFret;
      }
-
+      cbCanvasTester.generate();
+      TestChord.FifthString.FretPosition:=FirstFret;
+      TestChord.FifthString.Text := 'A#';
+      //TestChord.FifthString.Location := cbCanvasTester.getFretMarkerPoint(5,1);
      cbCanvasTester.generate();
      //cbCanvasTester.create(Form1.ClientRect, TestChord);
 
-  cbCanvasTester.DrawOnCanvas(Form1.Canvas);
+       cbCanvasTester.DrawOnCanvas(Form1.Canvas);
 
  // cbCanvasTester.addMarker(FifthStrng, FirstFret, Form1.Canvas, 'A#');
  // cbCanvasTester.addMarker(SixthStrng, FourthFret, Form1.Canvas, 'Ab');

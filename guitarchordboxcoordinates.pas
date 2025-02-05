@@ -104,7 +104,7 @@ type
     property StartFret: byte read getStartFret write setStartFret default 0;
     property ChordText: string read getChordText write setChordText;
     property ParentRect: Trect read aParentRect write aParentRect;
-    property ChordData: TChordData read mChordData write setChordData;
+    property ChordData: TChordData read mChordData write mChordData;
   end;
 
 
@@ -343,20 +343,39 @@ end;
 procedure TGuitarChordBoxCoOrds.setChordData(AValue: TChordData);
 begin
 
-  //@TODO Major TODO!
-  //generate positions in TChordData.MarkerData[GuitarString] based on fret
-  // get data from aFingerPoints
+  mChordText := aValue.Name;
+  mStartFret := aValue.StartingFret;
+
   aValue.MarkerData[SixthString].Location :=
     aFingerPoints[Ord(SixthString), Ord(aValue.SixthString.FretPosition)];
+  aValue.MarkerData[SixthString].Text := aValue.SixthString.Text;
 
+  aValue.MarkerData[FifthString].Location :=
+    aFingerPoints[Ord(FifthString), Ord(aValue.FifthString.FretPosition)];
+  aValue.MarkerData[FifthString].Text := aValue.FifthString.Text;
 
-   mChordData := AValue;
+  aValue.MarkerData[FourthString].Location :=
+    aFingerPoints[Ord(FourthString), Ord(aValue.FourthString.FretPosition)];
+  aValue.MarkerData[FourthString].Text := aValue.FourthString.Text;
+
+  aValue.MarkerData[ThirdString].Location :=
+    aFingerPoints[Ord(ThirdString), Ord(aValue.ThirdString.FretPosition)];
+  aValue.MarkerData[ThirdString].Text := aValue.ThirdString.Text;
+
+  aValue.MarkerData[SecondString].Location :=
+    aFingerPoints[Ord(SecondString), Ord(aValue.SecondString.FretPosition)];
+  aValue.MarkerData[SecondString].Text := aValue.SecondString.Text;
+
+  aValue.MarkerData[FirstString].Location :=
+    aFingerPoints[Ord(FirstString), Ord(aValue.FirstString.FretPosition)];
+  aValue.MarkerData[FirstString].Text := aValue.FirstString.Text;
+
+  mChordData := AValue;
 end;
 
 procedure TGuitarChordBoxCoOrds.setChordText(AValue: string);
 begin
   mChordText := AValue;
-  //generate(); //May need method to redraw canvas ?
 end;
 
 procedure TGuitarChordBoxCoOrds.setStartFret(AValue: byte);
@@ -376,6 +395,7 @@ begin
     fingerMarkerCalc;
     calcChordTextRect;
     calcFretTextRect;
+    setChordData(mChordData);
   end;
   // NOTE : Rect size needed first, then strings , frets, and finally
   //        finger position markers last!

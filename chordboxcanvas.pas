@@ -50,9 +50,7 @@ type
     property FretPoints: TfrtPnts read aFretPoints;    //protected
     property StringPoints: TstrPnts read aStringPoints;  //protected
     property FingerPoints: TchrdDtPnts read aFingerPoints;
-    //property ChordData: TChordData read mChordData write setMChordData;
-
-
+    property ChordData: TChordData read mChordData write mChordData;
   published
     //untested probably delete later!
     property SixthStringFinger: TfretNumber write setSixthStringFinger;
@@ -183,12 +181,10 @@ begin
 end;
 
 
-//@TODO Scrap this likley !
 procedure TChordBoxCanvas.DrawChordDataMarkers(aCanvas: TCanvas);
 var
   counter: TGuitarStrings;
 begin
-  //@TODO Implement from DrawCanvas
   with mChordData do
   begin
 
