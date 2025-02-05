@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  ComCtrls, Types, GuitarChordBoxCoordinates, ChordBoxCanvas;
+  ComCtrls, Types, GuitarChordBoxCoordinates, ChordBoxCanvas, ChordData;
 
 type
 
@@ -44,11 +44,15 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  TestChord := TChordData.Create();
+  TestChord.StartingFret :=1;
+  TestChord.FifthString.Text:='A';
+  TestChord.FifthString.StringNumber := SixthString;
   cbCanvasTester := TChordBoxCanvas.Create();
   TestChord.Name:='AMaj7';
   TestChord.StartingFret:=5;
-  TestChord.MarkerData[(SixthStrng)].Text := 'TEST';
-  TestChord.MarkerData[(SixthStrng)].Location := Point(150,150);// aFretPoints(ord(SixthStrng), ord(FirstFret));// Point(300,300);
+  TestChord.MarkerData[(SixthString)].Text := 'TEST';
+  TestChord.MarkerData[(SixthString)].Location := Point(150,150);// aFretPoints(ord(SixthStrng), ord(FirstFret));// Point(300,300);
 end;
 
 
@@ -63,6 +67,8 @@ begin
   cbCanvasTester.StartFret := 0;
   //cbCanvasTester.ChordText := 'GMaj7';
   TestChord.StartingFret:=0;
+  TestChord.Name := 'DMin7';
+
   {
   TestChord.MarkerData[SixthStrng].Location := cbCanvasTester.FingerPoints [ord (SixthStrng),ord( FourthFret)];
   TestChord.MarkerData[SixthStrng].Text:='64';
@@ -97,10 +103,11 @@ begin
     cbCanvasTester.create(Form1.ClientRect, TestChord);
      cbCanvasTester.AutoPenWidth:=false;
 
-     TestChord.MarkerData[FifthStrng].Text:='C#';
+     TestChord.MarkerData[FifthString].Text:='C#';
+     {
      with TestChord do begin
-       MarkerData[FourthStrng].Text :='A';
-       MarkerData[ThirdStrng].Text := 'G';
+       MarkerData[FourthString].Text :='A';
+       MarkerData[ThirdString].Text := 'G';
      end;
      cbCanvasTester.ChordData := TestChord;
      with cbCanvasTester do
@@ -113,7 +120,7 @@ begin
        FirstStringFinger:= OpenString;
      end;
     //SixthStringFinger := FourthFret;
-
+     }
 
      cbCanvasTester.generate();
      //cbCanvasTester.create(Form1.ClientRect, TestChord);
@@ -154,6 +161,7 @@ begin
   testFail.Free;
   cbc.Free;
   cbCanvasTester.Free;
+
 end;
 
 begin

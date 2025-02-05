@@ -20,9 +20,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="GuitarChordBox"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="93"/>
-        <CursorPos X="43" Y="103"/>
+        <TopLine Value="43"/>
+        <CursorPos Y="56"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -32,8 +31,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="GuitarChordBoxCoordinates"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="126"/>
-        <CursorPos X="26" Y="136"/>
+        <TopLine Value="363"/>
+        <CursorPos X="25" Y="373"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -43,7 +42,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="21"/>
         <CursorPos Y="24"/>
-        <UsageCount Value="199"/>
+        <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -51,9 +50,9 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ChordBoxCanvas"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="327"/>
-        <CursorPos X="10" Y="336"/>
-        <UsageCount Value="190"/>
+        <TopLine Value="181"/>
+        <CursorPos X="57" Y="191"/>
+        <UsageCount Value="192"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -62,7 +61,7 @@
         <EditorIndex Value="6"/>
         <TopLine Value="4"/>
         <CursorPos Y="21"/>
-        <UsageCount Value="181"/>
+        <UsageCount Value="183"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -70,17 +69,18 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
         <CursorPos Y="9"/>
-        <UsageCount Value="134"/>
+        <UsageCount Value="136"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="chorddata.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ChordData"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="24"/>
-        <CursorPos X="65" Y="28"/>
-        <UsageCount Value="22"/>
+        <TopLine Value="94"/>
+        <CursorPos X="16" Y="112"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -109,123 +109,123 @@
     <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="guitarchordbox.pas"/>
-        <Caret Line="97" Column="4" TopLine="81"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="39" Column="5" TopLine="28"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="175" Column="14" TopLine="169"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="173" Column="5" TopLine="163"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="28" Column="5" TopLine="24"/>
-      </Position>
-      <Position>
-        <Filename Value="guitarchordbox.pas"/>
-        <Caret Line="98" Column="53" TopLine="71"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="222" Column="13" TopLine="112"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="221" Column="14" TopLine="212"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="220" Column="6" TopLine="211"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="36" Column="86" TopLine="30"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="37" Column="5" TopLine="26"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="303" TopLine="284"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="301" Column="46" TopLine="292"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="239" Column="35" TopLine="236"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="46" Column="39" TopLine="29"/>
-      </Position>
-      <Position>
-        <Filename Value="guitarchordboxcoordinates.pas"/>
-        <Caret Line="32" Column="5" TopLine="20"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="334" Column="23" TopLine="323"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="26" Column="35" TopLine="15"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="54" TopLine="41"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="200" Column="3" TopLine="197"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="54" Column="14" TopLine="45"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="56" Column="71" TopLine="47"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="199" TopLine="189"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="28" Column="49" TopLine="25"/>
-      </Position>
-      <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="56" Column="2" TopLine="47"/>
-      </Position>
-      <Position>
-        <Filename Value="guitarchordbox.pas"/>
-        <Caret Line="102" Column="6" TopLine="86"/>
-      </Position>
-      <Position>
-        <Filename Value="guitarchordbox.pas"/>
-        <Caret Line="108" Column="39" TopLine="93"/>
+        <Caret Line="48" TopLine="40"/>
       </Position>
       <Position>
         <Filename Value="chorddata.pas"/>
-        <Caret Line="29" TopLine="21"/>
+        <Caret Line="80" Column="31" TopLine="56"/>
       </Position>
       <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="337" Column="52" TopLine="328"/>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="49" TopLine="40"/>
       </Position>
       <Position>
-        <Filename Value="chordboxcanvas.pas"/>
-        <Caret Line="336" Column="17" TopLine="328"/>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="47" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="48" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="49" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="50" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="51" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="52" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="53" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="chorddata.pas"/>
+        <Caret Line="94" Column="40" TopLine="77"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="54" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="47" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="48" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="49" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="50" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="51" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="52" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="53" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="chorddata.pas"/>
+        <Caret Line="24" TopLine="8"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="47" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="48" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="49" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="50" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="51" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="52" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="53" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="54" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="guitarchordbox.pas"/>
+        <Caret Line="55" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="chorddata.pas"/>
+        <Caret Line="60" Column="5" TopLine="48"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -254,6 +254,13 @@
         <WatchKind Value="wpkWrite"/>
         <Expression Value=":="/>
         <BreakHitCount Value="1"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="guitarchordbox.pas"/>
+        <Line Value="47"/>
       </Item>
     </BreakPoints>
     <Watches>

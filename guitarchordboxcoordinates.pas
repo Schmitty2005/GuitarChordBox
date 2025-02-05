@@ -11,7 +11,7 @@ uses
   {$IFDEF DCC}
   , System.Types
   {$ENDIF}
-  ;
+  , ChordData;
 
 type
   TstrRec = record
@@ -34,8 +34,8 @@ type
   TGuitarStrings = (SixthStrng = 1, FifthStrng, FourthStrng, ThirdStrng,
     SecondStrng, FirstStrng);
 
-  TFretNumber = (OpenString, FirstFret, SecondFret, ThirdFret, FourthFret);
-
+  TFretNumber = (OpenString, FirstFret, SecondFret, ThirdFret, FourthFret, Muted);
+   {
   TMarkerData = record
     Location: Tpoint;
     Shape: TmarkerShape;
@@ -43,13 +43,14 @@ type
   end;
 
   TMarkerDataStrings = array [TGuitarStrings] of TMarkerData;
-
+    }
+  {
   TChordData = record
     Name: string;
     StartingFret: integer;
     MarkerData: TMarkerDataStrings;
   end;
-
+   }
   //@TODO make a record to encompass all of the points!
 
   { TGuitarChordBoxCoOrds }

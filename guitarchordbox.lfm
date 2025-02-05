@@ -8,6 +8,7 @@ object Form1: TForm1
   ClientWidth = 250
   DoubleBuffered = True
   ParentDoubleBuffered = False
+  LCLVersion = '4.99.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   OnPaint = FormPaint

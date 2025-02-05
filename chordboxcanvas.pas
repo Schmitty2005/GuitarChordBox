@@ -5,7 +5,7 @@ unit ChordBoxCanvas;
 interface
 
 uses
-  Classes, SysUtils, Graphics, Types, GuitarChordBoxCoordinates;
+  Classes, SysUtils, Graphics, Types, GuitarChordBoxCoordinates, ChordData;
 
 type
 
@@ -187,7 +187,8 @@ begin
   //@TODO Implement from DrawCanvas
   with mChordData do
   begin
-    for counter := SixthStrng to FirstStrng do
+
+    for counter := TGuitarStrings(1) to TGuitarStrings(6) do // SixthStrng to FirstStrng do
       addMarker(MarkerData[counter].Location, aCanvas, MarkerData[counter].Text);
   end;
 end;
@@ -210,37 +211,37 @@ end;
 //@TODO Strings Move to GuitarChordBoxCoordinates!
 procedure TChordBoxCanvas.setSixthStringFinger(AValue: TfretNumber);
 begin
-  mChordData.MarkerData[sixthStrng].Location :=
+  mChordData.MarkerData[sixthString].Location :=
     aFingerPoints[Ord(SixthStrng), Ord(AValue)];
 end;
 
 procedure TChordBoxCanvas.setFifthStringFinger(AValue: TfretNumber);
 begin
-  mChordData.MarkerData[fifthStrng].Location :=
+  mChordData.MarkerData[fifthString].Location :=
     aFingerPoints[Ord(fifthStrng), Ord(AValue)];
 end;
 
 procedure TChordBoxCanvas.setFourthStringFinger(AValue: TfretNumber);
 begin
-  mChordData.MarkerData[fourthStrng].Location :=
+  mChordData.MarkerData[fourthString].Location :=
     aFingerPoints[Ord(fourthStrng), Ord(AValue)];
 end;
 
 procedure TChordBoxCanvas.setThirdStringFinger(AValue: TfretNumber);
 begin
-  mChordData.MarkerData[thirdStrng].Location :=
+  mChordData.MarkerData[thirdString].Location :=
     aFingerPoints[Ord(thirdStrng), Ord(AValue)];
 end;
 
 procedure TChordBoxCanvas.setSecondStringFinger(AValue: TfretNumber);
 begin
-  mChordData.MarkerData[secondStrng].Location :=
+  mChordData.MarkerData[secondString].Location :=
     aFingerPoints[Ord(secondStrng), Ord(AValue)];
 end;
 
 procedure TChordBoxCanvas.setFirstStringFinger(AValue: TfretNumber);
 begin
-  mChordData.MarkerData[firstStrng].Location :=
+  mChordData.MarkerData[firstString].Location :=
     aFingerPoints[Ord(firstStrng), Ord(AValue)];
 end;
 
@@ -323,7 +324,8 @@ begin
   aCanvas.Font.Bold := True;
   {$IFDEF FPC}
   aCanvas.Font.Size := Round(aCanvas.Width / 20);
-  {$ELSEIFDEF DCC}
+  {$ENDIF}
+  {$IFDEF DCC}
   aCanvas.Font.Size := 14 ;// @TODO Fix for Delphi!
   {$ENDIF}
 
