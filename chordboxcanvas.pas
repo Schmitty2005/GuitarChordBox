@@ -40,6 +40,7 @@ type
     procedure addMarker(aString: TGuitarStrings; aFret: TFretNumber;
       aCanvas: TCanvas; txtLbl: string); overload;
     function DrawOnCanvas(aCanvas: TCanvas): boolean;//@TODO move --see notes
+    procedure DrawChordData(aChordData: TChordData);
     property ChordBoxTextRect: Trect read aChordTextRect;  //protected
     property AutoPenWidth: boolean read mAutoPenWidth write setautoPen default True;
     property ManualPenWidth: integer read mManualPenWidth
@@ -49,7 +50,8 @@ type
     property FretPoints: TfrtPnts read aFretPoints;    //protected
     property StringPoints: TstrPnts read aStringPoints;  //protected
     property FingerPoints: TchrdDtPnts read aFingerPoints;
-    property ChordData: TChordData read mChordData write setMChordData;
+    //property ChordData: TChordData read mChordData write setMChordData;
+
 
   published
     //untested probably delete later!
@@ -180,6 +182,8 @@ begin
   {$ENDIF}
 end;
 
+
+//@TODO Scrap this likley !
 procedure TChordBoxCanvas.DrawChordDataMarkers(aCanvas: TCanvas);
 var
   counter: TGuitarStrings;
@@ -188,7 +192,8 @@ begin
   with mChordData do
   begin
 
-    for counter := TGuitarStrings(1) to TGuitarStrings(6) do // SixthStrng to FirstStrng do
+    for counter := TGuitarStrings(1) to TGuitarStrings(6) do
+      // SixthStrng to FirstStrng do
       addMarker(MarkerData[counter].Location, aCanvas, MarkerData[counter].Text);
   end;
 end;
@@ -329,7 +334,7 @@ begin
   aCanvas.Font.Size := 14 ;// @TODO Fix for Delphi!
   {$ENDIF}
 
- // acanvas.font.Italic := True;
+  // acanvas.font.Italic := True;
   //temp for debug line below
   // txtLbl := format('(%d,%d)%s', [Dotsize.CenterPoint.X,
   //  DotSize.CenterPoint.Y, txtLbl]);
@@ -413,6 +418,11 @@ begin
   //drawXShape(aCanvas, Point(100, 100));
   {================}
 
+end;
+
+procedure TChordBoxCanvas.DrawChordData(aChordData: TChordData);
+begin
+  //@TODO Draw all strings in ChordData
 end;
 
 

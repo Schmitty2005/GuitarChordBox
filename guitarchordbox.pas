@@ -67,11 +67,15 @@ begin
   cbCanvasTester.StartFret := 0;
   //cbCanvasTester.ChordText := 'GMaj7';
   TestChord.StartingFret:=0;
-  TestChord.Name := 'DMin7';
+    TestChord.Name := 'DMin7';
 
   TestChord.FifthString.Text := 'C5';
   TestChord.FifthString.FretPosition:=FirstFret; //@TODO No Method to Draw yet
+  TestChord.SixthString.FretPosition:=FourthFret;
+  TestChord.SixthString.Text := '6';
+  cbCanvasTester.ChordData := TestChord;
   //TestChord.MarkerData[FifthString];
+
 
   {
   TestChord.MarkerData[SixthStrng].Location := cbCanvasTester.FingerPoints [ord (SixthStrng),ord( FourthFret)];

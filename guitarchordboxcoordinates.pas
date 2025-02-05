@@ -65,6 +65,7 @@ type
     procedure fingerMarkerCalc;
     function getChordText: string;
     function getStartFret: byte;
+    procedure setChordData(AValue: TChordData);
     procedure setChordText(AValue: string);
     procedure setStartFret(AValue: byte);
     function stringLines(aRect: Trect): TstrPnts;
@@ -92,6 +93,7 @@ type
 
   public
     procedure generate();
+    procedure ChordDataInput(aChordData: TChordData);
     constructor Create();
     constructor Create(const fParentRect: Trect); overload;
     function getFretMarkerPoint(gString: integer; gFret: integer): Tpoint;
@@ -102,6 +104,7 @@ type
     property StartFret: byte read getStartFret write setStartFret default 0;
     property ChordText: string read getChordText write setChordText;
     property ParentRect: Trect read aParentRect write aParentRect;
+    property ChordData: TChordData read mChordData write setChordData;
   end;
 
 
@@ -337,6 +340,19 @@ begin
   Result := mStartFret;
 end;
 
+procedure TGuitarChordBoxCoOrds.setChordData(AValue: TChordData);
+begin
+
+  //@TODO Major TODO!
+  //generate positions in TChordData.MarkerData[GuitarString] based on fret
+  // get data from aFingerPoints
+  aValue.MarkerData[SixthString].Location :=
+    aFingerPoints[Ord(SixthString), Ord(aValue.SixthString.FretPosition)];
+
+
+   mChordData := AValue;
+end;
+
 procedure TGuitarChordBoxCoOrds.setChordText(AValue: string);
 begin
   mChordText := AValue;
@@ -364,6 +380,12 @@ begin
   // NOTE : Rect size needed first, then strings , frets, and finally
   //        finger position markers last!
   //        add check for fret start.  If > 0 then don't draw guitar nut.
+end;
+
+procedure TGuitarChordBoxCoOrds.ChordDataInput(aChordData: TChordData);
+begin
+  //Generate Markerpoints in TchordData
+  //Set Text, Starting Fret
 end;
 
 

@@ -83,7 +83,9 @@ implementation
 procedure TChordData.setfFifthString(AValue: TMarkerData);
 begin
   fFifthString:=AValue;
-  //needs calc method
+  //needs calc method to push data into MarkerData!
+  //or not!  Pass TchordData to ChordCanvas to get MarkerData Generated!
+  //
 end;
 
 procedure TChordData.setfFirstString(AValue: TMarkerData);
