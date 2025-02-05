@@ -53,25 +53,68 @@ type
     fThirdString: TMarkerData;
     fSecondString: TMarkerData;
     fFirstString: TMarkerData;
+    procedure setfFifthString(AValue: TMarkerData);
+    procedure setfFirstString(AValue: TMarkerData);
+    procedure setfFourthString(AValue: TMarkerData);
+    procedure setfSecondString(AValue: TMarkerData);
+    procedure setfSixthString(AValue: TMarkerData);
+    procedure setfThirdString(AValue: TMarkerData);
   public
-    MarkerData: TMarkerDataStrings;
+    MarkerData: TMarkerDataStrings; //@TODO This needs to get created with CoOrds
     constructor Create();
     constructor Create(aChordName: string; StartFret: byte); overload;
-    destructor Destroy (); override;
+    destructor Destroy(); override;
   published
     property Name: string read mChordText write mChordText;
     property StartingFret: byte read mStartFret write mStartFret;
-    property SixthString: TMarkerData read fSixthString write fSixthString;
-    property FifthString: TMarkerData read fFifthString write fFifthString;
-    property FourthString: TMarkerData read fFourthString write fFourthString;
-    property ThirdString: TMarkerData read fThirdString write fThirdString;
-    property SecondString: TMarkerData read fSecondString write fSecondString;
-    property FirstString: TMarkerData read fFirstString write fFirstString;
+    property SixthString: TMarkerData read fSixthString write setfSixthString;
+    property FifthString: TMarkerData read fFifthString write setfFifthString;
+    property FourthString: TMarkerData read fFourthString write setfFourthString;
+    property ThirdString: TMarkerData read fThirdString write setfThirdString;
+    property SecondString: TMarkerData read fSecondString write setfSecondString;
+    property FirstString: TMarkerData read fFirstString write setfFirstString;
+
   end;
 
 implementation
 
 { TChordData }
+
+procedure TChordData.setfFifthString(AValue: TMarkerData);
+begin
+  fFifthString:=AValue;
+  //needs calc method
+end;
+
+procedure TChordData.setfFirstString(AValue: TMarkerData);
+begin
+  if fFirstString=AValue then Exit;
+  fFirstString:=AValue;
+end;
+
+procedure TChordData.setfFourthString(AValue: TMarkerData);
+begin
+  if fFourthString=AValue then Exit;
+  fFourthString:=AValue;
+end;
+
+procedure TChordData.setfSecondString(AValue: TMarkerData);
+begin
+  if fSecondString=AValue then Exit;
+  fSecondString:=AValue;
+end;
+
+procedure TChordData.setfSixthString(AValue: TMarkerData);
+begin
+  if fSixthString=AValue then Exit;
+  fSixthString:=AValue;
+end;
+
+procedure TChordData.setfThirdString(AValue: TMarkerData);
+begin
+  if fThirdString=AValue then Exit;
+  fThirdString:=AValue;
+end;
 
 constructor TChordData.Create();
   //@TODO Also needs destructor!
@@ -99,7 +142,7 @@ end;
 
 destructor TChordData.Destroy();
 begin
-     SixthString.Free;
+  SixthString.Free;
   FifthString.Free;
   FourthString.Free;
   ThirdString.Free;
@@ -111,7 +154,6 @@ begin
   fThirdString.Free;
   fSecondString.Free;
   fFirstString.Free;
-
   inherited Destroy();
 end;
 

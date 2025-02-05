@@ -69,6 +69,10 @@ begin
   TestChord.StartingFret:=0;
   TestChord.Name := 'DMin7';
 
+  TestChord.FifthString.Text := 'C5';
+  TestChord.FifthString.FretPosition:=FirstFret; //@TODO No Method to Draw yet
+  //TestChord.MarkerData[FifthString];
+
   {
   TestChord.MarkerData[SixthStrng].Location := cbCanvasTester.FingerPoints [ord (SixthStrng),ord( FourthFret)];
   TestChord.MarkerData[SixthStrng].Text:='64';
