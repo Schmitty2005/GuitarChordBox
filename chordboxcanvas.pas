@@ -313,6 +313,7 @@ begin
   moveRectCenter(DotSize, aPoint);
   Normalize(DotSize);
   aCanvas.Brush.Style := bsSolid;
+  aCanvas.Brush.Color := clBlack;
   aCanvas.Ellipse(DotSize);
   aCanvas.Brush.Style := bsClear;
   {$IFDEF FPC}
@@ -323,13 +324,11 @@ begin
   aCanvas.Font.Color := clLime;
 
   aCanvas.Font.Bold := True;
-  {$IFDEF FPC}
-  aCanvas.Font.Size := Round(aCanvas.Width / 20);
-  {$ENDIF}
   {$IFDEF DCC}
-  aCanvas.Font.Size := 14 ;// @TODO Fix for Delphi!
+    aCanvas.TextRect(DotSize,
+      (DotSize.left + round(0.5 * aCanvas.TextWidth(txtLbl))), DotSize.top,
+      txtLbl); // DELPHI
   {$ENDIF}
-
   // acanvas.font.Italic := True;
   //temp for debug line below
   // txtLbl := format('(%d,%d)%s', [Dotsize.CenterPoint.X,
@@ -338,7 +337,9 @@ begin
   aCanvas.TextRect(DotSize, 0, 0, txtLbl, textLook); //Placeholder   'F𝄰♭♮'
   {$ENDIF}
   {$IFDEF DCC}
-  aCanvas.TextRect(DotSize.Left, DotSize.Top,txtLbl,[]); //@TODO TEMP DELPHI
+    aCanvas.TextRect(DotSize,
+      (DotSize.left + round(0.5 * aCanvas.TextWidth(txtLbl))), DotSize.top,
+      txtLbl); // DELPHI
   {$ENDIF}
 end;
 
@@ -373,7 +374,12 @@ end;
 
 function TChordBoxCanvas.DrawOnCanvas(aCanvas: TCanvas): boolean;
 var
+  {$IFDEF FPC}
   textStyle: TTextStyle;
+  {$ENDIF}
+  {$IFDEF DCC}
+  tempArray : array of TlinePoints;
+  {$ENDIF}
 begin
 
   //@TODO setup to use mChordData to draw chord box
@@ -385,8 +391,27 @@ begin
   aCanvas.Brush.Style := bsClear;
   aCanvas.Rectangle(aChordBoxRect);
 
+  {$IFDEF FPC}
   drawLines(aCanvas, aStringPoints[2..5]);
   drawLines(aCanvas, aFretPoints[1..3]);
+  {$ENDIF}
+
+  {$IFDEF DCC}
+  //@TODO needs Delphi Testing
+  //pass string lines
+  SetLength(tempArray, 4);
+  tempArray[0] := aStringPoints[2];
+  tempArray[1] := aStringPoints[3];
+  tempArray[2] := aStringPoints[4];
+  tempArray[3] := aStringPoints[5];
+  drawLines(aCanvas, tempArray);
+  //pass fretlines
+  SetLength(tempArray,3);
+  tempArray[0] := aFretPoints[1];
+  tempArray[1] := aFretPoints[2];
+  tempArray[2] := aFretPoints[3];
+  drawLines(aCanvas, tempArray);
+  {$ENDIF}
 
   aCanvas.Brush.Style := bsSolid;
   aCanvas.Brush.Color := clBlack;
@@ -398,8 +423,18 @@ begin
 
   aCanvas.Font.Size := Round(aCanvas.Width / 10);
   aCanvas.Font.Color := clBlue;
+  {$IFDEF DCC}
+  //this still doesnt work as good as it should!
+  aCanvas.Font.Size := round(aCanvas.ClipRect.Width / 8);
+  aCanvas.TextRect(aChordTextRect, aChordTextRect.left +
+    (round((aCanvas.TextWidth(mChordData.name)) / 2)),
+    aChordTextRect.top + round(aCanvas.TextHeight(mChordData.name) / 3),
+    mChordData.name); // DELPHI
+  {$ENDIF}
+  {$IFDEF FPC}
   aCanvas.TextRect(aChordTextRect, 0, 0, mChordData.Name, textStyle);
   aCanvas.Font.Size := Round(aCanvas.Width / 20);//18;
+  {$ENDIF}
 
   if mChordData.StartingFret > 0 then
     aCanvas.TextRect(aFretTextRect, 0, 0, IntToStr(mChordData.StartingFret), textStyle);
