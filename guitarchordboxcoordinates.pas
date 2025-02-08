@@ -115,7 +115,7 @@ uses Types;
 {$ENDIF}
 
 const
-  cShrinkRatio = -0.925;
+  cShrinkRatio = 0.925;
   cTopMoveRatio = 0.33;
   cBottomMoveRatio = 0.111;
   cSideMoveRatio = 0.15;
