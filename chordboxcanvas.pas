@@ -5,11 +5,12 @@ unit ChordBoxCanvas;
 interface
 
 uses
-  Classes, SysUtils, Graphics, Types, GuitarChordBoxCoordinates, ChordData;
+  Classes, SysUtils, Graphics, Types, GuitarChordBoxCoordinates, ChordData,
+  GuitarCBTypes;
 
 type
 
-  TmarkerShape = (msCircle, msSquare, msTriangle, msStar);
+ // TmarkerShape = (msCircle, msSquare, msTriangle, msStar);
 
   { TChordBoxCanvas }
 
@@ -36,9 +37,10 @@ type
     constructor Create(const cParentRect: Trect); overload;
     constructor Create(const cParentRect: Trect; aChordData: TChordData); overload;
     //procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
-    procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string); overload;
-    procedure addMarker(aString: TGuitarStrings; aFret: TFretNumber;
-      aCanvas: TCanvas; txtLbl: string); overload;
+    procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string;
+      aMarkerShape: TmarkerShape = msCircle);
+    //procedure addMarker(aString: TGuitarStrings; aFret: TFretNumber;
+    //  aCanvas: TCanvas; txtLbl: string); overload;
     function DrawOnCanvas(aCanvas: TCanvas): boolean;//@TODO move --see notes
     procedure DrawChordData(aChordData: TChordData);
     property ChordBoxTextRect: Trect read aChordTextRect;  //protected
@@ -190,7 +192,8 @@ begin
 
     for counter := TGuitarStrings(1) to TGuitarStrings(6) do
       // SixthStrng to FirstStrng do
-      addMarker(MarkerData[counter].Location, aCanvas, MarkerData[counter].Text);
+      addMarker(MarkerData[counter].Location, aCanvas,
+      MarkerData[counter].Text, MarkerData[Counter].Shape);
   end;
 end;
 
@@ -295,12 +298,13 @@ begin
     mPenWidth := Round(cParentRect.Width * 0.005)
   else
     mPenWidth := mManualPenWidth;
-  mChordData := aChordData;
+  if mChordData = nil then
+    mChordData := aChordData;
   generate;
 end;
 
 procedure TChordBoxCanvas.addMarker(aPoint: Tpoint; aCanvas: TCanvas;
-  txtLbl: string); overload;
+  txtLbl: string; aMarkerShape: TmarkerShape = msCircle);
 //@TODO add method to not draw chord points with (0,0)
 //      This method will likely replace other similar overloaded method.
 var
@@ -314,7 +318,22 @@ begin
   Normalize(DotSize);
   aCanvas.Brush.Style := bsSolid;
   aCanvas.Brush.Color := clBlack;
-  aCanvas.Ellipse(DotSize);
+  //@TODO Determine Marker Shape to Draw
+  case aMarkerShape of
+    msCircle:
+      aCanvas.Ellipse(DotSize);
+    msSquare:
+      aCanvas.Rectangle(DotSize);
+    msTriangle:
+      DrawTriShape(aCanvas, aPoint);
+    msStarSolid:
+      aCanvas.Chord(10, 10, 20, 20, 30, 30, 40, 50);
+  end;
+  {
+  if aMarkerShape = msCircle then
+    aCanvas.Ellipse(DotSize);
+  if a
+  }
   aCanvas.Brush.Style := bsClear;
   {$IFDEF FPC}
   textLook := aCanvas.TextStyle;
@@ -343,6 +362,7 @@ begin
   {$ENDIF}
 end;
 
+{
 procedure TChordBoxCanvas.addMarker(aString: TGuitarStrings;
   aFret: TFretNumber; aCanvas: TCanvas; txtLbl: string);
 var
@@ -363,14 +383,10 @@ begin
   //@TODO Need Method to calculat PX to Font PT size
   aCanvas.Font.Size := Round(aCanvas.Width / 20);//12;
   acanvas.font.Italic := True;
-  {
-  //temp for debug line below
-  txtLbl := format('(%d,%d)%s', [Dotsize.CenterPoint.X,
-    DotSize.CenterPoint.Y, txtLbl]);
-    }
+
   aCanvas.TextRect(DotSize, 0, 0, txtLbl, textLook); //Placeholder   'F𝄰♭♮';
 end;
-
+  }
 
 function TChordBoxCanvas.DrawOnCanvas(aCanvas: TCanvas): boolean;
 var

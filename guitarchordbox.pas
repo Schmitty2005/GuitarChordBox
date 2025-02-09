@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  ComCtrls, Types, GuitarChordBoxCoordinates, ChordBoxCanvas, ChordData;
+  ComCtrls, Types, GuitarChordBoxCoordinates, ChordBoxCanvas, ChordData, GuitarCBTypes;
 
 type
 
@@ -45,7 +45,7 @@ implementation
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   TestChord := TChordData.Create();
-  TestChord.StartingFret :=1;
+  //TestChord.StartingFret :=1;
   TestChord.FifthString.Text:='A';
   TestChord.FifthString.StringNumber := SixthString;
   cbCanvasTester := TChordBoxCanvas.Create();
@@ -74,6 +74,8 @@ begin
   TestChord.FifthString.FretPosition:=FirstFret; //@TODO No Method to Draw yet
   TestChord.SixthString.FretPosition:=FourthFret;
   TestChord.SixthString.Text := '6';
+  TestChord.SixthString.Shape := msTriangle;
+  TestChord.FifthString.Shape := msSquare;
  // cbCanvasTester.ChordData := TestChord;
   //TestChord.MarkerData[FifthString];
 
@@ -133,6 +135,8 @@ begin
       cbCanvasTester.generate();
       TestChord.FifthString.FretPosition:=FirstFret;
       TestChord.FifthString.Text := 'A#';
+      TestChord.FifthString.Shape:= msSquare;
+
       //TestChord.FifthString.Location := cbCanvasTester.getFretMarkerPoint(5,1);
      cbCanvasTester.generate();
      //cbCanvasTester.create(Form1.ClientRect, TestChord);

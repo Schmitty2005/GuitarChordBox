@@ -5,11 +5,12 @@ unit ChordData;
 interface
 
 uses
-  Classes, SysUtils, Types;
+  Classes, SysUtils, Types, GuitarCBTypes;
 
 type
-  TMarkerShape = (Circle, CircleEmpty, Square, SquareEmpty,
-    Triangle, TriangleEmpty, StarSolid);
+  {
+  TMarkerShape = (msCircle, msCircleEmpty, msSquare, msSquareEmpty,
+    msTriangle, msTriangleEmpty, msStarSolid);
 
   TGuitarStrings = (SixthString = 1, FifthString, FourthString, ThirdString,
     SecondString, FirstString);
@@ -21,6 +22,7 @@ type
     Shape: TmarkerShape;
     Text: string;
   end;
+  }
 
   TMarkerData = class
   private

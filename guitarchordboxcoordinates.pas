@@ -7,13 +7,16 @@ unit GuitarChordBoxCoordinates;
 interface
 
 uses
-  Classes, SysUtils
+  Classes, SysUtils, GuitarCBTypes
   {$IFDEF DCC}
   , System.Types
   {$ENDIF}
   , ChordData;
 
 type
+  //   TGuitarStrings = (SixthStrng = 1, FifthStrng, FourthStrng, ThirdStrng,
+  //  SecondStrng, FirstStrng);
+  {
   TstrRec = record
     start: Tpoint;
     finish: Tpoint;
@@ -29,13 +32,16 @@ type
 
   TMutedOpenPnts = array [1..6] of Tpoint;
 
-  TmarkerShape = (msCircle, msSquare, msTriangle, msStar);
+  // TmarkerShape = (msCircle, msSquare, msTriangle, msStar);
+  TMarkerShape = (msCircle, msCircleEmpty, msSquare, msSquareEmpty,
+    msTriangle, msTriangleEmpty, msStarSolid);
 
   TGuitarStrings = (SixthStrng = 1, FifthStrng, FourthStrng, ThirdStrng,
     SecondStrng, FirstStrng);
 
   TFretNumber = (OpenString, FirstFret, SecondFret, ThirdFret, FourthFret, Muted);
-   {
+  }
+  {
   TMarkerData = record
     Location: Tpoint;
     Shape: TmarkerShape;
@@ -56,6 +62,7 @@ type
   { TGuitarChordBoxCoOrds }
 
   TGuitarChordBoxCoOrds = class
+
   private
 
     mStartFret: byte;
@@ -349,26 +356,32 @@ begin
   aValue.MarkerData[SixthString].Location :=
     aFingerPoints[Ord(SixthString), Ord(aValue.SixthString.FretPosition)];
   aValue.MarkerData[SixthString].Text := aValue.SixthString.Text;
+  aValue.MarkerData[SixthString].Shape := aValue.SixthString.Shape;
 
   aValue.MarkerData[FifthString].Location :=
     aFingerPoints[Ord(FifthString), Ord(aValue.FifthString.FretPosition)];
   aValue.MarkerData[FifthString].Text := aValue.FifthString.Text;
+  aValue.MarkerData[FifthString].Shape := aValue.FifthString.Shape;
 
   aValue.MarkerData[FourthString].Location :=
     aFingerPoints[Ord(FourthString), Ord(aValue.FourthString.FretPosition)];
   aValue.MarkerData[FourthString].Text := aValue.FourthString.Text;
+  aValue.MarkerData[FourthString].Shape := aValue.FourthString.Shape;
 
   aValue.MarkerData[ThirdString].Location :=
     aFingerPoints[Ord(ThirdString), Ord(aValue.ThirdString.FretPosition)];
   aValue.MarkerData[ThirdString].Text := aValue.ThirdString.Text;
+  aValue.MarkerData[ThirdString].Shape := aValue.ThirdString.Shape;
 
   aValue.MarkerData[SecondString].Location :=
     aFingerPoints[Ord(SecondString), Ord(aValue.SecondString.FretPosition)];
   aValue.MarkerData[SecondString].Text := aValue.SecondString.Text;
+  aValue.MarkerData[SecondString].Shape := aValue.SecondString.Shape;
 
   aValue.MarkerData[FirstString].Location :=
     aFingerPoints[Ord(FirstString), Ord(aValue.FirstString.FretPosition)];
   aValue.MarkerData[FirstString].Text := aValue.FirstString.Text;
+  aValue.MarkerData[FirstString].Shape := aValue.FirstString.Shape;
 
   mChordData := AValue;
 end;
@@ -419,7 +432,7 @@ begin
   begin
     Result.Bottom := arect.Top + 1;
     Result.Left := aRect.Left;
-    Result.Right := aRect.Right;
+    Result.Right := aRect.Right+1;
     Result.Top := aRect.Top - (round(aRect.Height * 0.10));
   end;
 end;
