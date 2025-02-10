@@ -367,6 +367,9 @@ begin
     aFingerPoints[Ord(FourthString), Ord(aValue.FourthString.FretPosition)];
   aValue.MarkerData[FourthString].Text := aValue.FourthString.Text;
   aValue.MarkerData[FourthString].Shape := aValue.FourthString.Shape;
+  //@TODO WIP to make open and muted strings work properly
+  if aValue.MarkerData[FourthString].Fret = OpenString then
+    aValue.MarkerData[FourthString].Shape := msCircleEmpty;
 
   aValue.MarkerData[ThirdString].Location :=
     aFingerPoints[Ord(ThirdString), Ord(aValue.ThirdString.FretPosition)];
@@ -432,7 +435,7 @@ begin
   begin
     Result.Bottom := arect.Top + 1;
     Result.Left := aRect.Left;
-    Result.Right := aRect.Right+1;
+    Result.Right := aRect.Right + 1;
     Result.Top := aRect.Top - (round(aRect.Height * 0.10));
   end;
 end;

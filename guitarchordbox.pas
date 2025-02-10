@@ -46,7 +46,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   TestChord := TChordData.Create();
   //TestChord.StartingFret :=1;
-  TestChord.FifthString.Text:='A';
+  TestChord.FifthString.Text:='ROOT';
   TestChord.FifthString.StringNumber := SixthString;
   cbCanvasTester := TChordBoxCanvas.Create();
  // TestChord.Name:='AMaj7';
@@ -134,9 +134,10 @@ begin
      }
       cbCanvasTester.generate();
       TestChord.FifthString.FretPosition:=FirstFret;
-      TestChord.FifthString.Text := 'A#';
+      TestChord.FifthString.Text := 'Root';
       TestChord.FifthString.Shape:= msSquare;
-
+      TestChord.ThirdString.Shape := msMuted;//@TODO Not Created yet!
+      TestChord.FourthString.FretPosition := OpenString;
       //TestChord.FifthString.Location := cbCanvasTester.getFretMarkerPoint(5,1);
      cbCanvasTester.generate();
      //cbCanvasTester.create(Form1.ClientRect, TestChord);

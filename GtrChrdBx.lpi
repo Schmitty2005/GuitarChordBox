@@ -18,9 +18,10 @@
     </MacroValues>
     <BuildModes>
       <Item Name="Default" Default="True"/>
-      <SharedMatrixOptions Count="2">
+      <SharedMatrixOptions Count="3">
         <Item1 ID="800908471729" Modes="Default" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
         <Item2 ID="242579993925" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
+        <Item3 ID="110396314005" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk3"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>

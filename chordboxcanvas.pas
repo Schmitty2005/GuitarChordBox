@@ -5,12 +5,10 @@ unit ChordBoxCanvas;
 interface
 
 uses
-  Classes, SysUtils, Graphics, Types, GuitarChordBoxCoordinates, ChordData,
+  Classes, SysUtils, Graphics, Types, lazutils, GuitarChordBoxCoordinates, ChordData,
   GuitarCBTypes;
 
 type
-
- // TmarkerShape = (msCircle, msSquare, msTriangle, msStar);
 
   { TChordBoxCanvas }
 
@@ -23,7 +21,6 @@ type
     procedure drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
     procedure drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
     procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
-    //@TODO Check for normalization on aMarkerRect
     procedure DrawChordDataMarkers(aCanvas: TCanvas);
     procedure setautoPen(AValue: boolean);
     procedure setFifthStringFinger(AValue: TfretNumber);
@@ -33,24 +30,28 @@ type
     procedure setSecondStringFinger(AValue: TfretNumber);
     procedure setSixthStringFinger(AValue: TfretNumber);
     procedure setThirdStringFinger(AValue: TfretNumber);
+  protected
+    property MarkerRect: Trect read aMarkerRect;       //protected
+    property FretTextRect: Trect read aFretTextRect;  //protected
+    property FretPoints: TfrtPnts read aFretPoints;    //protected
+    property StringPoints: TstrPnts read aStringPoints;  //protected
   public
     constructor Create(const cParentRect: Trect); overload;
     constructor Create(const cParentRect: Trect; aChordData: TChordData); overload;
-    //procedure DrawTriShape(aCanvas: TCanvas; const aPoint: Tpoint);
     procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string;
       aMarkerShape: TmarkerShape = msCircle);
-    //procedure addMarker(aString: TGuitarStrings; aFret: TFretNumber;
-    //  aCanvas: TCanvas; txtLbl: string); overload;
     function DrawOnCanvas(aCanvas: TCanvas): boolean;//@TODO move --see notes
     procedure DrawChordData(aChordData: TChordData);
     property ChordBoxTextRect: Trect read aChordTextRect;  //protected
     property AutoPenWidth: boolean read mAutoPenWidth write setautoPen default True;
     property ManualPenWidth: integer read mManualPenWidth
       write mManualPenWidth default 1;
+    {
     property MarkerRect: Trect read aMarkerRect;       //protected
     property FretTextRect: Trect read aFretTextRect;  //protected
     property FretPoints: TfrtPnts read aFretPoints;    //protected
     property StringPoints: TstrPnts read aStringPoints;  //protected
+    }
     property FingerPoints: TchrdDtPnts read aFingerPoints;
     property ChordData: TChordData read mChordData write mChordData;
   published
@@ -179,6 +180,7 @@ begin
   aCanvas.Line(Point(markDot.CenterPoint.X, markDot.Top), markDot.BottomRight);
   aCanvas.Line(Point(markDot.Left, markDot.Bottom),
     Point(markdot.centerpoint.x, markdot.top));
+      aCanvas.FloodFill(aPoint.x+4, apoint.y+4, clBlack, TFillStyle.fsBorder);
   {$ENDIF}
 end;
 
@@ -193,7 +195,7 @@ begin
     for counter := TGuitarStrings(1) to TGuitarStrings(6) do
       // SixthStrng to FirstStrng do
       addMarker(MarkerData[counter].Location, aCanvas,
-      MarkerData[counter].Text, MarkerData[Counter].Shape);
+        MarkerData[counter].Text, MarkerData[Counter].Shape);
   end;
 end;
 
@@ -252,13 +254,18 @@ end;
 procedure TChordBoxCanvas.drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
 var
   markDot: Trect;
+  oldPen: integer;
 begin
+  oldPen := aCanvas.Pen.Width;
   markDot := Trect.Create(aMarkerRect);
   moveRectCenter(markDot, aPoint);
   {$IFDEF FPC}
+  //@TODO REmeber to save old pen and reset when done!
+  aCanvas.Pen.Width := Round (aCanvas.Width / 32);
   aCanvas.Line(markDot.TopLeft, markDot.BottomRight);
   aCanvas.Line(Point(markDot.Right, markDot.Top),
     Point(markDot.Left, markDot.Bottom));
+  aCanvas.Pen.Width := oldPen;
   {$ENDIF}
 
   {$IFDEF DCC}
@@ -328,6 +335,14 @@ begin
       DrawTriShape(aCanvas, aPoint);
     msStarSolid:
       aCanvas.Chord(10, 10, 20, 20, 30, 30, 40, 50);
+    msCircleEmpty:
+    begin
+      aCanvas.Brush.Style := bsClear;
+      aCanvas.Pen.Width := mPenWidth * 3;
+      aCanvas.Ellipse(DotSize);
+    end;
+    msMuted:
+      drawXShape(aCanvas, aPoint);
   end;
   {
   if aMarkerShape = msCircle then

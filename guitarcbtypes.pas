@@ -25,7 +25,7 @@ type
   TMutedOpenPnts = array [1..6] of Tpoint;
 
   // TmarkerShape = (msCircle, msSquare, msTriangle, msStar);
-  TMarkerShape = (msCircle, msCircleEmpty, msSquare, msSquareEmpty,
+  TMarkerShape = (msCircle, msCircleEmpty, msMuted, msSquare, msSquareEmpty,
     msTriangle, msTriangleEmpty, msStarSolid);
 
   TGuitarStringsCO = (SixthStrng = 1, FifthStrng, FourthStrng, ThirdStrng,
@@ -44,6 +44,7 @@ type
   TMarkerDataRec = record
     Location: Tpoint;
     Shape: TmarkerShape;
+    Fret : TFretNumber;
     Text: string;
   end;
 
