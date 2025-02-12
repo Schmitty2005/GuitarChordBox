@@ -66,6 +66,11 @@ type
     constructor Create();
     constructor Create(aChordName: string; StartFret: byte); overload;
     destructor Destroy(); override;
+    procedure ezDataEntry(ChordName: string; StartingFret: byte;
+      String6Fret: byte; String6Text: string; String5Fret: byte;
+      String5Text: string; String4Fret: byte; String4Text: string;
+      String3Fret: byte; String3Text: string; String2Fret: byte;
+      String2Text: string; String1Fret: byte; String1Text: string);
   published
     property Name: string read mChordText write mChordText;
     property StartingFret: byte read mStartFret write mStartFret;
@@ -84,40 +89,40 @@ implementation
 
 procedure TChordData.setfFifthString(AValue: TMarkerData);
 begin
-  fFifthString:=AValue;
+  fFifthString := AValue;
   //needs calc method to push data into MarkerData!
   //or not!  Pass TchordData to ChordCanvas to get MarkerData Generated!
-  //
+
 end;
 
 procedure TChordData.setfFirstString(AValue: TMarkerData);
 begin
-  if fFirstString=AValue then Exit;
-  fFirstString:=AValue;
+  if fFirstString = AValue then Exit;
+  fFirstString := AValue;
 end;
 
 procedure TChordData.setfFourthString(AValue: TMarkerData);
 begin
-  if fFourthString=AValue then Exit;
-  fFourthString:=AValue;
+  if fFourthString = AValue then Exit;
+  fFourthString := AValue;
 end;
 
 procedure TChordData.setfSecondString(AValue: TMarkerData);
 begin
-  if fSecondString=AValue then Exit;
-  fSecondString:=AValue;
+  if fSecondString = AValue then Exit;
+  fSecondString := AValue;
 end;
 
 procedure TChordData.setfSixthString(AValue: TMarkerData);
 begin
-  if fSixthString=AValue then Exit;
-  fSixthString:=AValue;
+  if fSixthString = AValue then Exit;
+  fSixthString := AValue;
 end;
 
 procedure TChordData.setfThirdString(AValue: TMarkerData);
 begin
-  if fThirdString=AValue then Exit;
-  fThirdString:=AValue;
+  if fThirdString = AValue then Exit;
+  fThirdString := AValue;
 end;
 
 constructor TChordData.Create();
@@ -159,6 +164,57 @@ begin
   fSecondString.Free;
   fFirstString.Free;
   inherited Destroy();
+end;
+
+procedure TChordData.ezDataEntry(ChordName: string; StartingFret: byte;
+  String6Fret: byte; String6Text: string; String5Fret: byte;
+  String5Text: string; String4Fret: byte; String4Text: string;
+  String3Fret: byte; String3Text: string; String2Fret: byte;
+  String2Text: string; String1Fret: byte; String1Text: string);
+begin
+  //@TODO needs resolution for open and muted!
+  //      maybe switch to Char type ?
+  //@TODO needs function to reset all chord data!
+  //      may need function added for no marker as well!
+
+  mChordText := ChordName;
+  mStartFret := StartingFret;
+  fSixthString.FretPosition := TFretNumber(String6Fret);
+  if String6Fret = 0 then fSixthString.Shape:= msCircleEmpty;
+  if String6text = 'X' then fSixthString.Shape := msMuted
+  else
+    fSixthString.Text := String6Text;
+
+
+  fFifthString.FretPosition := TFretNumber(String5Fret);
+  if String5Fret = 0 then fFifthString.Shape:= msCircleEmpty;
+  if String5text = 'X' then fFifthString.Shape := msMuted
+  else
+    fFifthString.Text := String5Text;
+
+  fFourthString.FretPosition := TFretNumber(String4Fret);
+  if String4Fret = 0 then fFourthString.Shape:= msCircleEmpty;
+  if String4text = 'X' then fFourthString.Shape := msMuted
+  else
+    fFourthString.Text := String4Text;
+
+  fThirdString.FretPosition := TFretNumber(String3Fret);
+  if String3Fret = 0 then fThirdString.Shape:= msCircleEmpty;
+  if String3text = 'X' then fThirdString.Shape := msMuted
+  else
+    fThirdString.Text := String3Text;
+
+  fSecondString.FretPosition := TFretNumber(String2Fret);
+  if String2Fret = 0 then fSecondString.Shape:= msCircleEmpty;
+  if String2text = 'X' then fSecondString.Shape := msMuted
+  else
+    fSecondString.Text := String2Text;
+
+  fFirstString.FretPosition := TFretNumber(String1Fret);
+  if String1Fret = 0 then fFirstString.Shape:= msCircleEmpty;
+  if String1text = 'X' then fFirstString.Shape := msMuted
+  else
+    fFirstString.Text := String1Text;
 end;
 
 end.

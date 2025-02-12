@@ -41,17 +41,11 @@ type
     procedure addMarker(aPoint: Tpoint; aCanvas: TCanvas; txtLbl: string;
       aMarkerShape: TmarkerShape = msCircle);
     function DrawOnCanvas(aCanvas: TCanvas): boolean;//@TODO move --see notes
-    procedure DrawChordData(aChordData: TChordData);
+    //procedure DrawChordData(aChordData: TChordData);
     property ChordBoxTextRect: Trect read aChordTextRect;  //protected
     property AutoPenWidth: boolean read mAutoPenWidth write setautoPen default True;
     property ManualPenWidth: integer read mManualPenWidth
       write mManualPenWidth default 1;
-    {
-    property MarkerRect: Trect read aMarkerRect;       //protected
-    property FretTextRect: Trect read aFretTextRect;  //protected
-    property FretPoints: TfrtPnts read aFretPoints;    //protected
-    property StringPoints: TstrPnts read aStringPoints;  //protected
-    }
     property FingerPoints: TchrdDtPnts read aFingerPoints;
     property ChordData: TChordData read mChordData write mChordData;
   published
@@ -252,15 +246,17 @@ begin
 end;
 
 procedure TChordBoxCanvas.drawXShape(aCanvas: TCanvas; const aPoint: Tpoint);
+const
+  cRatio = 0.68;
 var
   markDot: Trect;
   oldPen: integer;
 begin
   oldPen := aCanvas.Pen.Width;
-  markDot := Trect.Create(aMarkerRect);
+  markDot := Bounds(0, 0, Round(aMarkerRect.Width * cRatio),
+    Round(aMarkerRect.Height * cRatio));
   moveRectCenter(markDot, aPoint);
   {$IFDEF FPC}
-  //@TODO REmeber to save old pen and reset when done!
   aCanvas.Pen.Width := Round (aCanvas.Width / 32);
   aCanvas.Line(markDot.TopLeft, markDot.BottomRight);
   aCanvas.Line(Point(markDot.Right, markDot.Top),
@@ -283,11 +279,15 @@ end;
 procedure TChordBoxCanvas.drawOShape(aCanvas: TCanvas; const aPoint: Tpoint);
 var
   markDot: Trect;
+  oldPen: integer;
 begin
+  oldPen := aCanvas.Pen.Width;
+  aCanvas.Pen.Width := Round(aCanvas.Width / 42);
   markDot := Trect.Create(aMarkerRect);
   moveRectCenter(markDot, aPoint);
   aCanvas.Brush.Style := bsClear;
   aCanvas.Ellipse(markDot);
+  aCanvas.Pen.Width := oldPen;
 end;
 
 constructor TChordBoxCanvas.Create(const cParentRect: Trect);
@@ -336,11 +336,14 @@ begin
     msStarSolid:
       aCanvas.Chord(10, 10, 20, 20, 30, 30, 40, 50);
     msCircleEmpty:
-    begin
+      drawOShape(aCanvas, aPoint);
+      {
+      begin
       aCanvas.Brush.Style := bsClear;
       aCanvas.Pen.Width := mPenWidth * 3;
       aCanvas.Ellipse(DotSize);
     end;
+    }
     msMuted:
       drawXShape(aCanvas, aPoint);
   end;
@@ -470,22 +473,16 @@ begin
   if mChordData.StartingFret > 0 then
     aCanvas.TextRect(aFretTextRect, 0, 0, IntToStr(mChordData.StartingFret), textStyle);
 
-  //@TODO Draw fingerDots from mChordData
   DrawChordDataMarkers(aCanvas);
 
-  Result := False;
-  //@TODO Finish function
-  {TEMP FOR TESTING}
-
-  //drawXShape(aCanvas, Point(100, 100));
-  {================}
-
+  Result := True;
 end;
 
+ {
 procedure TChordBoxCanvas.DrawChordData(aChordData: TChordData);
 begin
   //@TODO Draw all strings in ChordData
 end;
-
+  }
 
 end.

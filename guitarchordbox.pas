@@ -13,12 +13,8 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    Button1: TButton;
-    Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
@@ -69,7 +65,8 @@ begin
   //cbCanvasTester.ChordText := 'GMaj7';
  // TestChord.StartingFret:=0;
  // TestChord.Name := 'FMin7';
-
+ {
+  //Testing of Markers
   TestChord.FifthString.Text := 'C5';
   TestChord.FifthString.FretPosition:=FirstFret; //@TODO No Method to Draw yet
   TestChord.SixthString.FretPosition:=FourthFret;
@@ -79,7 +76,7 @@ begin
  // cbCanvasTester.ChordData := TestChord;
   //TestChord.MarkerData[FifthString];
 
-
+  }
   {
   TestChord.MarkerData[SixthStrng].Location := cbCanvasTester.FingerPoints [ord (SixthStrng),ord( FourthFret)];
   TestChord.MarkerData[SixthStrng].Text:='64';
@@ -132,12 +129,20 @@ begin
      end;
     //SixthStringFinger := FourthFret;
      }
+     {
       cbCanvasTester.generate();
       TestChord.FifthString.FretPosition:=FirstFret;
       TestChord.FifthString.Text := 'Root';
       TestChord.FifthString.Shape:= msSquare;
       TestChord.ThirdString.Shape := msMuted;//@TODO Not Created yet!
       TestChord.FourthString.FretPosition := OpenString;
+      TestChord.FourthString.Text:='O';
+      TestChord.SecondString.FretPosition:= ThirdFret;
+      TestChord.SecondString.Text := 'D';
+      }
+      TestChord.ezDataEntry('CMaj', 0,0,'X', 3, 'C', 2, 'E', 0,'G', 1,'C', 0, 'E');
+
+
       //TestChord.FifthString.Location := cbCanvasTester.getFretMarkerPoint(5,1);
      cbCanvasTester.generate();
      //cbCanvasTester.create(Form1.ClientRect, TestChord);
