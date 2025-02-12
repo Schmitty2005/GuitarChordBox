@@ -1,0 +1,17 @@
+object Form6: TForm6
+  Left = 875
+  Top = 192
+  Caption = 'Form6'
+  ClientHeight = 480
+  ClientWidth = 215
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  OnPaint = FormPaint
+  Left = 875
+  Top = 192
+  DesignerMasterStyle = 0
+end

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2025/02/07 14:19:15.000.861,=C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\Unit6.pas</Transaction>
+    <Transaction>2025/02/07 14:19:48.000.868,C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\FMX_ChordBox.fmx=C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\Unit6.fmx</Transaction>
+    <Transaction>2025/02/07 14:19:48.000.868,C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\FMX_ChordBox.pas=C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\Unit6.pas</Transaction>
+    <Transaction>2025/02/07 14:20:06.000.273,C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\FMXChordBoxProject.dproj=C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\Project9.dproj</Transaction>
+    <Transaction>2025/02/08 08:15:43.000.200,=C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\FMXChordBoxCanvas.pas</Transaction>
+    <Transaction>2025/02/08 08:15:43.000.225,=C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\FMXChordData.pas</Transaction>
+    <Transaction>2025/02/08 08:15:43.000.277,=C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\FMXGuitarChordBoxCoordinates.pas</Transaction>
+    <Transaction>2025/02/09 08:30:10.783,=C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\Unit6.pas</Transaction>
+    <Transaction>2025/02/09 08:30:32.411,C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\ChordCollection.pas=C:\Users\brian\OneDrive\Documents\Embarcadero\Studio\Projects\Unit6.pas</Transaction>
+  </Transactions>
+</BorlandProject>
