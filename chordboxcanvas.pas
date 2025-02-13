@@ -325,6 +325,8 @@ begin
   Normalize(DotSize);
   aCanvas.Brush.Style := bsSolid;
   aCanvas.Brush.Color := clBlack;
+
+  if mUseAllSolidCircles then aMarkerShape := msCircle;
   //@TODO Determine Marker Shape to Draw
   case aMarkerShape of
     msCircle:

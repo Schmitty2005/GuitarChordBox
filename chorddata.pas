@@ -49,6 +49,7 @@ type
   private
     mChordText: string;
     mStartFret: byte;
+    mUseAllSolidCircles : Boolean;//@TODO Not implemented yet!
     fSixthString: TMarkerData;
     fFifthString: TMarkerData;
     fFourthString: TMarkerData;
@@ -70,7 +71,12 @@ type
       String6Fret: byte; String6Text: string; String5Fret: byte;
       String5Text: string; String4Fret: byte; String4Text: string;
       String3Fret: byte; String3Text: string; String2Fret: byte;
-      String2Text: string; String1Fret: byte; String1Text: string);
+      String2Text: string; String1Fret: byte; String1Text: string); overload;
+    procedure ezDataEntry(String6: TezFrets; String5: TezFrets;
+      String4: TezFrets; String3: TezFrets; String2: TezFrets;
+      String1: TezFrets); overload;
+    procedure ezDataEntry(String6: string; String5: string;
+      String4: string; String3: string; String2: string; String1: string); overload;
   published
     property Name: string read mChordText write mChordText;
     property StartingFret: byte read mStartFret write mStartFret;
@@ -172,49 +178,85 @@ procedure TChordData.ezDataEntry(ChordName: string; StartingFret: byte;
   String3Fret: byte; String3Text: string; String2Fret: byte;
   String2Text: string; String1Fret: byte; String1Text: string);
 begin
-  //@TODO needs resolution for open and muted!
-  //      maybe switch to Char type ?
   //@TODO needs function to reset all chord data!
   //      may need function added for no marker as well!
-
   mChordText := ChordName;
   mStartFret := StartingFret;
+
   fSixthString.FretPosition := TFretNumber(String6Fret);
-  if String6Fret = 0 then fSixthString.Shape:= msCircleEmpty;
+  if String6Fret = 0 then fSixthString.Shape := msCircleEmpty;
   if String6text = 'X' then fSixthString.Shape := msMuted
   else
     fSixthString.Text := String6Text;
 
-
   fFifthString.FretPosition := TFretNumber(String5Fret);
-  if String5Fret = 0 then fFifthString.Shape:= msCircleEmpty;
+  if String5Fret = 0 then fFifthString.Shape := msCircleEmpty;
   if String5text = 'X' then fFifthString.Shape := msMuted
   else
     fFifthString.Text := String5Text;
 
   fFourthString.FretPosition := TFretNumber(String4Fret);
-  if String4Fret = 0 then fFourthString.Shape:= msCircleEmpty;
+  if String4Fret = 0 then fFourthString.Shape := msCircleEmpty;
   if String4text = 'X' then fFourthString.Shape := msMuted
   else
     fFourthString.Text := String4Text;
 
   fThirdString.FretPosition := TFretNumber(String3Fret);
-  if String3Fret = 0 then fThirdString.Shape:= msCircleEmpty;
+  if String3Fret = 0 then fThirdString.Shape := msCircleEmpty;
   if String3text = 'X' then fThirdString.Shape := msMuted
   else
     fThirdString.Text := String3Text;
 
   fSecondString.FretPosition := TFretNumber(String2Fret);
-  if String2Fret = 0 then fSecondString.Shape:= msCircleEmpty;
+  if String2Fret = 0 then fSecondString.Shape := msCircleEmpty;
   if String2text = 'X' then fSecondString.Shape := msMuted
   else
     fSecondString.Text := String2Text;
 
   fFirstString.FretPosition := TFretNumber(String1Fret);
-  if String1Fret = 0 then fFirstString.Shape:= msCircleEmpty;
+  if String1Fret = 0 then fFirstString.Shape := msCircleEmpty;
   if String1text = 'X' then fFirstString.Shape := msMuted
   else
     fFirstString.Text := String1Text;
+end;
+
+procedure TChordData.ezDataEntry(String6: TezFrets; String5: TezFrets;
+  String4: TezFrets; String3: TezFrets; String2: TezFrets; String1: TezFrets);
+begin
+  fSixthString.FretPosition := TFretNumber(String6);
+  fFifthString.FretPosition := TFretNumber(String5);
+  fFourthString.FretPosition := TFretNumber(String4);
+  fThirdString.FretPosition := TFretNumber(String3);
+  fSecondString.FretPosition := TFretNumber(String2);
+  fFirstString.FretPosition := TFretNumber(String1);
+end;
+
+procedure TChordData.ezDataEntry(String6: string; String5: string;
+  String4: string; String3: string; String2: string; String1: string);
+begin
+  if String6 = 'X' then fSixthString.Shape := msMuted
+  else
+    fSixthString.Text := String6;
+
+  if String5 = 'X' then fFifthString.Shape := msMuted
+  else
+    fFifthString.Text := String5;
+
+  if String4 = 'X' then fFourthString.Shape := msMuted
+  else
+    fFourthString.Text := String4;
+
+  if String3 = 'X' then fThirdString.Shape := msMuted
+  else
+    fThirdString.Text := String3;
+
+  if String2 = 'X' then fSecondString.Shape := msMuted
+  else
+    fSecondString.Text := String2;
+
+  if String1 = 'X' then fFirstString.Shape := msMuted
+  else
+    fFirstString.Text := String1;
 end;
 
 end.

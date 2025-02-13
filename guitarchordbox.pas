@@ -109,7 +109,7 @@ begin
   end;
    }
     cbCanvasTester.create(Form1.ClientRect, TestChord);
-     cbCanvasTester.AutoPenWidth:=false;
+     cbCanvasTester.AutoPenWidth:=true;
 
     //TestChord.MarkerData[FifthString].Text:='C#';
      {

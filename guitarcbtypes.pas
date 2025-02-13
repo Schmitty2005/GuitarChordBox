@@ -9,6 +9,8 @@ uses
 
 type
 
+  TezFrets = -1..4;
+
   TstrRec = record
     start: Tpoint;
     finish: Tpoint;
