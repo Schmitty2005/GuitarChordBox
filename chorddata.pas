@@ -184,37 +184,37 @@ begin
   mStartFret := StartingFret;
 
   fSixthString.FretPosition := TFretNumber(String6Fret);
-  if String6Fret = 0 then fSixthString.Shape := msCircleEmpty;
+  //if String6Fret = 0 then fSixthString.Shape := msCircleEmpty;
   if String6text = 'X' then fSixthString.Shape := msMuted
   else
     fSixthString.Text := String6Text;
 
   fFifthString.FretPosition := TFretNumber(String5Fret);
-  if String5Fret = 0 then fFifthString.Shape := msCircleEmpty;
+  //if String5Fret = 0 then fFifthString.Shape := msCircleEmpty;
   if String5text = 'X' then fFifthString.Shape := msMuted
   else
     fFifthString.Text := String5Text;
 
   fFourthString.FretPosition := TFretNumber(String4Fret);
-  if String4Fret = 0 then fFourthString.Shape := msCircleEmpty;
+  //if String4Fret = 0 then fFourthString.Shape := msCircleEmpty;
   if String4text = 'X' then fFourthString.Shape := msMuted
   else
     fFourthString.Text := String4Text;
 
   fThirdString.FretPosition := TFretNumber(String3Fret);
-  if String3Fret = 0 then fThirdString.Shape := msCircleEmpty;
+  //if String3Fret = 0 then fThirdString.Shape := msCircleEmpty;
   if String3text = 'X' then fThirdString.Shape := msMuted
   else
     fThirdString.Text := String3Text;
 
   fSecondString.FretPosition := TFretNumber(String2Fret);
-  if String2Fret = 0 then fSecondString.Shape := msCircleEmpty;
+  //if String2Fret = 0 then fSecondString.Shape := msCircleEmpty;
   if String2text = 'X' then fSecondString.Shape := msMuted
   else
     fSecondString.Text := String2Text;
 
   fFirstString.FretPosition := TFretNumber(String1Fret);
-  if String1Fret = 0 then fFirstString.Shape := msCircleEmpty;
+  //if String1Fret = 0 then fFirstString.Shape := msCircleEmpty;
   if String1text = 'X' then fFirstString.Shape := msMuted
   else
     fFirstString.Text := String1Text;

@@ -398,7 +398,10 @@ begin
 
   //@TODO setup to use mChordData to draw chord box
   if mAutoPenWidth then
-    mPenWidth := Round(aCanvas.Width * 0.005)
+  begin
+    mPenWidth := Round(aCanvas.Width * 0.005);
+    aCanvas.Pen.Width :=mPenWidth;
+  end
   else
     aCanvas.Pen.Width := mPenWidth;
 
@@ -435,7 +438,7 @@ begin
   textStyle.Alignment := taCenter;
   textStyle.Layout := tlCenter;
   //@TODO no Font.Siz in BGRA Bitmap!
-  aCanvas.Font.Height := Round(aCanvas.Width / 10);
+  aCanvas.Font.Height := Round(aCanvas.Width / 5);
   aCanvas.Font.Color := clBlue;
   {$IFDEF DCC}
   //this still doesnt work as good as it should!
@@ -448,7 +451,7 @@ begin
   {$IFDEF FPC}
   aCanvas.TextRect(aChordTextRect, 0, 0, mChordData.Name, textStyle);
   //@TODO No Font.Size in TBGRACanvas.Font !!!!
-  aCanvas.Font.Height := Round(aCanvas.Width / 20);//18;
+  aCanvas.Font.Height := Round(aCanvas.Width / 15);//18;
   {$ENDIF}
 
   if mChordData.StartingFret > 0 then

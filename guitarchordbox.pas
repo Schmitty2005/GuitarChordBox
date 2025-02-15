@@ -69,7 +69,7 @@ begin
   //  [cbc.ParentCanvasRect.Left, cbc.ParentCanvasRect.Right,
   //  cbc.ParentCanvasRect.Top, cbc.ParentCanvasRect.Bottom]);
   cbCanvasTester.ParentCanvasRect := Form1.ClientRect;
-  cbCanvasTester.ParentCanvasRect := Image1.ClientRect;
+  //cbCanvasTester.ParentCanvasRect := Image1.ClientRect;
   //cbCanvasTester.ParentCanvasRect := ;
   //cbCanvasTester.StartFret := 0;
   //cbCanvasTester.ChordText := 'GMaj7';
@@ -187,6 +187,7 @@ begin
   end;
   }
   image.Draw(Form1.Canvas , ClientRect, False);
+
   //image.D
  // cbCanvasTester.DrawOnCanvas(Image1.Canvas);
 
