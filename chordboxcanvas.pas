@@ -326,7 +326,7 @@ begin
   aCanvas.Brush.Style := bsSolid;
   aCanvas.Brush.Color := clBlack;
 
-  if mUseAllSolidCircles then aMarkerShape := msCircle;
+  //                  if mUseAllSolidCircles then aMarkerShape := msCircle; //@TODO not finished!
   //@TODO Determine Marker Shape to Draw
   case aMarkerShape of
     msCircle:

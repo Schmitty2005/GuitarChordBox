@@ -10,8 +10,8 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, GuitarChordBox, ChordBoxCanvas, ChordData, GuitarcbTypes
-  { you can add units after this };
+  Forms, GuitarChordBox, ChordBoxCanvas, ChordData, GuitarcbTypes,
+  ChordBoxCanvasBGRA;
 
 {$R *.res}
 
