@@ -17,12 +17,15 @@ type
     Label2: TLabel;
     Label3: TLabel;
     PaintBox1: TPaintBox;
+    PaintBox2: TPaintBox;
     Panel1: TPanel;
+    Panel2: TPanel;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
     //procedure Image1Paint(Sender: TObject);
     procedure PaintBox1Paint(Sender: TObject);
+    procedure PaintBox2Paint(Sender: TObject);
     procedure Panel1Paint(Sender: TObject);
     // procedure Image1Paint(Sender: TObject);
 
@@ -276,11 +279,12 @@ var
   cbc: TChordBoxCanvasBGRA;
   img: TBGRABitmap;
 begin
-  PaintBox1.Height:=FOrm1.Height;
+  PaintBox1.Height := FOrm1.Height;
   PaintBox1.Width := Form1.Width;
-  PaintBox1.Canvas.Ellipse(30,30,200,200);
+  PaintBox1.Canvas.Ellipse(30, 30, 200, 200);
   cbc := TChordBoxCanvasBGRA.Create(PaintBox1.ClientRect);
-  img := TBGRABitmap.Create(Panel1.Width, Panel1.Height, ColorToBGRA(ColorToRGB(clWhite)));
+  img := TBGRABitmap.Create(Panel1.Width, Panel1.Height,
+    ColorToBGRA(ColorToRGB(clWhite)));
   PaintBox1.canvas.Brush.Color := clWhite;
   PaintBox1.canvas.Clear;
   // img.CanvasBGRA.Brush :=1 //TBGRABrush.;
@@ -288,12 +292,12 @@ begin
   cbc.generate();
 
   img.canvas.Brush.style := bsClear;
- // img.canvas.Brush.Color := clWhite;
-  img.Pen.Style:= psSolid ;
+  // img.canvas.Brush.Color := clWhite;
+  img.Pen.Style := psSolid;
   // := clBlack;
   img.canvas.Clear;
 
- cbc.DrawOnCanvas(img.CanvasBGRA);
+  cbc.DrawOnCanvas(img.CanvasBGRA);
   cbc.DrawOnCanvas(img.CanvasBGRA);
   //img.canvas.pen.Color := clBlack;
   img.canvas.Clear;
@@ -302,12 +306,47 @@ begin
   //canvas.Brush.color := clLime;
   //canvas.Clear;
   //canvas.Ellipse(100, 100, 200, 200);
-  img.Draw(PaintBox1.canvas, 0,0,true);//clientrect);
+  img.Draw(PaintBox1.canvas, 0, 0, True);//clientrect);
 
 
   cbc.Free;
   img.Free;
 end;
+
+procedure TForm1.PaintBox2Paint(Sender: TObject);
+var
+  cbc: TChordBoxCanvasBGRA;
+  img: TBGRABitmap;
+  cd : TChordData;
+begin
+  cd := TChordData.Create;
+  cd.ezDataEntry('Amin', 0,0,'X', 0, 'A', 2, 'E', 2, 'E', 1, 'C', 0, 'X');
+  PaintBox2.Height := FOrm1.Height;
+  PaintBox2.Width := Form1.Width;
+  PaintBox2.Canvas.Ellipse(30, 30, 200, 200);
+  cbc := TChordBoxCanvasBGRA.Create(PaintBox1.ClientRect,cd);
+  img := TBGRABitmap.Create(Panel1.Width, Panel1.Height,
+    ColorToBGRA(ColorToRGB(clWhite)));
+  PaintBox2.canvas.Brush.Color := clWhite;
+  PaintBox2.canvas.Clear;
+  cbc.generate();
+
+  img.canvas.Brush.style := bsClear;
+
+  img.Pen.Style := psSolid;
+
+  img.canvas.Clear;
+
+  cbc.DrawOnCanvas(img.CanvasBGRA);
+  cbc.DrawOnCanvas(img.CanvasBGRA);
+  img.canvas.Clear;
+  img.Draw(PaintBox2.canvas, 0, 0, True);//clientrect);
+
+ // cd.free; This possibly gets freed when cbc is destroyed
+  cbc.Free;
+  img.Free;
+end;
+
 
 procedure TForm1.Panel1Paint(Sender: TObject);
 var
