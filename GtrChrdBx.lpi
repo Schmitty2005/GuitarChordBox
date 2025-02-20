@@ -89,6 +89,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ChordBoxCanvasBGRA"/>
       </Unit>
+      <Unit>
+        <Filename Value="gcbpanel.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GCBPanel"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

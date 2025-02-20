@@ -7,6 +7,9 @@ interface
 uses
   Classes, SysUtils, Types, GuitarCBTypes;
 
+
+//@TODO add type to interface with some sort of OpenSource
+//      Guitar Chord information
 type
   {
   TMarkerShape = (msCircle, msCircleEmpty, msSquare, msSquareEmpty,

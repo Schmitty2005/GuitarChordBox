@@ -2,15 +2,23 @@ object Form1: TForm1
   Left = 300
   Height = 500
   Top = 32
-  Width = 250
+  Width = 692
   Caption = 'Guitar Chord Box'
   ClientHeight = 500
-  ClientWidth = 250
+  ClientWidth = 692
   DoubleBuffered = True
   ParentDoubleBuffered = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnPaint = FormPaint
+  object Panel1: TPanel
+    Left = 8
+    Height = 352
+    Top = 8
+    Width = 226
+    Caption = 'Panel1'
+    TabOrder = 0
+  end
   object Label2: TLabel
     Left = 112
     Height = 18
@@ -26,12 +34,5 @@ object Form1: TForm1
     Width = 44
     Anchors = [akLeft, akBottom]
     Caption = 'Label3'
-  end
-  object Image1: TImage
-    Left = 32
-    Height = 448
-    Top = 8
-    Width = 192
-    AntialiasingMode = amOn
   end
 end

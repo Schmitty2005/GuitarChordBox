@@ -301,6 +301,7 @@ end;
 
 constructor TChordBoxCanvas.Create(const cParentRect: Trect; aChordData: TChordData);
 begin
+  aParentRect := cParentRect;
   if mAutoPenWidth then
     mPenWidth := Round(cParentRect.Width * 0.005)
   else

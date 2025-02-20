@@ -1,13 +1,14 @@
 unit ChordBoxCanvasBGRA;
 {$MODE DELPHI}
 interface
-//
+
 //WIP
 //   -- Replaced TCanvas with TBGRACanvas
 //   -- Replaced TChordBoxCanvas with TChordBoxCanvasBGRA
-//
+
 uses
-  Classes, SysUtils, Graphics, Types, BGRACanvas, lazutils, GuitarChordBoxCoordinates, ChordData,
+  Classes, SysUtils, Graphics, Types, BGRACanvas, lazutils,
+  GuitarChordBoxCoordinates, ChordData,
   GuitarCBTypes;
 
 type
@@ -40,8 +41,8 @@ type
   public
     constructor Create(const cParentRect: Trect); overload;
     constructor Create(const cParentRect: Trect; aChordData: TChordData); overload;
-    procedure addMarker(aPoint: Tpoint; aCanvas: TBGRACanvas; txtLbl: string;
-      aMarkerShape: TmarkerShape = msCircle);
+    procedure addMarker(aPoint: Tpoint; aCanvas: TBGRACanvas;
+      txtLbl: string; aMarkerShape: TmarkerShape = msCircle);
     function DrawOnCanvas(aCanvas: TBGRACanvas): boolean;//@TODO move --see notes
     //procedure DrawChordData(aChordData: TChordData);
     property ChordBoxTextRect: Trect read aChordTextRect;  //protected
@@ -303,6 +304,7 @@ end;
 
 constructor TChordBoxCanvasBGRA.Create(const cParentRect: Trect; aChordData: TChordData);
 begin
+  aParentRect := cParentRect;//This should fix!
   if mAutoPenWidth then
     mPenWidth := Round(cParentRect.Width * 0.005)
   else
@@ -366,7 +368,7 @@ begin
   //No BOLD font in BGRACanvas!
   //@TODO Submit issue on Github  ?
   //aCanvas.Font.Bold := True;
-  aCanvas.Font.Style:= [fsBold];
+  aCanvas.Font.Style := [fsBold];
   {$IFDEF DCC}
     aCanvas.TextRect(DotSize,
       (DotSize.left + round(0.5 * aCanvas.TextWidth(txtLbl))), DotSize.top,
@@ -400,7 +402,7 @@ begin
   if mAutoPenWidth then
   begin
     mPenWidth := Round(aCanvas.Width * 0.005);
-    aCanvas.Pen.Width :=mPenWidth;
+    aCanvas.Pen.Width := mPenWidth;
   end
   else
     aCanvas.Pen.Width := mPenWidth;
