@@ -411,6 +411,7 @@ begin
     fingerMarkerCalc;
     calcChordTextRect;
     calcFretTextRect;
+    if mChordData = nil then mChordData := TChordData.Create;
     setChordData(mChordData);
   end;
   // NOTE : Rect size needed first, then strings , frets, and finally
