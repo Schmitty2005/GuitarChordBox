@@ -296,6 +296,7 @@ end;
 constructor TChordBoxCanvasBGRA.Create(const cParentRect: Trect);
 begin
   inherited;
+  aParentRect := cParentRect;
   if mAutoPenWidth then
     mPenWidth := Round(cParentRect.Width * 0.005)
   else

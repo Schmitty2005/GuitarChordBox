@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
   ComCtrls, Types, GuitarChordBoxCoordinates, ChordBoxCanvas, ChordData,
-  GuitarCBTypes, BGRABitmap, ChordBoxCanvasBGRA, GCBPanel;
+  GuitarCBTypes, BGRABitmap, BGRABitmapTypes, ChordBoxCanvasBGRA, GCBPanel;
 
 type
 
@@ -16,10 +16,12 @@ type
   TForm1 = class(TForm)
     Label2: TLabel;
     Label3: TLabel;
+    PaintBox1: TPaintBox;
     Panel1: TPanel;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
+    //procedure Image1Paint(Sender: TObject);
     procedure PaintBox1Paint(Sender: TObject);
     procedure Panel1Paint(Sender: TObject);
     // procedure Image1Paint(Sender: TObject);
@@ -62,22 +64,22 @@ procedure TForm1.FormPaint(Sender: TObject);
 var
   image: TBGRABitmap;
   sty: TTextStyle;
-  begin
+begin
   image := TBGRABitmap.Create(canvas.Width, canvas.Height);
   Label2.Caption := 'Client Width : ' + IntToStr(clientRect.Width);
   Label3.Caption := 'Client Heigth: ' + IntToStr(clientRect.Height);
   // Label1.Caption := format('Parent Canvs Left: %d, Rigth : %d, Top: %d, Bottom: %d',
   //  [cbc.ParentCanvasRect.Left, cbc.ParentCanvasRect.Right,
   //  cbc.ParentCanvasRect.Top, cbc.ParentCanvasRect.Bottom]);
-  //
+
   //@TODO Check that ParentCanvasRect is being set on Create
   //      this should draw image without this line, but does not!
-  //
-  //
-  //
+
+
+
   ////////cbCanvasTester.ParentCanvasRect := Form1.ClientRect;
-  //
-  //
+
+
 
   //cbCanvasTester.ParentCanvasRect := Image1.ClientRect;
   //cbCanvasTester.ParentCanvasRect := ;
@@ -196,10 +198,10 @@ var
     TextRect(ClientRect, 40,40,'Hello BGRA BitMap',sty);
   end;
   }
-  image.Draw(Form1.Canvas , ClientRect, False);
+  image.Draw(Form1.Canvas, ClientRect, False);
 
   //image.D
- // cbCanvasTester.DrawOnCanvas(Image1.Canvas);
+  // cbCanvasTester.DrawOnCanvas(Image1.Canvas);
 
   // cbCanvasTester.addMarker(FifthStrng, FirstFret, Form1.Canvas, 'A#');
   // cbCanvasTester.addMarker(SixthStrng, FourthFret, Form1.Canvas, 'Ab');
@@ -224,25 +226,83 @@ var
   // Label1.Caption := 'Start Fret: ' + IntToStr(cbCanvasTester.StartFret);
 
   {===================}
-    image.free;
+  image.Free;
 end;
 
-procedure TForm1.PaintBox1Paint(Sender: TObject);
+
+{
+procedure TForm1.Image1Paint(Sender: TObject);
 var
-  cbc : TChordBoxCanvasBGRA;
-  img : TBGRABitmap;
+  cbc: TChordBoxCanvasBGRA;
+  img: TBGRABitmap;
 begin
-  cbc := TChordBoxCanvasBGRA.Create (clientRect);
-  img := TBGRABitmap.Create(width, height);
- // img.CanvasBGRA.Brush :=1 //TBGRABrush.;
+  Image1.Height := FOrm1.Height;
+  Image1.Width := Form1.Width;
+  Image1.Canvas.Ellipse(30, 30, 200, 200);
+  cbc := TChordBoxCanvasBGRA.Create(clientRect);
+  //  image := TBGRABitmap.Create(ClientWidth,ClientHeight,ColorToBGRA(ColorToRGB(clBtnFace)));
+  img := TBGRABitmap.Create(Form1.Width, Form1.Height, ColorToBGRA(ColorToRGB(clWhite)));
+  Image1.canvas.Brush.Color := clWhite;
+
+  Image1.canvas.Clear;
+  // img.CanvasBGRA.Brush :=1 //TBGRABrush.;
   //img.InvalidateBitmap;
+  cbc.generate();
+
+  img.canvas.Brush.style := bsClear;
+  // img.canvas.Brush.Color := clWhite;
+  img.Pen.Style := psSolid;
+  // := clBlack;
+  img.canvas.Clear;
+
   cbc.DrawOnCanvas(img.CanvasBGRA);
-  canvas.pen.color := clRed;
-  canvas.brush.style := bsClear;
-  canvas.Brush.color := clLime;
-  canvas.Clear;
-   canvas.Ellipse(100,100,200,200);
-  img.Draw(canvas, clientrect);
+  cbc.DrawOnCanvas(img.CanvasBGRA);
+  //img.canvas.pen.Color := clBlack;
+  img.canvas.Clear;
+  //canvas.pen.color := clRed;
+  ////canvas.brush.style := bsClear;
+  //canvas.Brush.color := clLime;
+  //canvas.Clear;
+  //canvas.Ellipse(100, 100, 200, 200);
+  img.Draw(Image1.canvas, 0, 0, True);//clientrect);
+
+
+  cbc.Free;
+  img.Free;
+end;
+ }
+procedure Tform1.PaintBox1Paint(Sender: TObject);
+var
+  cbc: TChordBoxCanvasBGRA;
+  img: TBGRABitmap;
+begin
+  PaintBox1.Height:=FOrm1.Height;
+  PaintBox1.Width := Form1.Width;
+  PaintBox1.Canvas.Ellipse(30,30,200,200);
+  cbc := TChordBoxCanvasBGRA.Create(PaintBox1.ClientRect);
+  img := TBGRABitmap.Create(Panel1.Width, Panel1.Height, ColorToBGRA(ColorToRGB(clWhite)));
+  PaintBox1.canvas.Brush.Color := clWhite;
+  PaintBox1.canvas.Clear;
+  // img.CanvasBGRA.Brush :=1 //TBGRABrush.;
+  //img.InvalidateBitmap;
+  cbc.generate();
+
+  img.canvas.Brush.style := bsClear;
+ // img.canvas.Brush.Color := clWhite;
+  img.Pen.Style:= psSolid ;
+  // := clBlack;
+  img.canvas.Clear;
+
+ cbc.DrawOnCanvas(img.CanvasBGRA);
+  cbc.DrawOnCanvas(img.CanvasBGRA);
+  //img.canvas.pen.Color := clBlack;
+  img.canvas.Clear;
+  //canvas.pen.color := clRed;
+  ////canvas.brush.style := bsClear;
+  //canvas.Brush.color := clLime;
+  //canvas.Clear;
+  //canvas.Ellipse(100, 100, 200, 200);
+  img.Draw(PaintBox1.canvas, 0,0,true);//clientrect);
 
 
   cbc.Free;
@@ -251,18 +311,20 @@ end;
 
 procedure TForm1.Panel1Paint(Sender: TObject);
 var
-  cbc : TChordBoxCanvasBGRA;
-  img : TBGRABitmap;
+  cbc: TChordBoxCanvasBGRA;
+  img: TBGRABitmap;
 begin
-  cbc := TChordBoxCanvasBGRA.Create (clientRect);
-  img := TBGRABitmap.Create(width, height);
- // cbc.DrawOnCanvas(img.CanvasBGRA);
+  img := TBGRABitmap.Create(Width, Height);
+  cbc := TChordBoxCanvasBGRA.Create(clientRect);
+  cbc.DrawOnCanvas(img.CanvasBGRA);
+
+  //cbc.DrawOnCanvas(img.CanvasBGRA);
   //canvas.pen.color := clGreen;
   //canvas.brush.style := bsClear;
   //canvas.Brush.color := clLime;
-//  canvas.Clear;
-   canvas.Ellipse(100,100,200,200);
-//  img.Draw(canvas, clientrect);
+  //  canvas.Clear;
+  canvas.Ellipse(100, 100, 200, 200);
+  img.Draw(canvas, clientrect);
 
 
   cbc.Free;
